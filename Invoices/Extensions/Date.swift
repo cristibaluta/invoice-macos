@@ -39,7 +39,7 @@ extension Date {
         return dateFormatter.string(from: self)
     }
     
-    var ddMMMyyyy: String {
+    var mediumDate: String {
         let comp = Calendar.current.dateComponents([.year, .month, .day], from: self)
         var month = ""
         switch comp.month {

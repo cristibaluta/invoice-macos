@@ -20,47 +20,43 @@ class ReportStore: ObservableObject {
     
     var printingData: Data?
     var data: InvoiceData
-    var invoiceDictionary: [String: Any]? {
-        guard let data = try? JSONEncoder().encode(data) else { return nil }
-        return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] }
-    }
     @Published var reports: [Report] = []
     @Published var html: String
-    
-    private var projects = [String: [Report]]()
-    
     
     init (data: InvoiceData) {
         self.html = ""
         self.data = data
+        self.reports = data.reports.map({
+            return Report(project_name: $0.project_name,
+                          group: $0.group,
+                          description: $0.description,
+                          duration: $0.duration)
+        })
         calculate()
     }
     
     func openCsv (at fileUrl: URL) {
         do {
             let csv = try CSV(url: fileUrl, delimiter: ";")
-            projects = [:]
             var reports = [Report]()
             try csv.enumerateAsDict { dict in
                 let report = Report(project_name: dict["Project Name"] ?? "",
                                     group: nil,
                                     description: dict["Work Description"] ?? "",
                                     duration: Double(dict["Hours"]?.replacingOccurrences(of: ",", with: ".") ?? "0") ?? 0)
-                reports.append(report)
-                var projectReports = self.projects[report.project_name] ?? []
-                // Find duplicate
+                
+                // Find duplicate and add time
                 var foundDuplicate = false
-                for i in 0..<projectReports.count {
-                    if projectReports[i].description == report.description {
-                        projectReports[i].duration += report.duration
+                for i in 0..<reports.count {
+                    if reports[i].description == report.description {
+                        reports[i].duration += report.duration
                         foundDuplicate = true
                         break
                     }
                 }
                 if !foundDuplicate {
-                    projectReports.append(report)
+                    reports.append(report)
                 }
-                self.projects[report.project_name] = projectReports
             }
             self.reports = reports
             calculate()
@@ -69,8 +65,14 @@ class ReportStore: ObservableObject {
         }
     }
     
-    func deleteReport (_ report: Report) {
-        
+    func updateReport (_ report: Report) {
+        for i in 0..<reports.count {
+            if reports[i].id == report.id {
+                reports[i] = report
+                break
+            }
+        }
+        calculate()
     }
     
     func calculate() {
@@ -88,41 +90,55 @@ class ReportStore: ObservableObject {
                 return
             }
             
-            /// Add new invoice data to the template
-            /// Convert the data to dictionary
-            for (key, value) in (invoiceDictionary ?? [:]) {
-                if key == "invoice_date", let date = Date(yyyyMMdd: value as? String ?? "") {
-                    template = template.replacingOccurrences(of: "::\(key)::", with: "\(date.ddMMMyyyy)")
-                }
-                else if key == "contractor", let dic = value as? [String: Any] {
-                    for (k, v) in dic {
-                        template = template.replacingOccurrences(of: "::\(key)_\(k)::", with: "\(v)")
-                    }
-                } else if key == "client", let dic = value as? [String: Any] {
-                    for (k, v) in dic {
-                        template = template.replacingOccurrences(of: "::\(key)_\(k)::", with: "\(v)")
-                    }
-                } else {
-                    template = template.replacingOccurrences(of: "::\(key)::", with: "\(value)")
-                }
-            }
-            // Calculate total units
+            template = data.toHtmlUsingTemplate(template)
+            
+            // Calculate total amount of units
             let units = data.products.reduce(0.0) { u, product in
                 return u + product.units
             }
             template = template.replacingOccurrences(of: "::units::", with: units.stringFormatWith2Digits)
             
+            // Group reports by projects then by groups
+            var projects = [String: [String: [Report]]]()
+            for report in reports {
+                var groups = projects[report.project_name] ?? [:]
+                var groupReports = groups[report.group ?? ""] ?? []
+                groupReports.append(report)
+                groups[report.group ?? ""] = groupReports
+                projects[report.project_name] = groups
+            }
+            
             /// Add rows
             var projectsHtml = ""
-            for (projectName, reports) in projects {
+            for (projectName, groups) in projects {
                 var project = templateProject.replacingOccurrences(of: "::project_name::", with: projectName)
-                
                 var rowsHtml = ""
-                for report in reports {
+                
+                // Iterate over groups
+                for (groupName, reports) in groups {
+                    guard groupName != "" else {
+                        // No group, add each report as a new table row
+                        for report in reports {
+                            var row = templateRow
+                            row = row.replacingOccurrences(of: "::task::", with: report.description)
+                            row = row.replacingOccurrences(of: "::duration::",
+                                                           with: report.duration.stringFormatWith2Digits)
+                            rowsHtml += row
+                        }
+                        continue
+                    }
+                    // Group found, add each report grouped together in a single row
+                    var groupedTasksHtml = "<p>\(groupName):</p><ul>"
+                    var duration = 0.0
+                    for report in reports {
+                        groupedTasksHtml += "<li>\(report.description)</li>"
+                        duration += report.duration
+                    }
+                    groupedTasksHtml += "</ul>"
                     var row = templateRow
-                    row = row.replacingOccurrences(of: "::task::", with: report.description)
+                    row = row.replacingOccurrences(of: "::task::", with: groupedTasksHtml)
                     row = row.replacingOccurrences(of: "::duration::",
-                                                   with: report.duration.stringFormatWith2Digits)
+                                                             with: duration.stringFormatWith2Digits)
                     rowsHtml += row
                 }
                 
@@ -147,7 +163,13 @@ class ReportStore: ObservableObject {
                                                         withIntermediateDirectories: true,
                                                         attributes: nil)
                 // Add reports to json
-                
+                let reports: [InvoiceReport] = self.reports.map({
+                    return InvoiceReport(project_name: $0.project_name,
+                                         group: $0.group,
+                                         description: $0.description,
+                                         duration: $0.duration)
+                })
+                data.reports = reports
                 // Save json
                 let encoder = JSONEncoder()
                 encoder.outputFormatting = .prettyPrinted
@@ -156,7 +178,8 @@ class ReportStore: ObservableObject {
                 try jsonData.write(to: invoiceJsonUrl)
                 
                 // Save report pdf
-                let reportPdfUrl = invoiceUrl.appendingPathComponent("report-\(data.invoice_series)\(data.invoice_nr)-\(data.date.yyyyMMdd).pdf")
+                let pdfName = "Report-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).pdf"
+                let reportPdfUrl = invoiceUrl.appendingPathComponent(pdfName)
                 try printingData?.write(to: reportPdfUrl)
             }
             catch {

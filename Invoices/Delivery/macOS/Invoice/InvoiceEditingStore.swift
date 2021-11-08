@@ -10,21 +10,6 @@ import AppKit
 
 class InvoiceEditingStore: ObservableObject {
     
-    @Published var email: String {
-        didSet {
-            data.email = email
-        }
-    }
-    @Published var phone: String {
-        didSet {
-            data.phone = phone
-        }
-    }
-    @Published var web: String {
-        didSet {
-            data.web = web
-        }
-    }
     @Published var invoiceSeries: String {
         didSet {
             data.invoice_series = invoiceSeries
@@ -38,7 +23,7 @@ class InvoiceEditingStore: ObservableObject {
     
     @Published var date: Date {
         didSet {
-            data.invoice_date = date.ddMMMyyyy
+            data.invoice_date = date.yyyyMMdd
         }
     }
     @Published var rate: String {
@@ -86,9 +71,6 @@ class InvoiceEditingStore: ObservableObject {
     
     init (data: InvoiceData) {
         self.data = data
-        email = data.email
-        phone = data.phone
-        web = data.web
         invoiceSeries = data.invoice_series
         invoiceNr = String(data.invoice_nr)
         date = Date(yyyyMMdd: data.invoice_date) ?? Date()

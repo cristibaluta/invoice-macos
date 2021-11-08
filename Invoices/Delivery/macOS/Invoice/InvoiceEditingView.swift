@@ -74,24 +74,7 @@ struct InvoiceEditingView: View {
             Divider().padding(.top, 10).padding(.bottom, 10)
             
             Group {
-                HStack(alignment: .center) {
-                    Text("Email:").font(.system(size: 12))
-                    TextField("", text: $store.email).onChange(of: store.email) { _ in
-                        completion(store.data)
-                    }.font(.system(size: 12))
-                }
-                HStack(alignment: .center) {
-                    Text("Phone:").font(.system(size: 12))
-                    TextField("", text: $store.phone).onChange(of: store.phone) { _ in
-                        completion(store.data)
-                    }.font(.system(size: 12))
-                }
-                HStack(alignment: .center) {
-                    Text("Website:").font(.system(size: 12))
-                    TextField("", text: $store.web).onChange(of: store.web) { _ in
-                        completion(store.data)
-                    }.font(.system(size: 12))
-                }
+                
                 HStack(alignment: .center) {
                     Text("Invoice series:").font(.system(size: 12))
                     TextField("", text: $store.invoiceSeries).onChange(of: store.invoiceSeries) { _ in

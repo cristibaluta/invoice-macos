@@ -23,14 +23,31 @@ struct ReportRowView: View {
     
     var body: some View {
         HStack(alignment: .top, spacing: 20) {
-            TextField("Group", text: $group).frame(width: 100)
-            TextEditor(text: $notes)
-            TextField("Duration", text: $duration).frame(width: 50)
+            TextField("Group", text: $group).frame(width: 100).onChange(of: group) {_ in
+                completion(Report(id: report.id,
+                                  project_name: report.project_name,
+                                  group: group,
+                                  description: notes,
+                                  duration: report.duration))
+            }
+            TextEditor(text: $notes).onChange(of: notes) {_ in
+                completion(Report(id: report.id,
+                                  project_name: report.project_name,
+                                  group: group,
+                                  description: notes,
+                                  duration: report.duration))
+            }
+            Text(duration).frame(width: 50)
         }
         .padding(.bottom, 10)
         .contextMenu {
             Button(action: {
                 group = "Meetings"
+                completion(Report(id: report.id,
+                                  project_name: report.project_name,
+                                  group: group,
+                                  description: notes,
+                                  duration: report.duration))
             }) {
                 Text("Mark as meeting")
             }

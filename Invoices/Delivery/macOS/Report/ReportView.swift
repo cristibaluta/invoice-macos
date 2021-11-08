@@ -19,7 +19,7 @@ struct ReportView: View {
     var body: some View {
         VStack {
             HStack(alignment: .center) {
-                Button("Open CSV") {
+                Button("Import CSV worklogs") {
                     let panel = NSOpenPanel()
                     panel.canChooseFiles = true
                     panel.canChooseDirectories = false
@@ -37,12 +37,13 @@ struct ReportView: View {
                 .popover(isPresented: $showingPopover) {
                     List(self.store.reports) { report in
                         ReportRowView(report: report) { newReport in
-                            
+                            store.updateReport(newReport)
                         }
                     }
                     .frame(width: 600, height: 500)
                 }
             }
+            .frame(height: 36, alignment: .leading)
             
             HtmlView(htmlString: store.html) { printingData in
                 store.printingData = printingData

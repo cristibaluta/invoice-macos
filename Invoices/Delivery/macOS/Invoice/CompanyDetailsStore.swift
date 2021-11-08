@@ -44,6 +44,21 @@ class CompanyDetailsStore: ObservableObject {
             data.bank_name = bankName
         }
     }
+    @Published var email: String {
+        didSet {
+            data.email = email != "" ? email : nil
+        }
+    }
+    @Published var phone: String {
+        didSet {
+            data.phone = phone != "" ? phone : nil
+        }
+    }
+    @Published var web: String {
+        didSet {
+            data.web = web != "" ? web : nil
+        }
+    }
     
     var data: CompanyDetails
     
@@ -57,5 +72,8 @@ class CompanyDetailsStore: ObservableObject {
         county = data.county
         bankAccount = data.bank_account
         bankName = data.bank_name
+        email = data.email ?? ""
+        phone = data.phone ?? ""
+        web = data.web ?? ""
     }
 }

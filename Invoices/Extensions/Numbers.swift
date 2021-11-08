@@ -39,3 +39,14 @@ extension Double {
         return (self * 10000).rounded() / 10000.0
     }
 }
+
+extension Int {
+    var prefixedWith0: String {
+        if self < 10 {
+            return "00\(self)"
+        } else if self < 100 {
+            return "0\(self)"
+        }
+        return "\(self)"
+    }
+}

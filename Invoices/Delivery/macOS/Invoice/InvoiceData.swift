@@ -9,10 +9,6 @@ import Foundation
 
 struct InvoiceData: Codable, PropertyLoopable {
     
-    var email: String
-    var phone: String
-    var web: String
-    
     var invoice_series: String
     var invoice_nr: Int
     var invoice_date: String
@@ -29,6 +25,38 @@ struct InvoiceData: Codable, PropertyLoopable {
     var date: Date {
         return Date(yyyyMMdd: invoice_date) ?? Date()
     }
+    
+    func toHtmlUsingTemplate (_ template: String) -> String {
+        /// Convert enum to dict
+        guard let data = try? JSONEncoder().encode(self) else { return "" }
+        let dict: [String: Any]? = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments))
+                .flatMap { $0 as? [String: Any] }
+        var template = template
+        for (key, value) in (dict ?? [:]) {
+            guard key != "amount" && key != "amount_total" else {
+                // This values are calculated
+                continue
+            }
+            if key == "invoice_date", let date = Date(yyyyMMdd: value as? String ?? "") {
+                template = template.replacingOccurrences(of: "::\(key)::", with: "\(date.mediumDate)")
+            }
+            else if key == "invoice_nr" {
+                template = template.replacingOccurrences(of: "::\(key)::", with: self.invoice_nr.prefixedWith0)
+            }
+            else if key == "contractor", let dic = value as? [String: Any] {
+                for (k, v) in dic {
+                    template = template.replacingOccurrences(of: "::\(key)_\(k)::", with: "\(v)")
+                }
+            } else if key == "client", let dic = value as? [String: Any] {
+                for (k, v) in dic {
+                    template = template.replacingOccurrences(of: "::\(key)_\(k)::", with: "\(v)")
+                }
+            } else {
+                template = template.replacingOccurrences(of: "::\(key)::", with: "\(value)")
+            }
+        }
+        return template
+    }
 }
 
 struct InvoiceProduct: Codable {
@@ -43,7 +71,7 @@ struct InvoiceProduct: Codable {
 
 struct InvoiceReport: Codable {
     var project_name: String
-    var group: String
+    var group: String?
     var description: String
     var duration: Double
 }
@@ -56,6 +84,9 @@ struct CompanyDetails: Codable, PropertyLoopable {
     var county: String
     var bank_account: String
     var bank_name: String
+    var email: String?
+    var phone: String?
+    var web: String?
 }
 
 protocol PropertyLoopable {

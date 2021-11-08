@@ -146,10 +146,7 @@ extension ContentStore {
     }
     
     private var emptyInvoiceData: InvoiceData {
-        return InvoiceData(email: "",
-                           phone: "",
-                           web: "",
-                           invoice_series: "",
+        return InvoiceData(invoice_series: "",
                            invoice_nr: 1,
                            invoice_date: Date().yyyyMMdd,
                            client: CompanyDetails(name: "",

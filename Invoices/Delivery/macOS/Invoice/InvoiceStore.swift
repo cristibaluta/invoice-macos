@@ -11,12 +11,7 @@ class InvoiceStore: ObservableObject {
     
     var invoicePrintData: Data?
     var data: InvoiceData
-    var invoiceDictionary: [String: Any]? {
-        guard let data = try? JSONEncoder().encode(data) else { return nil }
-        return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] }
-    }
     @Published var html: String
-    
     
     init (data: InvoiceData) {
         self.html = ""
@@ -34,27 +29,7 @@ class InvoiceStore: ObservableObject {
                 return
             }
             
-            /// Add new invoice data to the template
-            /// Convert the data to dictionary
-            for (key, value) in (invoiceDictionary ?? [:]) {
-                guard key != "amount" && key != "amount_total" else {
-                    continue
-                }
-                if key == "invoice_date", let date = Date(yyyyMMdd: value as? String ?? "") {
-                    template = template.replacingOccurrences(of: "::\(key)::", with: "\(date.ddMMMyyyy)")
-                }
-                else if key == "contractor", let dic = value as? [String: Any] {
-                    for (k, v) in dic {
-                        template = template.replacingOccurrences(of: "::\(key)_\(k)::", with: "\(v)")
-                    }
-                } else if key == "client", let dic = value as? [String: Any] {
-                    for (k, v) in dic {
-                        template = template.replacingOccurrences(of: "::\(key)_\(k)::", with: "\(v)")
-                    }
-                } else {
-                    template = template.replacingOccurrences(of: "::\(key)::", with: "\(value)")
-                }
-            }
+            template = data.toHtmlUsingTemplate(template)
             
             /// Calculate the amount
             var amount_total = 0.0
@@ -121,9 +96,10 @@ class InvoiceStore: ObservableObject {
                 try jsonData.write(to: invoiceJsonUrl)
                 
                 // Save invoice html + pdf
-                let invoiceHtmlUrl = invoiceUrl.appendingPathComponent("invoice.html")
-                try html.write(to: invoiceHtmlUrl, atomically: true, encoding: .utf8)
-                let invoicePdfUrl = invoiceUrl.appendingPathComponent("invoice-\(data.invoice_series)\(data.invoice_nr)-\(data.date.yyyyMMdd).pdf")
+//                let invoiceHtmlUrl = invoiceUrl.appendingPathComponent("invoice.html")
+//                try html.write(to: invoiceHtmlUrl, atomically: true, encoding: .utf8)
+                let pdfName = "Invoice-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).pdf"
+                let invoicePdfUrl = invoiceUrl.appendingPathComponent(pdfName)
                 try invoicePrintData?.write(to: invoicePdfUrl)
             }
             catch {
