@@ -82,6 +82,7 @@ extension ContentStore {
                 let jsonData = try Data(contentsOf: invoiceUrl.appendingPathComponent("data.json"))
                 let jsonObject = try JSONDecoder().decode(InvoiceData.self, from: jsonData)
                 self.isEditing = false
+                self.currentInvoiceData = nil
                 self.currentInvoiceData = jsonObject
             } catch {
                 self.isEditing = false
@@ -140,6 +141,7 @@ extension ContentStore {
     }
     
     func initProject (at url: URL) {
+        currentInvoiceData = nil
         History().setLastProjectDir(url)
         SandboxManager.executeInSelectedDir { url in
             do {
