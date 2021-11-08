@@ -1,0 +1,157 @@
+<!DOCTYPE HTML>
+<head>
+	<title>::title::</title>
+	<meta charset="UTF-8" />
+	<style>
+	body, html {
+		width: 900px;
+		height: 1285px;
+		background-color : #FFFFFF;
+		margin : 0px 0px 0px 0px;
+		padding : 0px;
+		font-family : Verdana, Helvetica, Arial, sans-serif;
+		font-size : 14px;
+		color : #000;
+	}
+	#container {
+	    min-height:100%;
+	    position:relative;
+		margin : 10px 10px 10px 10px;
+	}
+
+	.company_details, .price_calculation, .total, .signatures {
+		overflow: auto;
+		clear: both;
+	}
+	.header {
+	    position: relative;
+	    height: 80px;
+	}
+	.header #column_left {
+		float : left;
+		width : 30%;
+	}
+	
+	#logo {
+		height: 40px;
+		margin-left: 20px;
+	}
+	.vertical-center {
+	  margin: 0;
+	  position: absolute;
+	  top: 50%;
+	  -ms-transform: translateY(-50%);
+	  transform: translateY(-50%);
+	}
+	.right {
+		text-align: right;
+	}
+	
+	#footer {
+		position: absolute;
+	    bottom: 0;
+	    width: 100%;
+	    height: 90px;
+	}
+	
+	#column_left {
+		float : left;
+		width : 40%;
+	}
+	#column_right {
+		float : right;
+		width : 40%;
+	}
+	#header_column_right {
+		float : right;
+		right: 20px;
+	}
+
+
+	table {
+		width: 100%;
+	}
+	tr {
+		text-align: center;
+	}
+	tr #data {
+		line-height: 24px;
+	}
+
+	.no_border {
+		border: 0px;
+	}
+	.bordered {
+	    border: 1px solid black;
+	    border-collapse: collapse;
+	}
+	.padded {
+	    padding-top: 5px;
+		padding-bottom: 5px;
+	}
+	table.no_border th, table.no_border tr, table.no_border td {
+	    border: none;
+	}
+	table.bordered th, table.bordered tr, table.bordered td {
+	    border: 1px solid black;
+	    border-collapse: collapse;
+	}
+	table.left th, table.left tr, table.left td {
+	    text-align: left;
+	}
+	table.right th, table.right tr, table.right td {
+	    text-align: right;
+	}
+	table.padded th, table.padded tr, table.padded td {
+	    padding-top: 5px;
+		padding-bottom: 5px;
+	}
+
+	.line {
+		background-color: black;
+		width: 100%;
+		height: 1px;
+	}
+	</style>
+</head>
+
+<body>
+	<div id="container">
+		
+		<div style="width: 100%; text-align: center; padding-top: 0px; padding-bottom: 0px">
+			<p style="font-size: 30px;"><b>ANEXĂ</b></p>
+			<p>La factura nr ::invoice_nr:: seria ::invoice_series:: din data de ::invoice_date::</p>
+			<p>Raport de activitate pe luna ::month:: ::year::</p>
+		</div>
+	
+		::projects::
+	
+		<div style="width: 100%; height: 10px"></div>
+	
+		<div class="total">
+			<div id="column_right" style="height: 100%;">
+				<table class="bordered left padded">
+					<tr> 
+						<td class="right"><b>Total ore lucrate</b></td>
+						<td>::units::</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
+		<footer id="footer">
+			<div class="line"> </div>
+			<div style="width: 100%; height: 30px">
+				<div id="column_left">
+					<p>Furnizor: ::contractor_name::</p>
+					<p>Semnătură:</p>
+				</div>
+				<div id="column_right" style="text-align: left;">
+					<p>Beneficiar: ::client_name::</p>
+					<p>Semnătură:</p>
+				</div>
+			</div>
+		</footer>
+	</div>
+</body>
+</html>
