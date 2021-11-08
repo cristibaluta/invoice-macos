@@ -11,7 +11,7 @@ struct InvoiceEditingView: View {
     
     @ObservedObject var store: InvoiceEditingStore
     private var completion: (InvoiceData) -> Void
-    @State var showingFurnizor = false
+    @State var showingContractor = false
     @State var showingClient = false
     
     init (store: InvoiceEditingStore, completion: @escaping (InvoiceData) -> Void) {
@@ -91,11 +91,11 @@ struct InvoiceEditingView: View {
             
             Divider().padding(.top, 10).padding(.bottom, 10)
 
-            Button("My company") {
-                showingFurnizor.toggle()
+            Button("Contractor") {
+                showingContractor.toggle()
                 showingClient = false
             }
-            if showingFurnizor {
+            if showingContractor {
                 Divider()
                 CompanyDetailsView(store: CompanyDetailsStore(data: store.data.contractor)) { companyData in
                     store.data.contractor = companyData
@@ -106,7 +106,7 @@ struct InvoiceEditingView: View {
             
             Button("Client") {
                 showingClient.toggle()
-                showingFurnizor = false
+                showingContractor = false
             }
             if showingClient {
                 Divider()
