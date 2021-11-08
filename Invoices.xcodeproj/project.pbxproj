@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		2814C1EA26E765690054FD5B /* PdfView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C1E926E765690054FD5B /* PdfView.swift */; };
 		2814C1EE26E88F510054FD5B /* HtmlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C1ED26E88F510054FD5B /* HtmlView.swift */; };
-		2814C1F226E8E3E50054FD5B /* InvoiceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C1F126E8E3E50054FD5B /* InvoiceData.swift */; };
+		2814C1F226E8E3E50054FD5B /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C1F126E8E3E50054FD5B /* Model.swift */; };
 		2814C1F426E910930054FD5B /* Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C1F326E910930054FD5B /* Numbers.swift */; };
 		2814C1F626E9323A0054FD5B /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C1F526E9323A0054FD5B /* Date.swift */; };
 		2867F84827063C9C002CA8CC /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2867F84727063C9C002CA8CC /* History.swift */; };
@@ -39,7 +39,7 @@
 /* Begin PBXFileReference section */
 		2814C1E926E765690054FD5B /* PdfView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfView.swift; sourceTree = "<group>"; };
 		2814C1ED26E88F510054FD5B /* HtmlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlView.swift; sourceTree = "<group>"; };
-		2814C1F126E8E3E50054FD5B /* InvoiceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceData.swift; sourceTree = "<group>"; };
+		2814C1F126E8E3E50054FD5B /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		2814C1F326E910930054FD5B /* Numbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numbers.swift; sourceTree = "<group>"; };
 		2814C1F526E9323A0054FD5B /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		2867F84727063C9C002CA8CC /* History.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
@@ -113,7 +113,6 @@
 			children = (
 				28D81C312733D94900209EAC /* InvoiceView.swift */,
 				28D81C332733D95700209EAC /* InvoiceStore.swift */,
-				2814C1F126E8E3E50054FD5B /* InvoiceData.swift */,
 				28D81C3D27358BD200209EAC /* InvoiceEditingView.swift */,
 				28D81C3F27358BE600209EAC /* InvoiceEditingStore.swift */,
 				2867F84B270B595C002CA8CC /* CompanyDetailsView.swift */,
@@ -148,6 +147,7 @@
 				2867F84927065729002CA8CC /* SandboxManager.swift */,
 				28F91D4F26A1AC110057C5CC /* ContentView.swift */,
 				28F91D5D26A1B33B0057C5CC /* ContentStore.swift */,
+				2814C1F126E8E3E50054FD5B /* Model.swift */,
 				28D81C442737CAE100209EAC /* Invoice */,
 				28D81C452737CAF100209EAC /* Report */,
 				28D81C462737CB0800209EAC /* Components */,
@@ -279,7 +279,7 @@
 				28D81C4D2738D2BA00209EAC /* ReportRowView.swift in Sources */,
 				2867F84C270B595C002CA8CC /* CompanyDetailsView.swift in Sources */,
 				28D81C4027358BE600209EAC /* InvoiceEditingStore.swift in Sources */,
-				2814C1F226E8E3E50054FD5B /* InvoiceData.swift in Sources */,
+				2814C1F226E8E3E50054FD5B /* Model.swift in Sources */,
 				2867F84827063C9C002CA8CC /* History.swift in Sources */,
 				28D81C4827380A2900209EAC /* ReportView.swift in Sources */,
 				2814C1EE26E88F510054FD5B /* HtmlView.swift in Sources */,

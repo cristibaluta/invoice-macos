@@ -7,6 +7,12 @@
 
 import Foundation
 
+struct InvoiceFolder: Identifiable, Hashable {
+    var id = UUID()
+    var date: Date
+    var name: String
+}
+
 struct InvoiceData: Codable, PropertyLoopable {
     
     var invoice_series: String

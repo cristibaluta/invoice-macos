@@ -10,9 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @ObservedObject var store: ContentStore
-    @State var invoiceName: String = ""
     @State var editor: Int = 0
-    @State var selectKeeper: Invoice?
     
     init (store: ContentStore) {
         self.store = store
@@ -21,11 +19,9 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             // List of invoices
-            List(self.store.invoices, id: \.self, selection: $selectKeeper) { invoice in
+            List(self.store.invoices, id: \.self, selection: $store.selectKeeper) { invoice in
                 Text(invoice.name)
                     .onTapGesture {
-                        selectKeeper = invoice
-                        invoiceName = invoice.name
                         store.showInvoice(invoice)
                     }
                     .contextMenu {
@@ -61,7 +57,7 @@ struct ContentView: View {
                             Text("Invalid section")
                     }
                 }
-                .navigationTitle(invoiceName)
+                .navigationTitle(store.invoiceName)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigation) {
                         Button("New invoice") {
@@ -107,7 +103,7 @@ struct ContentView: View {
                 }.padding(20)
             } else if store.hasFolderSelected {
                 VStack(alignment: .center) {
-                    Text("Select an invoice from the left side or create a new one starting with data from last one.")
+                    Text("Select an invoice from the left side or create a new one using data from the last invoice.")
                     Button("New Invoice") {
                         store.generateNewInvoice()
                     }

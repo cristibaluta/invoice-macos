@@ -8,15 +8,9 @@
 import SwiftUI
 import Combine
 
-struct Invoice: Identifiable, Hashable {
-    var id = UUID()
-    var date: Date
-    var name: String
-}
-
 final class ContentStore: ObservableObject {
     
-    @Published var invoices: [Invoice] = []
+    @Published var invoices: [InvoiceFolder] = []
     @Published var currentInvoiceStore: InvoiceStore?
     @Published var currentReportStore: ReportStore?
     var currentInvoiceData: InvoiceData? {
@@ -41,6 +35,8 @@ final class ContentStore: ObservableObject {
     @Published var hasFolderSelected: Bool = false
     @Published var isEditing: Bool = false
     @Published var section: Int = 0
+    @Published var invoiceName: String = ""
+    @Published var selectKeeper: InvoiceFolder?
     
     init() {
 //        History().clear()
@@ -57,10 +53,10 @@ final class ContentStore: ObservableObject {
         SandboxManager.executeInSelectedDir { url in
             do {
                 let files = try FileManager.default.contentsOfDirectory(atPath: url.path)
-                var list = [Invoice]()
+                var list = [InvoiceFolder]()
                 for file in files.sorted().reversed() {
                     if let date = Date(yyyyMMdd: file) {
-                        list.append(Invoice(date: date, name: file))
+                        list.append(InvoiceFolder(date: date, name: file))
                     }
                 }
                 showInvoices(list)
@@ -73,19 +69,22 @@ final class ContentStore: ObservableObject {
 
 extension ContentStore {
     
-    func showInvoices(_ invoices: [Invoice]) {
+    func showInvoices(_ invoices: [InvoiceFolder]) {
         self.invoices = invoices
     }
     
-    func showInvoice(_ invoice: Invoice) {
+    func showInvoice(_ invoice: InvoiceFolder) {
+        selectKeeper = invoice
+        invoiceName = invoice.name
         SandboxManager.executeInSelectedDir { url in
             let invoiceUrl = url.appendingPathComponent(invoice.name)
             do {
                 let jsonData = try Data(contentsOf: invoiceUrl.appendingPathComponent("data.json"))
                 let jsonObject = try JSONDecoder().decode(InvoiceData.self, from: jsonData)
+                self.isEditing = false
                 self.currentInvoiceData = jsonObject
             } catch {
-                print(error)
+                self.isEditing = false
                 self.currentInvoiceData = nil
                 self.errorMessage = ("Error parsing data.json", "\(error)")
             }
@@ -106,14 +105,35 @@ extension ContentStore {
                     var invoice = try JSONDecoder().decode(InvoiceData.self, from: jsonData)
                     /// Increase invoice nr
                     invoice.invoice_nr += 1
-                    invoice.invoice_date = (Date(yyyyMMdd: invoice.invoice_date)?.nextMonth().endOfMonth() ?? Date()).yyyyMMdd
+                    // Set invoice date to last working day of the next month
+                    let nextDate = Date(yyyyMMdd: invoice.invoice_date)?.nextMonth().endOfMonth() ?? Date()
+                    invoice.invoice_date = nextDate.yyyyMMdd
+                    invoice.reports = []
                     
+                    let invoiceFolder = InvoiceFolder(date: nextDate, name: nextDate.yyyyMMdd)
+                    self.invoices.insert(invoiceFolder, at: 0)
+                    self.section = 0
+                    self.isEditing = true
+                    self.selectKeeper = invoiceFolder
+                    self.invoiceName = invoiceFolder.name
                     self.currentInvoiceData = invoice
                 } else {
+                    let invoiceFolder = InvoiceFolder(date: Date(), name: Date().yyyyMMdd)
+                    self.invoices.insert(invoiceFolder, at: 0)
+                    self.section = 0
+                    self.isEditing = true
+                    self.selectKeeper = invoiceFolder
+                    self.invoiceName = invoiceFolder.name
                     self.currentInvoiceData = emptyInvoiceData
                 }
             } catch {
                 print("\(error)")
+                let invoiceFolder = InvoiceFolder(date: Date(), name: Date().yyyyMMdd)
+                self.invoices.insert(invoiceFolder, at: 0)
+                self.section = 0
+                self.isEditing = true
+                self.selectKeeper = invoiceFolder
+                self.invoiceName = invoiceFolder.name
                 self.currentInvoiceData = emptyInvoiceData
             }
         }
@@ -198,7 +218,7 @@ extension ContentStore {
 }
 
 extension ContentStore {
-    func showInFinder (_ invoice: Invoice) {
+    func showInFinder (_ invoice: InvoiceFolder) {
         SandboxManager.executeInSelectedDir { url in
             let invoiceUrl = url.appendingPathComponent(invoice.name)
             NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: invoiceUrl.path)
