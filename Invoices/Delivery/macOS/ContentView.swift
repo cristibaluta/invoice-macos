@@ -63,18 +63,10 @@ struct ContentView: View {
                         Button("New invoice") {
                             store.generateNewInvoice()
                         }
-                        Button("Open") {
-                            let panel = NSOpenPanel()
-                            panel.canChooseFiles = false
-                            panel.canChooseDirectories = true
-                            panel.allowsMultipleSelection = false
-                            if panel.runModal() == .OK {
-                                if let url = panel.urls.first {
-                                    History().setLastProjectDir(url)
-                                    store.reloadData()
-                                }
-                            }
+                        Button("Open project") {
+                            openProject()
                         }
+                        Divider()
                     }
                     ToolbarItem(placement: .principal) {
                         Picker("Section", selection: $editor) {
@@ -88,8 +80,10 @@ struct ContentView: View {
                     }
                     ToolbarItemGroup(placement: .primaryAction) {
                         Spacer()
-                        Button("Edit") {
-                            store.edit()
+                        if store.section == 0 {
+                            Button("Edit") {
+                                store.edit()
+                            }
                         }
                         Button("Save") {
                             store.save()
@@ -110,23 +104,29 @@ struct ContentView: View {
                 }.padding(20)
             } else {
                 VStack(alignment: .center) {
-                    Text("Select a directory for your invoices!")
-                    Button("Open") {
-                        let panel = NSOpenPanel()
-                        panel.canChooseFiles = false
-                        panel.canChooseDirectories = true
-                        panel.allowsMultipleSelection = false
-                        if panel.runModal() == .OK {
-                            if let url = panel.urls.first {
-                                store.initProject(at: url)
-                                store.reloadData()
-                            }
-                        }
+                    Text("Create your first project, select a directory for your invoices!")
+                    Button("Create project") {
+                        openProject()
                     }
                 }
             }
         }
         .frame(maxWidth: .infinity, minHeight: 600, maxHeight: .infinity, alignment: .topLeading)
+    }
+    
+    private func openProject() {
+        let panel = NSOpenPanel()
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.canCreateDirectories = true
+        panel.allowsMultipleSelection = false
+        panel.title = "Chose a destination directory for your invoices"
+        if panel.runModal() == .OK {
+            if let url = panel.urls.first {
+                store.initProject(at: url)
+                store.reloadData()
+            }
+        }
     }
 }
 

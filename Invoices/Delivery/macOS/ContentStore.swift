@@ -157,7 +157,9 @@ extension ContentStore {
                 for template in templates {
                     let bundlePath = Bundle.main.path(forResource: template, ofType: ".html")
                     let destPath = templateUrl.appendingPathComponent("\(template).html").path
-                    try FileManager.default.copyItem(atPath: bundlePath!, toPath: destPath)
+                    if !FileManager.default.fileExists(atPath: destPath) {
+                        try FileManager.default.copyItem(atPath: bundlePath!, toPath: destPath)
+                    }
                 }
             } catch {
                 print(error)
