@@ -10,8 +10,10 @@ import Foundation
 
 class Fastfile: LaneFile {
 	func betaLane() {
-	desc("Push a new beta build to TestFlight")
-		buildApp(scheme: "Invoices")
+        desc("Push a new beta build to TestFlight")
+        incrementBuildNumber(xcodeproj: "Invoices.xcodeproj")
+        updateCodeSigningSettings(path: "Invoices.xcodeproj", useAutomaticSigning: true)
+        buildApp(scheme: "Invoices", exportTeamId: .userDefined("5NHDC5EV44"))
 		uploadToTestflight(username: "cristi.baluta+apple@gmail.com")
 	}
 }
