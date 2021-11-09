@@ -1,2 +1,2 @@
 # invoice-macos
-Mac app to generate invoices for developers, and activity reports
+Mac app to generate invoices and reports from jira worklogs.
