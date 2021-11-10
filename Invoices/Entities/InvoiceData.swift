@@ -7,12 +7,6 @@
 
 import Foundation
 
-struct InvoiceFolder: Identifiable, Hashable {
-    var id = UUID()
-    var date: Date
-    var name: String
-}
-
 struct InvoiceData: Codable, PropertyLoopable {
     
     var invoice_series: String
@@ -27,6 +21,9 @@ struct InvoiceData: Codable, PropertyLoopable {
     var currency: String
     var tva: Double
     var amount_total: Double
+}
+
+extension InvoiceData {
     
     var date: Date {
         return Date(yyyyMMdd: invoice_date) ?? Date()

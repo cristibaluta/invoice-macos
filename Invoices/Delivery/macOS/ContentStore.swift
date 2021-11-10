@@ -81,7 +81,6 @@ extension ContentStore {
             do {
                 let jsonData = try Data(contentsOf: invoiceUrl.appendingPathComponent("data.json"))
                 let jsonObject = try JSONDecoder().decode(InvoiceData.self, from: jsonData)
-                self.isEditing = false
                 self.currentInvoiceData = nil
                 self.currentInvoiceData = jsonObject
             } catch {

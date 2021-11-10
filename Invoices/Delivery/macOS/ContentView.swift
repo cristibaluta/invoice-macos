@@ -32,7 +32,6 @@ struct ContentView: View {
                         }
                     }
             }
-            .frame(width: 100)
             
             if store.currentInvoiceStore != nil {
                 HStack {
