@@ -52,11 +52,13 @@ final class ContentStore: ObservableObject {
         // Read all invoices from current directory
         SandboxManager.executeInSelectedDir { url in
             do {
-                let files = try FileManager.default.contentsOfDirectory(atPath: url.path)
+                let folders = try FileManager.default.contentsOfDirectory(atPath: url.path)
                 var list = [InvoiceFolder]()
-                for file in files.sorted().reversed() {
-                    if let date = Date(yyyyMMdd: file) {
-                        list.append(InvoiceFolder(date: date, name: file))
+                for folder in folders.sorted().reversed() {
+                    let comps: [String] = folder.components(separatedBy: "-")
+                    if let dateComp = comps.first, let date = Date(yyyyMMdd: dateComp) {
+                        let invoiceNrComp = comps.last ?? ""
+                        list.append(InvoiceFolder(date: date, invoiceNr: invoiceNrComp, name: folder))
                     }
                 }
                 showInvoices(list)
@@ -110,7 +112,9 @@ extension ContentStore {
                     invoice.invoice_date = nextDate.yyyyMMdd
                     invoice.reports = []
                     
-                    let invoiceFolder = InvoiceFolder(date: nextDate, name: nextDate.yyyyMMdd)
+                    let invoiceFolder = InvoiceFolder(date: nextDate,
+                                                      invoiceNr: "\(invoice.invoice_series)\(invoice.invoice_nr)",
+                                                      name: "\(nextDate.yyyyMMdd)-\(invoice.invoice_series)\(invoice.invoice_nr)")
                     self.invoices.insert(invoiceFolder, at: 0)
                     self.section = 0
                     self.isEditing = true
@@ -118,7 +122,10 @@ extension ContentStore {
                     self.invoiceName = invoiceFolder.name
                     self.currentInvoiceData = invoice
                 } else {
-                    let invoiceFolder = InvoiceFolder(date: Date(), name: Date().yyyyMMdd)
+                    // Empty invoice
+                    let invoiceFolder = InvoiceFolder(date: Date(),
+                                                      invoiceNr: "",
+                                                      name: Date().yyyyMMdd)
                     self.invoices.insert(invoiceFolder, at: 0)
                     self.section = 0
                     self.isEditing = true
@@ -128,7 +135,9 @@ extension ContentStore {
                 }
             } catch {
                 print("\(error)")
-                let invoiceFolder = InvoiceFolder(date: Date(), name: Date().yyyyMMdd)
+                let invoiceFolder = InvoiceFolder(date: Date(),
+                                                  invoiceNr: "",
+                                                  name: Date().yyyyMMdd)
                 self.invoices.insert(invoiceFolder, at: 0)
                 self.section = 0
                 self.isEditing = true
@@ -195,8 +204,9 @@ extension ContentStore {
                                                      amount: 0)],
                            reports: [],
                            currency: "",
-                           tva: 0,
-                           amount_total: 0)
+                           vat: 0,
+                           amount_total: 0,
+                           amount_total_vat: 0)
     }
     
     func edit() {

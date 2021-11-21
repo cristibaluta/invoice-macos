@@ -69,8 +69,8 @@ struct ContentView: View {
                     }
                     ToolbarItem(placement: .principal) {
                         Picker("Section", selection: $editor) {
-                            Text("Factura").tag(0)
-                            Text("Anexa").tag(1)
+                            Text("Invoice").tag(0)
+                            Text("Report").tag(1)
                         }
                         .pickerStyle(SegmentedPickerStyle())
                         .onChange(of: editor) { tag in
@@ -96,7 +96,7 @@ struct ContentView: View {
                 }.padding(20)
             } else if store.hasFolderSelected {
                 VStack(alignment: .center) {
-                    Text("Select an invoice from the left side or create a new one using data from the last invoice.")
+                    Text("Select an invoice from the left side - or create a new invoice using data from the last invoice.")
                     Button("New Invoice") {
                         store.generateNewInvoice()
                     }

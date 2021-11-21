@@ -63,11 +63,29 @@ struct InvoiceEditingView: View {
                     }.font(.system(size: 12))
                 }
                 HStack(alignment: .center) {
-                    Text("TVA:").font(.system(size: 12))
-                    TextField("TVA", text: $store.tva).onChange(of: store.tva) { _ in
+                    Text("VAT:").font(.system(size: 12))
+                    TextField("VAT", text: $store.vat).onChange(of: store.vat) { _ in
                         completion(store.data)
                     }
                     .font(.system(size: 12))
+                }
+            }
+            
+            Divider().padding(.top, 10).padding(.bottom, 10)
+            
+            Group {
+                Toggle("Provide total", isOn: $store.isEditingTotal)
+                Text("This will trigger the units to be calculated").font(.system(size: 12))
+                if store.isEditingTotal {
+                    HStack(alignment: .center) {
+                        Text("Total amount:").font(.system(size: 12))
+                        TextField("Total", text: $store.amountTotalVat).onChange(of: store.amountTotalVat) { _ in
+                            completion(store.data)
+                        }
+                        .font(.system(size: 12))
+                    }
+                } else {
+                    Text("Total amount: \(store.amountTotalVat)").font(.system(size: 12))
                 }
             }
             
@@ -91,32 +109,34 @@ struct InvoiceEditingView: View {
             
             Divider().padding(.top, 10).padding(.bottom, 10)
 
-            Button("Contractor") {
-                showingContractor.toggle()
-                showingClient = false
-            }
-            if showingContractor {
-                Divider()
-                CompanyDetailsView(store: CompanyDetailsStore(data: store.data.contractor)) { companyData in
-                    store.data.contractor = companyData
-                    completion(store.data)
+            Group {
+                Button("Contractor") {
+                    showingContractor.toggle()
+                    showingClient = false
                 }
-                Divider()
-            }
-            
-            Button("Client") {
-                showingClient.toggle()
-                showingContractor = false
-            }
-            if showingClient {
-                Divider()
-                CompanyDetailsView(store: CompanyDetailsStore(data: store.data.client)) { companyData in
-                    store.data.client = companyData
-                    completion(store.data)
+                if showingContractor {
+                    Divider()
+                    CompanyDetailsView(store: CompanyDetailsStore(data: store.data.contractor)) { companyData in
+                        store.data.contractor = companyData
+                        completion(store.data)
+                    }
+                    Divider()
                 }
-                Divider()
+                
+                Button("Client") {
+                    showingClient.toggle()
+                    showingContractor = false
+                }
+                if showingClient {
+                    Divider()
+                    CompanyDetailsView(store: CompanyDetailsStore(data: store.data.client)) { companyData in
+                        store.data.client = companyData
+                        completion(store.data)
+                    }
+                    Divider()
+                }
+                Spacer()
             }
-            Spacer()
         }
         .padding(10)
     }

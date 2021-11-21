@@ -7,36 +7,31 @@
 
 import Foundation
 
-extension Double {
+extension Decimal {
     
     var stringFormatWith2Digits: String {
         let formatter = NumberFormatter()
+        formatter.locale = Locale.current
+//        formatter.numberStyle = .currency
         formatter.numberStyle = .decimal
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2
         formatter.decimalSeparator = "."
         formatter.groupingSeparator = ","
 
-        let number = NSNumber(value: self)
-        return formatter.string(from: number)!
+        return formatter.string(from: self as NSDecimalNumber) ?? "-"
     }
     var stringFormatWith4Digits: String {
         let formatter = NumberFormatter()
+        formatter.locale = Locale.current
+//        formatter.numberStyle = .currency
         formatter.numberStyle = .decimal
         formatter.minimumFractionDigits = 4
         formatter.maximumFractionDigits = 4
         formatter.decimalSeparator = "."
         formatter.groupingSeparator = ","
 
-        let number = NSNumber(value: self)
-        return formatter.string(from: number)!
-    }
-    
-    var roundTo2Digits: Double {
-        return (self * 100).rounded() / 100.0
-    }
-    var roundTo4Digits: Double {
-        return (self * 10000).rounded() / 10000.0
+        return formatter.string(from: self as NSDecimalNumber) ?? "-"
     }
 }
 

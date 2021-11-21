@@ -29,16 +29,14 @@ class InvoiceStore: ObservableObject {
                 return
             }
             
-            template = data.toHtmlUsingTemplate(template)
-            
             /// Calculate the amount
-            var amount_total = 0.0
+            var amount_total: Decimal = 0.0
             var products = [InvoiceProduct]()
             
             for var product in data.products {
                 let amount_per_unit = product.rate * product.exchange_rate
                 let amount = product.units * amount_per_unit
-                amount_total += amount + amount * data.tva / 100
+                amount_total += amount
                 
                 product.amount_per_unit = amount_per_unit
                 product.amount = amount
@@ -46,6 +44,10 @@ class InvoiceStore: ObservableObject {
             }
             
             data.amount_total = amount_total
+            data.amount_total_vat = amount_total + amount_total * data.vat / 100
+            
+            // Replace
+            template = data.toHtmlUsingTemplate(template)
             
             /// Add rows
             var i = 1
@@ -68,12 +70,7 @@ class InvoiceStore: ObservableObject {
                 rows += row
                 i += 1
             }
-            
             template = template.replacingOccurrences(of: "::rows::", with: rows)
-            template = template.replacingOccurrences(of: "::amount::",
-                                                     with: "\(data.amount_total.stringFormatWith2Digits)")
-            template = template.replacingOccurrences(of: "::amount_total::",
-                                                     with: "\(data.amount_total.stringFormatWith2Digits)")
             
             self.html = template
         }
@@ -83,7 +80,8 @@ class InvoiceStore: ObservableObject {
         SandboxManager.executeInSelectedDir { url in
             do {
                 // Generate folder if none exists
-                let invoiceUrl = url.appendingPathComponent(data.date.yyyyMMdd)
+                let folderName = "\(data.date.yyyyMMdd)-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)"
+                let invoiceUrl = url.appendingPathComponent(folderName)
                 try FileManager.default.createDirectory(at: invoiceUrl,
                                                         withIntermediateDirectories: true,
                                                         attributes: nil)

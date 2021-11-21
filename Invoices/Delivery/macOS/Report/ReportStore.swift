@@ -13,7 +13,7 @@ struct Report: Identifiable {
     var project_name: String
     var group: String?
     var description: String
-    var duration: Double
+    var duration: Decimal
 }
 
 class ReportStore: ObservableObject {
@@ -43,7 +43,7 @@ class ReportStore: ObservableObject {
                 let report = Report(project_name: dict["Project Name"] ?? "",
                                     group: nil,
                                     description: dict["Work Description"] ?? "",
-                                    duration: Double(dict["Hours"]?.replacingOccurrences(of: ",", with: ".") ?? "0") ?? 0)
+                                    duration: Decimal(Double(dict["Hours"]?.replacingOccurrences(of: ",", with: ".") ?? "0") ?? 0))
                 
                 // Find duplicate and add time
                 var foundDuplicate = false
@@ -129,7 +129,7 @@ class ReportStore: ObservableObject {
                     }
                     // Group found, add each report grouped together in a single row
                     var groupedTasksHtml = "<p>\(groupName):</p><ul>"
-                    var duration = 0.0
+                    var duration: Decimal = 0.0
                     for report in reports {
                         groupedTasksHtml += "<li>\(report.description)</li>"
                         duration += report.duration
@@ -158,7 +158,8 @@ class ReportStore: ObservableObject {
         SandboxManager.executeInSelectedDir { url in
             do {
                 // Generate folder if none exists
-                let invoiceUrl = url.appendingPathComponent(data.date.yyyyMMdd)
+                let folderName = "\(data.date.yyyyMMdd)-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)"
+                let invoiceUrl = url.appendingPathComponent(folderName)
                 try FileManager.default.createDirectory(at: invoiceUrl,
                                                         withIntermediateDirectories: true,
                                                         attributes: nil)

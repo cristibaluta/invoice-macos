@@ -19,8 +19,9 @@ struct InvoiceData: Codable, PropertyLoopable {
     var products: [InvoiceProduct]
     var reports: [InvoiceReport]
     var currency: String
-    var tva: Double
-    var amount_total: Double
+    var vat: Decimal
+    var amount_total: Decimal
+    var amount_total_vat: Decimal
 }
 
 extension InvoiceData {
@@ -36,11 +37,10 @@ extension InvoiceData {
                 .flatMap { $0 as? [String: Any] }
         var template = template
         for (key, value) in (dict ?? [:]) {
-            guard key != "amount" && key != "amount_total" else {
-                // This values are calculated
-                continue
+            if key == "amount_total" || key == "amount_total_vat", let amount = value as? Decimal {
+                template = template.replacingOccurrences(of: "::\(key)::", with: "\(amount.stringFormatWith2Digits)")
             }
-            if key == "invoice_date", let date = Date(yyyyMMdd: value as? String ?? "") {
+            else if key == "invoice_date", let date = Date(yyyyMMdd: value as? String ?? "") {
                 template = template.replacingOccurrences(of: "::\(key)::", with: "\(date.mediumDate)")
             }
             else if key == "invoice_nr" {
@@ -50,11 +50,13 @@ extension InvoiceData {
                 for (k, v) in dic {
                     template = template.replacingOccurrences(of: "::\(key)_\(k)::", with: "\(v)")
                 }
-            } else if key == "client", let dic = value as? [String: Any] {
+            }
+            else if key == "client", let dic = value as? [String: Any] {
                 for (k, v) in dic {
                     template = template.replacingOccurrences(of: "::\(key)_\(k)::", with: "\(v)")
                 }
-            } else {
+            }
+            else {
                 template = template.replacingOccurrences(of: "::\(key)::", with: "\(value)")
             }
         }
@@ -64,19 +66,19 @@ extension InvoiceData {
 
 struct InvoiceProduct: Codable {
     var product_name: String
-    var rate: Double
-    var exchange_rate: Double
-    var units: Double
+    var rate: Decimal
+    var exchange_rate: Decimal
+    var units: Decimal
     var units_name: String
-    var amount_per_unit: Double
-    var amount: Double
+    var amount_per_unit: Decimal
+    var amount: Decimal
 }
 
 struct InvoiceReport: Codable {
     var project_name: String
     var group: String?
     var description: String
-    var duration: Double
+    var duration: Decimal
 }
 
 struct CompanyDetails: Codable, PropertyLoopable {

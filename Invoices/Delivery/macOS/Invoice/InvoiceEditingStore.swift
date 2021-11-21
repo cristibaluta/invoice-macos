@@ -28,17 +28,17 @@ class InvoiceEditingStore: ObservableObject {
     }
     @Published var rate: String {
         didSet {
-            data.products[0].rate = Double(rate) ?? 0
+            data.products[0].rate = Decimal(Double(rate) ?? 0)
         }
     }
     @Published var exchangeRate: String {
         didSet {
-            data.products[0].exchange_rate = Double(exchangeRate) ?? 0
+            data.products[0].exchange_rate = Decimal(Double(exchangeRate) ?? 0)
         }
     }
     @Published var units: String {
         didSet {
-            data.products[0].units = Double(units) ?? 0
+            data.products[0].units = Decimal(Double(units) ?? 0)
         }
     }
     @Published var unitsName: String {
@@ -51,11 +51,18 @@ class InvoiceEditingStore: ObservableObject {
             data.products[0].product_name = productName
         }
     }
-    @Published var tva: String {
+    @Published var vat: String {
         didSet {
-            data.tva = Double(tva) ?? 0
+            data.vat = Decimal(Double(vat) ?? 0)
         }
     }
+    @Published var amountTotalVat: String {
+        didSet {
+            data.amount_total_vat = Decimal(Double(amountTotalVat) ?? 0)
+        }
+    }
+    @Published var isEditingTotal: Bool = false
+    
     var clientData: CompanyDetails {
         didSet {
             data.client = clientData
@@ -74,13 +81,14 @@ class InvoiceEditingStore: ObservableObject {
         invoiceSeries = data.invoice_series
         invoiceNr = String(data.invoice_nr)
         date = Date(yyyyMMdd: data.invoice_date) ?? Date()
-        tva = String(data.tva)
+        vat = data.vat.stringFormatWith2Digits
+        amountTotalVat = data.amount_total_vat.stringFormatWith2Digits
         clientData = data.client
         contractorData = data.contractor
         
-        rate = String(data.products[0].rate)
-        exchangeRate = String(data.products[0].exchange_rate)
-        units = String(data.products[0].units)
+        rate = data.products[0].rate.stringFormatWith2Digits
+        exchangeRate = data.products[0].exchange_rate.stringFormatWith4Digits
+        units = data.products[0].units.stringFormatWith2Digits
         unitsName = data.products[0].units_name
         productName = data.products[0].product_name
     }
