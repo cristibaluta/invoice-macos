@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import BarChart
 
 final class ContentStore: ObservableObject {
     
@@ -37,6 +38,8 @@ final class ContentStore: ObservableObject {
     @Published var section: Int = 0
     @Published var invoiceName: String = ""
     @Published var selectKeeper: InvoiceFolder?
+    var chartConfig = ChartConfiguration()
+    @Published var chartEntries: [ChartDataEntry] = []
     
     init() {
 //        History().clear()
@@ -54,14 +57,27 @@ final class ContentStore: ObservableObject {
             do {
                 let folders = try FileManager.default.contentsOfDirectory(atPath: url.path)
                 var list = [InvoiceFolder]()
+                var bars = [ChartDataEntry]()
                 for folder in folders.sorted().reversed() {
                     let comps: [String] = folder.components(separatedBy: "-")
                     if let dateComp = comps.first, let date = Date(yyyyMMdd: dateComp) {
                         let invoiceNrComp = comps.last ?? ""
-                        list.append(InvoiceFolder(date: date, invoiceNr: invoiceNrComp, name: folder))
+                        let invoiceFolder = InvoiceFolder(date: date, invoiceNr: invoiceNrComp, name: folder)
+                        list.append(invoiceFolder)
+                        // Load data to display in chart
+                        let invoiceUrl = url.appendingPathComponent(invoiceFolder.name)
+                        do {
+                            let jsonData = try Data(contentsOf: invoiceUrl.appendingPathComponent("data.json"))
+                            let invoice = try JSONDecoder().decode(InvoiceData.self, from: jsonData)
+                            let bar = ChartDataEntry(x: "\(invoice.invoice_nr)", y: invoice.amount_total_vat.doubleValue)
+                            bars.append(bar)
+                        } catch {
+                            
+                        }
                     }
                 }
                 showInvoices(list)
+                showChart(bars)
             } catch {
                 print("\(error)")
             }
@@ -73,6 +89,16 @@ extension ContentStore {
     
     func showInvoices(_ invoices: [InvoiceFolder]) {
         self.invoices = invoices
+    }
+    
+    func showChart(_ bars: [ChartDataEntry]) {
+        DispatchQueue.main.async {
+            self.chartEntries = bars.reversed()
+            self.chartConfig.data.entries = self.chartEntries
+            DispatchQueue.main.async {
+                self.chartConfig.data.entries = self.chartEntries
+            }
+        }
     }
     
     func showInvoice(_ invoice: InvoiceFolder) {

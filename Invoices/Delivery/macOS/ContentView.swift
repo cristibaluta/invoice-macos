@@ -6,6 +6,7 @@
 //
 import Foundation
 import SwiftUI
+import BarChart
 
 struct ContentView: View {
     
@@ -96,6 +97,25 @@ struct ContentView: View {
                 }.padding(20)
             } else if store.hasFolderSelected {
                 VStack(alignment: .center) {
+                    BarChartView(config: store.chartConfig)
+                        .onAppear() {
+                            store.chartConfig.data.color = .red
+                            store.chartConfig.xAxis.labelsColor = .gray
+                            store.chartConfig.xAxis.ticksColor = .gray
+                            store.chartConfig.labelsCTFont = CTFontCreateWithName(("SFProText-Regular" as CFString), 10, nil)
+                            store.chartConfig.xAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
+                            store.chartConfig.yAxis.labelsColor = .gray
+                            store.chartConfig.yAxis.ticksColor = .gray
+                            store.chartConfig.yAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
+                            store.chartConfig.yAxis.minTicksSpacing = 30.0
+                            store.chartConfig.yAxis.formatter = { (value, decimals) in
+                                let format = value == 0 ? "" : "RON"
+                                return String(format: "%.\(decimals)f \(format)", value)
+                            }
+                        }
+                        .frame(height: 300)
+                        .padding(20)
+                        .animation(.easeInOut)
                     Text("Select an invoice from the left side - or create a new invoice using data from the last invoice.")
                     Button("New Invoice") {
                         store.generateNewInvoice()

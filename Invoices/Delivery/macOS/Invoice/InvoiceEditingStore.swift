@@ -40,8 +40,8 @@ class InvoiceEditingStore: ObservableObject {
         didSet {
             data.products[0].units = Decimal(string: units) ?? 0
             data.calculate()
-            if !isAmountTotalProvided {
-                amountTotal = data.amount_total.stringValue_2
+            if !isFixedTotal {
+                amountTotalVat = data.amount_total_vat.stringValue_2
             }
         }
     }
@@ -60,18 +60,18 @@ class InvoiceEditingStore: ObservableObject {
             data.vat = Decimal(string: vat) ?? 0
         }
     }
-    @Published var amountTotal: String {
+    @Published var amountTotalVat: String {
         didSet {
-            if isAmountTotalProvided {
-                data.amount_total = Decimal(string: amountTotal) ?? 0
+            if isFixedTotal {
+                data.amount_total_vat = Decimal(string: amountTotalVat) ?? 0
                 data.calculate()
                 units = data.products[0].units.stringValue_2
             }
         }
     }
-    @Published var isAmountTotalProvided: Bool = false {
+    @Published var isFixedTotal: Bool = false {
         didSet {
-            data.isAmountTotalProvided = isAmountTotalProvided
+            data.isFixedTotal = isFixedTotal
         }
     }
     
@@ -94,7 +94,7 @@ class InvoiceEditingStore: ObservableObject {
         invoiceNr = String(data.invoice_nr)
         date = Date(yyyyMMdd: data.invoice_date) ?? Date()
         vat = data.vat.stringValue_2
-        amountTotal = data.amount_total.stringValue_2
+        amountTotalVat = data.amount_total_vat.stringValue_2
         clientData = data.client
         contractorData = data.contractor
         

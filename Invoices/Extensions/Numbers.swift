@@ -50,6 +50,10 @@ extension Decimal {
 
         return formatter.string(from: self as NSDecimalNumber) ?? "-"
     }
+    
+    var doubleValue: Double {
+        return NSDecimalNumber(decimal: self).doubleValue
+    }
 }
 
 extension Int {

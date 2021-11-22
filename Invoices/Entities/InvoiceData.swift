@@ -22,7 +22,9 @@ struct InvoiceData: Codable, PropertyLoopable {
     var vat: Decimal
     var amount_total: Decimal
     var amount_total_vat: Decimal
-    var isAmountTotalProvided: Bool?
+    
+    // This will trigger the units to be calculated instead the amount_total_vat
+    var isFixedTotal: Bool?
 }
 
 extension InvoiceData {
@@ -39,6 +41,7 @@ extension InvoiceData {
         var template = template
         for (key, value) in (dict ?? [:]) {
             if key == "amount_total" || key == "amount_total_vat" {
+                // Somethimes it comes as NSNumber instead Decimal
                 if let amount = value as? Decimal {
                     template = template.replacingOccurrences(of: "::\(key)::", with: "\(amount.stringValue_grouped2)")
                 }
@@ -72,10 +75,10 @@ extension InvoiceData {
     mutating func calculate() {
         var products = [InvoiceProduct]()
         /// Calculate the amount
-        if isAmountTotalProvided == true {
+        if isFixedTotal == true {
             // We know the total amount
             // We calculate the units
-            amount_total_vat = amount_total + amount_total * vat / 100
+            amount_total = amount_total_vat / (1 + (vat / 100))
 
             for var product in self.products {
                 product.amount_per_unit = product.rate * product.exchange_rate

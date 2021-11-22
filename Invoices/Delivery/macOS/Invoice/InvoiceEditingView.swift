@@ -69,7 +69,7 @@ struct InvoiceEditingView: View {
                 }
                 HStack(alignment: .center) {
                     Text("Units:").font(.system(size: 12))
-                    if !store.isAmountTotalProvided {
+                    if !store.isFixedTotal {
                         TextField("", text: $store.units).onChange(of: store.units) { _ in
                             completion(store.data)
                         }.font(.system(size: 12))
@@ -96,18 +96,18 @@ struct InvoiceEditingView: View {
             Divider().padding(.top, 10).padding(.bottom, 10)
             
             Group {
-                Toggle("Provide total", isOn: $store.isAmountTotalProvided)
-                Text("This will trigger the units to be calculated").font(.system(size: 12))
-                if store.isAmountTotalProvided {
+                Toggle("Fixed total", isOn: $store.isFixedTotal)
+                Text("Will trigger the units to be calculated").font(.system(size: 10))
+                if store.isFixedTotal {
                     HStack(alignment: .center) {
-                        Text("Total amount:").font(.system(size: 12))
-                        TextField("Total", text: $store.amountTotal).onChange(of: store.amountTotal) { _ in
+                        Text("Total amount VAT:").font(.system(size: 12))
+                        TextField("Total", text: $store.amountTotalVat).onChange(of: store.amountTotalVat) { _ in
                             completion(store.data)
                         }
                         .font(.system(size: 12))
                     }
                 } else {
-                    Text("Total amount: \(store.amountTotal)").font(.system(size: 12))
+                    Text("Total amount VAT: \(store.amountTotalVat)").font(.system(size: 12))
                 }
             }
             

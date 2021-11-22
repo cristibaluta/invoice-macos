@@ -15,6 +15,7 @@
 		2867F84827063C9C002CA8CC /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2867F84727063C9C002CA8CC /* History.swift */; };
 		2867F84A27065729002CA8CC /* SandboxManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2867F84927065729002CA8CC /* SandboxManager.swift */; };
 		2867F84C270B595C002CA8CC /* CompanyDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2867F84B270B595C002CA8CC /* CompanyDetailsView.swift */; };
+		28C0435D274BA69F0057C0D0 /* BarChart in Frameworks */ = {isa = PBXBuildFile; productRef = 28C0435C274BA69F0057C0D0 /* BarChart */; };
 		28C61819273BF43C0044ABBB /* InvoiceFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C61818273BF43C0044ABBB /* InvoiceFolder.swift */; };
 		28D81C302733D49000209EAC /* CompanyDetailsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C2F2733D49000209EAC /* CompanyDetailsStore.swift */; };
 		28D81C322733D94900209EAC /* InvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C312733D94900209EAC /* InvoiceView.swift */; };
@@ -75,6 +76,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28D81C432736434C00209EAC /* SwiftCSV in Frameworks */,
+				28C0435D274BA69F0057C0D0 /* BarChart in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,6 +224,7 @@
 			name = Invoices;
 			packageProductDependencies = (
 				28D81C422736434C00209EAC /* SwiftCSV */,
+				28C0435C274BA69F0057C0D0 /* BarChart */,
 			);
 			productName = Invoices;
 			productReference = 28F91D4A26A1AC100057C5CC /* Invoices.app */;
@@ -252,6 +255,7 @@
 			mainGroup = 28F91D4126A1AC100057C5CC;
 			packageReferences = (
 				28D81C412736434C00209EAC /* XCRemoteSwiftPackageReference "SwiftCSV" */,
+				28C0435B274BA69F0057C0D0 /* XCRemoteSwiftPackageReference "BarChart" */,
 			);
 			productRefGroup = 28F91D4B26A1AC100057C5CC /* Products */;
 			projectDirPath = "";
@@ -507,6 +511,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		28C0435B274BA69F0057C0D0 /* XCRemoteSwiftPackageReference "BarChart" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dawigr/BarChart.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		28D81C412736434C00209EAC /* XCRemoteSwiftPackageReference "SwiftCSV" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/swiftcsv/SwiftCSV";
@@ -518,6 +530,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		28C0435C274BA69F0057C0D0 /* BarChart */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 28C0435B274BA69F0057C0D0 /* XCRemoteSwiftPackageReference "BarChart" */;
+			productName = BarChart;
+		};
 		28D81C422736434C00209EAC /* SwiftCSV */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 28D81C412736434C00209EAC /* XCRemoteSwiftPackageReference "SwiftCSV" */;
