@@ -96,7 +96,7 @@ class ReportStore: ObservableObject {
             let units = data.products.reduce(0.0) { u, product in
                 return u + product.units
             }
-            template = template.replacingOccurrences(of: "::units::", with: units.stringFormatWith2Digits)
+            template = template.replacingOccurrences(of: "::units::", with: units.stringValue_grouped2)
             
             // Group reports by projects then by groups
             var projects = [String: [String: [Report]]]()
@@ -122,7 +122,7 @@ class ReportStore: ObservableObject {
                             var row = templateRow
                             row = row.replacingOccurrences(of: "::task::", with: report.description)
                             row = row.replacingOccurrences(of: "::duration::",
-                                                           with: report.duration.stringFormatWith2Digits)
+                                                           with: report.duration.stringValue_grouped2)
                             rowsHtml += row
                         }
                         continue
@@ -138,7 +138,7 @@ class ReportStore: ObservableObject {
                     var row = templateRow
                     row = row.replacingOccurrences(of: "::task::", with: groupedTasksHtml)
                     row = row.replacingOccurrences(of: "::duration::",
-                                                             with: duration.stringFormatWith2Digits)
+                                                             with: duration.stringValue_grouped2)
                     rowsHtml += row
                 }
                 

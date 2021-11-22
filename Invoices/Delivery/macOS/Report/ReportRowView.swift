@@ -55,7 +55,7 @@ struct ReportRowView: View {
         .onAppear {
             group = report.group ?? ""
             notes = report.description
-            duration = report.duration.stringFormatWith2Digits
+            duration = report.duration.stringValue_grouped2
         }
     }
 }

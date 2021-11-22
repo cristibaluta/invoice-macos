@@ -20,25 +20,25 @@ class InvoiceEditingStore: ObservableObject {
             data.invoice_nr = Int(invoiceNr) ?? 0
         }
     }
-    
     @Published var date: Date {
         didSet {
             data.invoice_date = date.yyyyMMdd
         }
     }
+    
     @Published var rate: String {
         didSet {
-            data.products[0].rate = Decimal(Double(rate) ?? 0)
+            data.products[0].rate = Decimal(string: rate) ?? 0
         }
     }
     @Published var exchangeRate: String {
         didSet {
-            data.products[0].exchange_rate = Decimal(Double(exchangeRate) ?? 0)
+            data.products[0].exchange_rate = Decimal(string: exchangeRate) ?? 0
         }
     }
     @Published var units: String {
         didSet {
-            data.products[0].units = Decimal(Double(units) ?? 0)
+            data.products[0].units = Decimal(string: units) ?? 0
         }
     }
     @Published var unitsName: String {
@@ -53,15 +53,23 @@ class InvoiceEditingStore: ObservableObject {
     }
     @Published var vat: String {
         didSet {
-            data.vat = Decimal(Double(vat) ?? 0)
+            data.vat = Decimal(string: vat) ?? 0
         }
     }
-    @Published var amountTotalVat: String {
+    @Published var amountTotal: String {
         didSet {
-            data.amount_total_vat = Decimal(Double(amountTotalVat) ?? 0)
+            data.amount_total = Decimal(string: amountTotal) ?? 0
+            if isAmountTotalProvided {
+                data.products[0].units = data.amount_total / data.products[0].amount_per_unit
+                units = data.products[0].units.stringValue_2
+            }
         }
     }
-    @Published var isEditingTotal: Bool = false
+    @Published var isAmountTotalProvided: Bool = false {
+        didSet {
+            data.isAmountTotalProvided = isAmountTotalProvided
+        }
+    }
     
     var clientData: CompanyDetails {
         didSet {
@@ -81,14 +89,14 @@ class InvoiceEditingStore: ObservableObject {
         invoiceSeries = data.invoice_series
         invoiceNr = String(data.invoice_nr)
         date = Date(yyyyMMdd: data.invoice_date) ?? Date()
-        vat = data.vat.stringFormatWith2Digits
-        amountTotalVat = data.amount_total_vat.stringFormatWith2Digits
+        vat = data.vat.stringValue_2
+        amountTotal = data.amount_total_vat.stringValue_2
         clientData = data.client
         contractorData = data.contractor
         
-        rate = data.products[0].rate.stringFormatWith2Digits
-        exchangeRate = data.products[0].exchange_rate.stringFormatWith4Digits
-        units = data.products[0].units.stringFormatWith2Digits
+        rate = data.products[0].rate.stringValue_2
+        exchangeRate = data.products[0].exchange_rate.stringValue_4
+        units = data.products[0].units.stringValue_2
         unitsName = data.products[0].units_name
         productName = data.products[0].product_name
     }

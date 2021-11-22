@@ -9,10 +9,8 @@ import Foundation
 
 extension Decimal {
     
-    var stringFormatWith2Digits: String {
+    var stringValue_grouped2: String {
         let formatter = NumberFormatter()
-        formatter.locale = Locale.current
-//        formatter.numberStyle = .currency
         formatter.numberStyle = .decimal
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2
@@ -21,15 +19,34 @@ extension Decimal {
 
         return formatter.string(from: self as NSDecimalNumber) ?? "-"
     }
-    var stringFormatWith4Digits: String {
+    var stringValue_grouped4: String {
         let formatter = NumberFormatter()
-        formatter.locale = Locale.current
-//        formatter.numberStyle = .currency
         formatter.numberStyle = .decimal
         formatter.minimumFractionDigits = 4
         formatter.maximumFractionDigits = 4
         formatter.decimalSeparator = "."
         formatter.groupingSeparator = ","
+
+        return formatter.string(from: self as NSDecimalNumber) ?? "-"
+    }
+    
+    var stringValue_2: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
+        formatter.decimalSeparator = "."
+        formatter.groupingSeparator = ""
+
+        return formatter.string(from: self as NSDecimalNumber) ?? "-"
+    }
+    var stringValue_4: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 4
+        formatter.maximumFractionDigits = 4
+        formatter.decimalSeparator = "."
+        formatter.groupingSeparator = ""
 
         return formatter.string(from: self as NSDecimalNumber) ?? "-"
     }

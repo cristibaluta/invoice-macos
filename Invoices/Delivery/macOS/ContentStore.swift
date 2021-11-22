@@ -78,13 +78,14 @@ extension ContentStore {
     func showInvoice(_ invoice: InvoiceFolder) {
         selectKeeper = invoice
         invoiceName = invoice.name
+        
         SandboxManager.executeInSelectedDir { url in
             let invoiceUrl = url.appendingPathComponent(invoice.name)
             do {
                 let jsonData = try Data(contentsOf: invoiceUrl.appendingPathComponent("data.json"))
-                let jsonObject = try JSONDecoder().decode(InvoiceData.self, from: jsonData)
+                let invoice = try JSONDecoder().decode(InvoiceData.self, from: jsonData)
                 self.currentInvoiceData = nil
-                self.currentInvoiceData = jsonObject
+                self.currentInvoiceData = invoice
             } catch {
                 self.isEditing = false
                 self.currentInvoiceData = nil
@@ -114,7 +115,7 @@ extension ContentStore {
                     
                     let invoiceFolder = InvoiceFolder(date: nextDate,
                                                       invoiceNr: "\(invoice.invoice_series)\(invoice.invoice_nr)",
-                                                      name: "\(nextDate.yyyyMMdd)-\(invoice.invoice_series)\(invoice.invoice_nr)")
+                                                      name: "\(nextDate.yyyyMMdd)-\(invoice.invoice_series)\(invoice.invoice_nr.prefixedWith0)")
                     self.invoices.insert(invoiceFolder, at: 0)
                     self.section = 0
                     self.isEditing = true

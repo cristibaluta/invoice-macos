@@ -29,22 +29,39 @@ class InvoiceStore: ObservableObject {
                 return
             }
             
-            /// Calculate the amount
-            var amount_total: Decimal = 0.0
             var products = [InvoiceProduct]()
             
-            for var product in data.products {
-                let amount_per_unit = product.rate * product.exchange_rate
-                let amount = product.units * amount_per_unit
-                amount_total += amount
-                
-                product.amount_per_unit = amount_per_unit
-                product.amount = amount
-                products.append(product)
+            /// Calculate the amount
+            if data.isAmountTotalProvided == true {
+                // We know the total amount
+                // We calculate the units
+                data.amount_total_vat = data.amount_total + data.amount_total * data.vat / 100
+
+                for var product in data.products {
+                    product.amount_per_unit = product.rate * product.exchange_rate
+                    product.units = data.amount_total / product.amount_per_unit
+                    product.amount = data.amount_total
+                    products.append(product)
+                }
             }
-            
-            data.amount_total = amount_total
-            data.amount_total_vat = amount_total + amount_total * data.vat / 100
+            else {
+                // We know the units
+                // We calculate the total amount
+                var amount_total: Decimal = 0.0
+                
+                for var product in data.products {
+                    let amount_per_unit = product.rate * product.exchange_rate
+                    let amount = product.units * amount_per_unit
+                    amount_total += amount
+                    
+                    product.amount_per_unit = amount_per_unit
+                    product.amount = amount
+                    products.append(product)
+                }
+                
+                data.amount_total = amount_total
+                data.amount_total_vat = data.amount_total + data.amount_total * data.vat / 100
+            }
             
             // Replace
             template = data.toHtmlUsingTemplate(template)
@@ -56,16 +73,16 @@ class InvoiceStore: ObservableObject {
                 var row = templateRow.replacingOccurrences(of: "::nr::", with: "\(i)")
                 row = row.replacingOccurrences(of: "::product::", with: product.product_name)
                 row = row.replacingOccurrences(of: "::rate::",
-                                               with: "\(product.rate.stringFormatWith2Digits)")
+                                               with: "\(product.rate.stringValue_grouped2)")
                 row = row.replacingOccurrences(of: "::exchange_rate::",
-                                               with: "\(product.exchange_rate.stringFormatWith4Digits)")
+                                               with: "\(product.exchange_rate.stringValue_grouped4)")
                 row = row.replacingOccurrences(of: "::units_name::", with: product.units_name)
                 row = row.replacingOccurrences(of: "::units::",
-                                               with: "\(product.units.stringFormatWith2Digits)")
+                                               with: "\(product.units.stringValue_grouped2)")
                 row = row.replacingOccurrences(of: "::amount_per_unit::",
-                                               with: "\(product.amount_per_unit.stringFormatWith4Digits)")
+                                               with: "\(product.amount_per_unit.stringValue_grouped4)")
                 row = row.replacingOccurrences(of: "::amount::",
-                                               with: "\(product.amount.stringFormatWith2Digits)")
+                                               with: "\(product.amount.stringValue_grouped2)")
                 
                 rows += row
                 i += 1

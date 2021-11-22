@@ -22,6 +22,7 @@ struct InvoiceData: Codable, PropertyLoopable {
     var vat: Decimal
     var amount_total: Decimal
     var amount_total_vat: Decimal
+    var isAmountTotalProvided: Bool?
 }
 
 extension InvoiceData {
@@ -38,7 +39,7 @@ extension InvoiceData {
         var template = template
         for (key, value) in (dict ?? [:]) {
             if key == "amount_total" || key == "amount_total_vat", let amount = value as? Decimal {
-                template = template.replacingOccurrences(of: "::\(key)::", with: "\(amount.stringFormatWith2Digits)")
+                template = template.replacingOccurrences(of: "::\(key)::", with: "\(amount.stringValue_grouped2)")
             }
             else if key == "invoice_date", let date = Date(yyyyMMdd: value as? String ?? "") {
                 template = template.replacingOccurrences(of: "::\(key)::", with: "\(date.mediumDate)")

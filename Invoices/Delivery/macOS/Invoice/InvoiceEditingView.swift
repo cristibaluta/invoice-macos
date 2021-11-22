@@ -21,7 +21,20 @@ struct InvoiceEditingView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
+            
             Group {
+                HStack(alignment: .center) {
+                    Text("Invoice series:").font(.system(size: 12))
+                    TextField("", text: $store.invoiceSeries).onChange(of: store.invoiceSeries) { _ in
+                        completion(store.data)
+                    }.font(.system(size: 12))
+                }
+                HStack(alignment: .center) {
+                    Text("Invoice nr:").font(.system(size: 12))
+                    TextField("", text: $store.invoiceNr).onChange(of: store.invoiceNr) { _ in
+                        completion(store.data)
+                    }.font(.system(size: 12))
+                }
                 HStack(alignment: .center) {
                     Text("Invoice date:").font(.system(size: 12))
                     DatePicker("", selection: $store.date, displayedComponents: .date)
@@ -30,6 +43,11 @@ struct InvoiceEditingView: View {
                         }
                         .font(.system(size: 12))
                 }
+            }
+            
+            Divider().padding(.top, 10).padding(.bottom, 10)
+
+            Group {
                 HStack(alignment: .center) {
                     Text("Product:").font(.system(size: 12))
                     TextField("", text: $store.productName).onChange(of: store.productName) { _ in
@@ -51,10 +69,14 @@ struct InvoiceEditingView: View {
                 }
                 HStack(alignment: .center) {
                     Text("Units:").font(.system(size: 12))
-                    TextField("", text: $store.units).onChange(of: store.units) { _ in
-                        completion(store.data)
+                    if !store.isAmountTotalProvided {
+                        TextField("", text: $store.units).onChange(of: store.units) { _ in
+                            completion(store.data)
+                        }.font(.system(size: 12))
+                    } else {
+                        Text(store.units).font(.system(size: 12))
                     }
-                    .font(.system(size: 12))
+                    
                 }
                 HStack(alignment: .center) {
                     Text("Units name:").font(.system(size: 12))
@@ -74,41 +96,23 @@ struct InvoiceEditingView: View {
             Divider().padding(.top, 10).padding(.bottom, 10)
             
             Group {
-                Toggle("Provide total", isOn: $store.isEditingTotal)
+                Toggle("Provide total", isOn: $store.isAmountTotalProvided)
                 Text("This will trigger the units to be calculated").font(.system(size: 12))
-                if store.isEditingTotal {
+                if store.isAmountTotalProvided {
                     HStack(alignment: .center) {
                         Text("Total amount:").font(.system(size: 12))
-                        TextField("Total", text: $store.amountTotalVat).onChange(of: store.amountTotalVat) { _ in
+                        TextField("Total", text: $store.amountTotal).onChange(of: store.amountTotal) { _ in
                             completion(store.data)
                         }
                         .font(.system(size: 12))
                     }
                 } else {
-                    Text("Total amount: \(store.amountTotalVat)").font(.system(size: 12))
+                    Text("Total amount: \(store.amountTotal)").font(.system(size: 12))
                 }
             }
             
             Divider().padding(.top, 10).padding(.bottom, 10)
             
-            Group {
-                
-                HStack(alignment: .center) {
-                    Text("Invoice series:").font(.system(size: 12))
-                    TextField("", text: $store.invoiceSeries).onChange(of: store.invoiceSeries) { _ in
-                        completion(store.data)
-                    }.font(.system(size: 12))
-                }
-                HStack(alignment: .center) {
-                    Text("Invoice nr:").font(.system(size: 12))
-                    TextField("", text: $store.invoiceNr).onChange(of: store.invoiceNr) { _ in
-                        completion(store.data)
-                    }.font(.system(size: 12))
-                }
-            }
-            
-            Divider().padding(.top, 10).padding(.bottom, 10)
-
             Group {
                 Button("Contractor") {
                     showingContractor.toggle()
