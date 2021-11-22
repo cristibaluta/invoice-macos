@@ -38,8 +38,13 @@ extension InvoiceData {
                 .flatMap { $0 as? [String: Any] }
         var template = template
         for (key, value) in (dict ?? [:]) {
-            if key == "amount_total" || key == "amount_total_vat", let amount = value as? Decimal {
-                template = template.replacingOccurrences(of: "::\(key)::", with: "\(amount.stringValue_grouped2)")
+            if key == "amount_total" || key == "amount_total_vat" {
+                if let amount = value as? Decimal {
+                    template = template.replacingOccurrences(of: "::\(key)::", with: "\(amount.stringValue_grouped2)")
+                }
+                else if let amount = value as? NSNumber {
+                    template = template.replacingOccurrences(of: "::\(key)::", with: "\(amount.decimalValue.stringValue_grouped2)")
+                }
             }
             else if key == "invoice_date", let date = Date(yyyyMMdd: value as? String ?? "") {
                 template = template.replacingOccurrences(of: "::\(key)::", with: "\(date.mediumDate)")
@@ -62,6 +67,42 @@ extension InvoiceData {
             }
         }
         return template
+    }
+    
+    mutating func calculate() {
+        var products = [InvoiceProduct]()
+        /// Calculate the amount
+        if isAmountTotalProvided == true {
+            // We know the total amount
+            // We calculate the units
+            amount_total_vat = amount_total + amount_total * vat / 100
+
+            for var product in self.products {
+                product.amount_per_unit = product.rate * product.exchange_rate
+                product.units = amount_total / product.amount_per_unit
+                product.amount = amount_total
+                products.append(product)
+            }
+        }
+        else {
+            // We know the units
+            // We calculate the total amount
+            var total: Decimal = 0.0
+            
+            for var product in self.products {
+                let amount_per_unit = product.rate * product.exchange_rate
+                let amount = product.units * amount_per_unit
+                total += amount
+                
+                product.amount_per_unit = amount_per_unit
+                product.amount = amount
+                products.append(product)
+            }
+            
+            amount_total = total
+            amount_total_vat = amount_total + amount_total * vat / 100
+        }
+        self.products = products
     }
 }
 

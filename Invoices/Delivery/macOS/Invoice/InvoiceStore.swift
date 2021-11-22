@@ -29,39 +29,7 @@ class InvoiceStore: ObservableObject {
                 return
             }
             
-            var products = [InvoiceProduct]()
-            
-            /// Calculate the amount
-            if data.isAmountTotalProvided == true {
-                // We know the total amount
-                // We calculate the units
-                data.amount_total_vat = data.amount_total + data.amount_total * data.vat / 100
-
-                for var product in data.products {
-                    product.amount_per_unit = product.rate * product.exchange_rate
-                    product.units = data.amount_total / product.amount_per_unit
-                    product.amount = data.amount_total
-                    products.append(product)
-                }
-            }
-            else {
-                // We know the units
-                // We calculate the total amount
-                var amount_total: Decimal = 0.0
-                
-                for var product in data.products {
-                    let amount_per_unit = product.rate * product.exchange_rate
-                    let amount = product.units * amount_per_unit
-                    amount_total += amount
-                    
-                    product.amount_per_unit = amount_per_unit
-                    product.amount = amount
-                    products.append(product)
-                }
-                
-                data.amount_total = amount_total
-                data.amount_total_vat = data.amount_total + data.amount_total * data.vat / 100
-            }
+            data.calculate()
             
             // Replace
             template = data.toHtmlUsingTemplate(template)
@@ -69,7 +37,7 @@ class InvoiceStore: ObservableObject {
             /// Add rows
             var i = 1
             var rows = ""
-            for product in products {
+            for product in data.products {
                 var row = templateRow.replacingOccurrences(of: "::nr::", with: "\(i)")
                 row = row.replacingOccurrences(of: "::product::", with: product.product_name)
                 row = row.replacingOccurrences(of: "::rate::",
