@@ -39,8 +39,7 @@ struct ContentView: View {
                     switch store.section {
                         case 0:
                             if let invoiceStore = store.currentInvoiceStore {
-                                InvoiceView(store: invoiceStore)
-                                    .frame(width: 920)
+                                InvoiceView(store: invoiceStore).frame(width: 920)
                                 if store.isEditing {
                                     InvoiceEditingView(store: InvoiceEditingStore(data: invoiceStore.data)) { data in
                                         store.currentInvoiceData = data
@@ -50,8 +49,7 @@ struct ContentView: View {
                             }
                         case 1:
                             if let reportStore = store.currentReportStore {
-                                ReportView(store: reportStore)
-                                    .frame(width: 920)
+                                ReportView(store: reportStore).frame(width: 920)
                             }
                         default:
                             Text("Invalid section")
@@ -90,12 +88,14 @@ struct ContentView: View {
                         }
                     }
                 }
-            } else if let errorMessage = store.errorMessage {
+            }
+            else if let errorMessage = store.errorMessage {
                 VStack(alignment: .center) {
                     Text(errorMessage.0).bold()
                     Text(errorMessage.1)
                 }.padding(20)
-            } else if store.hasFolderSelected {
+            }
+            else if store.hasFolderSelected {
                 VStack(alignment: .center) {
                     BarChartView(config: store.chartConfig)
                         .onAppear() {
@@ -121,7 +121,8 @@ struct ContentView: View {
                         store.generateNewInvoice()
                     }
                 }.padding(20)
-            } else {
+            }
+            else {
                 VStack(alignment: .center) {
                     Text("Create your first project, select a directory for your invoices!")
                     Button("Create project") {

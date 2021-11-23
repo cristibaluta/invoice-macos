@@ -16,6 +16,7 @@ struct InvoiceView: View {
     
     init (store: InvoiceStore) {
         self.store = store
+        print("New invoiceview \(store.data.invoice_nr)")
     }
     
     var body: some View {

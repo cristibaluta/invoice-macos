@@ -20,6 +20,8 @@ final class ContentStore: ObservableObject {
                 if currentInvoiceStore == nil {
                     currentInvoiceStore = InvoiceStore(data: data)
                     currentReportStore = ReportStore(data: data)
+                    currentInvoiceStore?.calculate()
+                    currentReportStore?.calculate()
                 } else {
                     currentInvoiceStore?.data = data
                     currentInvoiceStore?.calculate()
@@ -102,6 +104,7 @@ extension ContentStore {
     }
     
     func showInvoice(_ invoice: InvoiceFolder) {
+        print("Show invoice \(invoice)")
         selectKeeper = invoice
         invoiceName = invoice.name
         
@@ -249,7 +252,13 @@ extension ContentStore {
     func save() {
         switch section {
             case 0:
-                currentInvoiceStore?.save()
+                currentInvoiceStore?.save() { invoiceFolder in
+                    if let folder = invoiceFolder {
+                        if !self.invoices.contains(where: {$0.name == folder.name}) {
+                            self.invoices.insert(folder, at: 0)
+                        }
+                    }
+                }
             case 1:
                 currentReportStore?.save()
             default: break

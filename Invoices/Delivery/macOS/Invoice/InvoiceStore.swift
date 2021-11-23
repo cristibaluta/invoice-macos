@@ -20,6 +20,7 @@ class InvoiceStore: ObservableObject {
     }
     
     func calculate() {
+        print("Calculate \(data.invoice_nr)")
         SandboxManager.executeInSelectedDir { url in
             /// Get template
             let templateUrl = url.appendingPathComponent("templates")
@@ -56,16 +57,17 @@ class InvoiceStore: ObservableObject {
                 i += 1
             }
             template = template.replacingOccurrences(of: "::rows::", with: rows)
-            
+            print("calculated")
             self.html = template
         }
     }
     
-    func save() {
+    func save (completion: (InvoiceFolder?) -> Void) {
         SandboxManager.executeInSelectedDir { url in
             do {
                 // Generate folder if none exists
-                let folderName = "\(data.date.yyyyMMdd)-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)"
+                let invoiceNr = "\(data.invoice_series)\(data.invoice_nr.prefixedWith0)"
+                let folderName = "\(data.date.yyyyMMdd)-\(invoiceNr)"
                 let invoiceUrl = url.appendingPathComponent(folderName)
                 try FileManager.default.createDirectory(at: invoiceUrl,
                                                         withIntermediateDirectories: true,
@@ -84,10 +86,14 @@ class InvoiceStore: ObservableObject {
                 let pdfName = "Invoice-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).pdf"
                 let invoicePdfUrl = invoiceUrl.appendingPathComponent(pdfName)
                 try invoicePrintData?.write(to: invoicePdfUrl)
+                
+                completion(InvoiceFolder(date: data.date, invoiceNr: invoiceNr, name: folderName))
             }
             catch {
                 print(error)
+                completion(nil)
             }
         }
     }
+    
 }
