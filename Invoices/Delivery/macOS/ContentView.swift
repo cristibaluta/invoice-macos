@@ -97,6 +97,8 @@ struct ContentView: View {
             }
             else if store.hasFolderSelected {
                 VStack(alignment: .center) {
+                    
+                    Text("Invoice amount")
                     BarChartView(config: store.chartConfig)
                     .onAppear() {
                         store.chartConfig.data.color = .red
@@ -117,6 +119,8 @@ struct ContentView: View {
                     .padding(20)
                     .animation(.easeInOut)
                     
+                    Spacer().frame(height: 30)
+                    Text("Rate")
                     BarChartView(config: store.rateChartConfig)
                     .onAppear() {
                         store.rateChartConfig.data.color = .orange
@@ -129,7 +133,7 @@ struct ContentView: View {
                         store.rateChartConfig.yAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
                         store.rateChartConfig.yAxis.minTicksSpacing = 30.0
                         store.rateChartConfig.yAxis.formatter = { (value, decimals) in
-                            let format = value == 0 ? "" : "RON"
+                            let format = value == 0 ? "" : "€"
                             return String(format: "%.\(decimals)f \(format)", value)
                         }
                     }
