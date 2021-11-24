@@ -12,10 +12,12 @@ class InvoiceStore: ObservableObject {
     var invoicePrintData: Data?
     var data: InvoiceData
     @Published var html: String
+    @Published var editingStore: InvoiceEditingStore
     
     init (data: InvoiceData) {
         self.html = ""
         self.data = data
+        self.editingStore = InvoiceEditingStore(data: data)
         calculate()
     }
     
@@ -31,6 +33,7 @@ class InvoiceStore: ObservableObject {
             }
             
             data.calculate()
+//            print(data)
             
             // Replace
             template = data.toHtmlUsingTemplate(template)
@@ -57,7 +60,6 @@ class InvoiceStore: ObservableObject {
                 i += 1
             }
             template = template.replacingOccurrences(of: "::rows::", with: rows)
-            print("calculated")
             self.html = template
         }
     }

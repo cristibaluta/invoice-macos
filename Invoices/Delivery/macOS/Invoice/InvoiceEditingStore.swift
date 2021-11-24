@@ -87,6 +87,7 @@ class InvoiceEditingStore: ObservableObject {
     }
     
     var data: InvoiceData
+    var isInitStage = true
     
     init (data: InvoiceData) {
         self.data = data
@@ -103,5 +104,7 @@ class InvoiceEditingStore: ObservableObject {
         units = data.products[0].units.stringValue_2
         unitsName = data.products[0].units_name
         productName = data.products[0].product_name
+        
+        isInitStage = false
     }
 }

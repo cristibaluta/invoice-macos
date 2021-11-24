@@ -17,6 +17,7 @@ struct InvoiceEditingView: View {
     init (store: InvoiceEditingStore, completion: @escaping (InvoiceData) -> Void) {
         self.store = store
         self.completion = completion
+        print("New invoiceEditingView \(store.data.invoice_nr)")
     }
     
     var body: some View {

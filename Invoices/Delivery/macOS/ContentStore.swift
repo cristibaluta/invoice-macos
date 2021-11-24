@@ -17,17 +17,8 @@ final class ContentStore: ObservableObject {
     var currentInvoiceData: InvoiceData? {
         didSet {
             if let data = currentInvoiceData {
-                if currentInvoiceStore == nil {
-                    currentInvoiceStore = InvoiceStore(data: data)
-                    currentReportStore = ReportStore(data: data)
-                    currentInvoiceStore?.calculate()
-                    currentReportStore?.calculate()
-                } else {
-                    currentInvoiceStore?.data = data
-                    currentInvoiceStore?.calculate()
-                    currentReportStore?.data = data
-                    currentReportStore?.calculate()
-                }
+                currentInvoiceStore = InvoiceStore(data: data)
+                currentReportStore = ReportStore(data: data)
             } else {
                 currentInvoiceStore = nil
                 currentReportStore = nil
@@ -41,7 +32,9 @@ final class ContentStore: ObservableObject {
     @Published var invoiceName: String = ""
     @Published var selectKeeper: InvoiceFolder?
     var chartConfig = ChartConfiguration()
+    var rateChartConfig = ChartConfiguration()
     @Published var chartEntries: [ChartDataEntry] = []
+    @Published var rateChartEntries: [ChartDataEntry] = []
     
     init() {
 //        History().clear()
@@ -59,7 +52,9 @@ final class ContentStore: ObservableObject {
             do {
                 let folders = try FileManager.default.contentsOfDirectory(atPath: url.path)
                 var list = [InvoiceFolder]()
-                var bars = [ChartDataEntry]()
+                var prices = [ChartDataEntry]()
+                var rates = [ChartDataEntry]()
+                
                 for folder in folders.sorted().reversed() {
                     let comps: [String] = folder.components(separatedBy: "-")
                     if let dateComp = comps.first, let date = Date(yyyyMMdd: dateComp) {
@@ -71,15 +66,17 @@ final class ContentStore: ObservableObject {
                         do {
                             let jsonData = try Data(contentsOf: invoiceUrl.appendingPathComponent("data.json"))
                             let invoice = try JSONDecoder().decode(InvoiceData.self, from: jsonData)
-                            let bar = ChartDataEntry(x: "\(invoice.invoice_nr)", y: invoice.amount_total_vat.doubleValue)
-                            bars.append(bar)
+                            let price = ChartDataEntry(x: "\(invoice.invoice_nr)", y: invoice.amount_total_vat.doubleValue)
+                            prices.append(price)
+                            let rate = ChartDataEntry(x: "\(invoice.invoice_nr)", y: invoice.products[0].rate.doubleValue)
+                            rates.append(rate)
                         } catch {
                             
                         }
                     }
                 }
                 showInvoices(list)
-                showChart(bars)
+                showChart(prices, rates)
             } catch {
                 print("\(error)")
             }
@@ -93,12 +90,15 @@ extension ContentStore {
         self.invoices = invoices
     }
     
-    func showChart(_ bars: [ChartDataEntry]) {
+    func showChart(_ prices: [ChartDataEntry], _ rates: [ChartDataEntry]) {
         DispatchQueue.main.async {
-            self.chartEntries = bars.reversed()
+            self.chartEntries = prices.reversed()
+            self.rateChartEntries = rates.reversed()
             self.chartConfig.data.entries = self.chartEntries
+            self.rateChartConfig.data.entries = self.rateChartEntries
             DispatchQueue.main.async {
                 self.chartConfig.data.entries = self.chartEntries
+                self.rateChartConfig.data.entries = self.rateChartEntries
             }
         }
     }

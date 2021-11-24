@@ -12,6 +12,7 @@ struct ContentView: View {
     
     @ObservedObject var store: ContentStore
     @State var editor: Int = 0
+    @State private var showingAlert = false
     
     init (store: ContentStore) {
         self.store = store
@@ -22,30 +23,25 @@ struct ContentView: View {
             // List of invoices
             List(self.store.invoices, id: \.self, selection: $store.selectKeeper) { invoice in
                 Text(invoice.name)
-                    .onTapGesture {
-                        store.showInvoice(invoice)
+                .onTapGesture {
+                    store.showInvoice(invoice)
+                }
+                .contextMenu {
+                    Button(action: {
+                        store.showInFinder(invoice)
+                    }) {
+                        Text("Show in Finder")
                     }
-                    .contextMenu {
-                        Button(action: {
-                            store.showInFinder(invoice)
-                        }) {
-                            Text("Show in Finder")
-                        }
-                    }
+                }
             }
             
+            // Invoice and reports
             if store.currentInvoiceStore != nil {
-                HStack {
+                VStack {
                     switch store.section {
                         case 0:
                             if let invoiceStore = store.currentInvoiceStore {
-                                InvoiceView(store: invoiceStore).frame(width: 920)
-                                if store.isEditing {
-                                    InvoiceEditingView(store: InvoiceEditingStore(data: invoiceStore.data)) { data in
-                                        store.currentInvoiceData = data
-                                    }
-                                    .frame(maxWidth: 220)
-                                }
+                                InvoiceView(store: invoiceStore)
                             }
                         case 1:
                             if let reportStore = store.currentReportStore {
@@ -61,7 +57,8 @@ struct ContentView: View {
                         Button("New invoice") {
                             store.generateNewInvoice()
                         }
-                        Button("Open project") {
+                        .help("Use data from the last invoice to create a new one.")
+                        Button("Open") {
                             openProject()
                         }
                         Divider()
@@ -78,13 +75,16 @@ struct ContentView: View {
                     }
                     ToolbarItemGroup(placement: .primaryAction) {
                         Spacer()
-                        if store.section == 0 {
-                            Button("Edit") {
-                                store.edit()
-                            }
-                        }
                         Button("Save") {
                             store.save()
+                            showingAlert = true
+                        }
+                        .alert(isPresented: $showingAlert) {
+                            Alert(
+                                title: Text("Save success"),
+                                message: Text("Your pdfs are saved in directory. You can right click on any invoice to view it in Finder."),
+                                dismissButton: .default(Text("OK"))
+                            )
                         }
                     }
                 }
@@ -98,34 +98,63 @@ struct ContentView: View {
             else if store.hasFolderSelected {
                 VStack(alignment: .center) {
                     BarChartView(config: store.chartConfig)
-                        .onAppear() {
-                            store.chartConfig.data.color = .red
-                            store.chartConfig.xAxis.labelsColor = .gray
-                            store.chartConfig.xAxis.ticksColor = .gray
-                            store.chartConfig.labelsCTFont = CTFontCreateWithName(("SFProText-Regular" as CFString), 10, nil)
-                            store.chartConfig.xAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
-                            store.chartConfig.yAxis.labelsColor = .gray
-                            store.chartConfig.yAxis.ticksColor = .gray
-                            store.chartConfig.yAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
-                            store.chartConfig.yAxis.minTicksSpacing = 30.0
-                            store.chartConfig.yAxis.formatter = { (value, decimals) in
-                                let format = value == 0 ? "" : "RON"
-                                return String(format: "%.\(decimals)f \(format)", value)
-                            }
+                    .onAppear() {
+                        store.chartConfig.data.color = .red
+                        store.chartConfig.xAxis.labelsColor = .gray
+                        store.chartConfig.xAxis.ticksColor = .gray
+                        store.chartConfig.labelsCTFont = CTFontCreateWithName(("SFProText-Regular" as CFString), 10, nil)
+                        store.chartConfig.xAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
+                        store.chartConfig.yAxis.labelsColor = .gray
+                        store.chartConfig.yAxis.ticksColor = .gray
+                        store.chartConfig.yAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
+                        store.chartConfig.yAxis.minTicksSpacing = 30.0
+                        store.chartConfig.yAxis.formatter = { (value, decimals) in
+                            let format = value == 0 ? "" : "RON"
+                            return String(format: "%.\(decimals)f \(format)", value)
                         }
-                        .frame(height: 300)
-                        .padding(20)
-                        .animation(.easeInOut)
-                    Text("Select an invoice from the left side - or create a new invoice using data from the last invoice.")
-                    Button("New Invoice") {
-                        store.generateNewInvoice()
                     }
-                }.padding(20)
+                    .frame(height: 300)
+                    .padding(20)
+                    .animation(.easeInOut)
+                    
+                    BarChartView(config: store.rateChartConfig)
+                    .onAppear() {
+                        store.rateChartConfig.data.color = .orange
+                        store.rateChartConfig.xAxis.labelsColor = .gray
+                        store.rateChartConfig.xAxis.ticksColor = .gray
+                        store.rateChartConfig.labelsCTFont = CTFontCreateWithName(("SFProText-Regular" as CFString), 10, nil)
+                        store.rateChartConfig.xAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
+                        store.rateChartConfig.yAxis.labelsColor = .gray
+                        store.rateChartConfig.yAxis.ticksColor = .gray
+                        store.rateChartConfig.yAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
+                        store.rateChartConfig.yAxis.minTicksSpacing = 30.0
+                        store.rateChartConfig.yAxis.formatter = { (value, decimals) in
+                            let format = value == 0 ? "" : "RON"
+                            return String(format: "%.\(decimals)f \(format)", value)
+                        }
+                    }
+                    .frame(height: 150)
+                    .padding(20)
+                    .animation(.easeInOut)
+                }
+                .padding(20)
+                .toolbar {
+                    ToolbarItemGroup(placement: .navigation) {
+                        Button("New invoice") {
+                            store.generateNewInvoice()
+                        }
+                        .help("Use data from the last invoice to create a new one.")
+                        Button("Open") {
+                            openProject()
+                        }
+                        Divider()
+                    }
+                }
             }
             else {
                 VStack(alignment: .center) {
-                    Text("Create your first project, select a directory for your invoices!")
-                    Button("Create project") {
+                    Text("Create your first series of invoices, select a directory!")
+                    Button("Select") {
                         openProject()
                     }
                 }

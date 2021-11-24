@@ -20,11 +20,20 @@ struct InvoiceView: View {
     }
     
     var body: some View {
-        VStack {
+        HStack {
+            Spacer()
             HtmlView(htmlString: store.html) { printingData in
                 store.invoicePrintData = printingData
             }
+            .frame(width: 920)
             .padding(10)
+            Spacer()
+            Divider().padding(.top, 10).padding(.bottom, 10)
+            InvoiceEditingView(store: store.editingStore) { data in
+                store.data = data
+                store.calculate()
+            }
+            .frame(width: 220, alignment: .trailing)
         }
     }
 }
