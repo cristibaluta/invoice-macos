@@ -107,7 +107,10 @@ struct ContentView: View {
                 VStack(alignment: .center) {
                     
                     if store.chartEntries.isEmpty {
-                        Text("No invoices created yet.")
+                        Text("Create your first invoice.")
+                        Button("New invoice") {
+                            store.generateNewInvoice()
+                        }
                     } else {
                         Text("Invoice amount")
                         BarChartView(config: store.chartConfig)
@@ -169,8 +172,8 @@ struct ContentView: View {
             }
             else {
                 VStack(alignment: .center) {
-                    Text("Create your first series of invoices, select a directory!")
-                    Button("Select") {
+                    Text("Select a directory for your invoices.")
+                    Button("Open") {
                         openProject()
                     }
                 }
