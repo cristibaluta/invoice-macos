@@ -107,7 +107,8 @@ struct ContentView: View {
                 VStack(alignment: .center) {
                     
                     if store.chartEntries.isEmpty {
-                        Text("Create your first invoice.")
+                        Text("Create your first invoice.").bold()
+                        Text("Templates were created in the directory, you can edit them at any time.")
                         Button("New invoice") {
                             store.generateNewInvoice()
                         }

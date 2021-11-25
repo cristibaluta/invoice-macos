@@ -23,7 +23,7 @@ struct ReportRowView: View {
     
     var body: some View {
         HStack(alignment: .top, spacing: 20) {
-            TextField("Group", text: $group).frame(width: 100).onChange(of: group) {_ in
+            TextField("Group name", text: $group).frame(width: 100).onChange(of: group) {_ in
                 completion(Report(id: report.id,
                                   project_name: report.project_name,
                                   group: group,

@@ -120,7 +120,6 @@ struct InvoiceEditingView: View {
                     showingClient = false
                 }
                 if showingContractor {
-                    Divider()
                     CompanyDetailsView(store: CompanyDetailsStore(data: store.data.contractor)) { companyData in
                         store.data.contractor = companyData
                         completion(store.data)
@@ -133,7 +132,6 @@ struct InvoiceEditingView: View {
                     showingContractor = false
                 }
                 if showingClient {
-                    Divider()
                     CompanyDetailsView(store: CompanyDetailsStore(data: store.data.client)) { companyData in
                         store.data.client = companyData
                         completion(store.data)

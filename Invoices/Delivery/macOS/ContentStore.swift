@@ -145,7 +145,6 @@ extension ContentStore {
                     let invoiceFolder = InvoiceFolder(date: nextDate,
                                                       invoiceNr: "\(invoice.invoice_series)\(invoice.invoice_nr)",
                                                       name: "\(nextDate.yyyyMMdd)-\(invoice.invoice_series)\(invoice.invoice_nr.prefixedWith0)")
-                    self.invoices.insert(invoiceFolder, at: 0)
                     self.section = 0
                     self.isEditing = true
                     self.selectKeeper = invoiceFolder
@@ -156,7 +155,6 @@ extension ContentStore {
                     let invoiceFolder = InvoiceFolder(date: Date(),
                                                       invoiceNr: "",
                                                       name: Date().yyyyMMdd)
-                    self.invoices.insert(invoiceFolder, at: 0)
                     self.section = 0
                     self.isEditing = true
                     self.selectKeeper = invoiceFolder
@@ -168,7 +166,6 @@ extension ContentStore {
                 let invoiceFolder = InvoiceFolder(date: Date(),
                                                   invoiceNr: "",
                                                   name: Date().yyyyMMdd)
-                self.invoices.insert(invoiceFolder, at: 0)
                 self.section = 0
                 self.isEditing = true
                 self.selectKeeper = invoiceFolder
