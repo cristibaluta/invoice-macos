@@ -210,7 +210,7 @@ struct InvoiceProduct: Codable {
 
 struct InvoiceReport: Codable {
     var project_name: String
-    var group: String?
+    var group: String
     var description: String
     var duration: Decimal
     
@@ -235,7 +235,7 @@ struct InvoiceReport: Codable {
     }
     
     init (project_name: String,
-          group: String?,
+          group: String,
           description: String,
           duration: Decimal) {
         self.project_name = project_name

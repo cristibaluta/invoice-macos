@@ -10,13 +10,9 @@ import Foundation
 struct Report: Identifiable {
     var id = UUID()
     var project_name: String
-    var group: String?
+    var group: String
     var description: String
     var duration: Decimal
-}
-
-struct ReportGroup {
-    
 }
 
 struct ReportProject: Identifiable {

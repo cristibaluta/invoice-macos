@@ -44,7 +44,7 @@ class ReportStore: ObservableObject {
                     return
                 }
                 let report = Report(project_name: projectName,
-                                    group: nil,
+                                    group: "",
                                     description: dict["Work Description"] ?? "",
                                     duration: Decimal(Double(dict["Hours"]?.replacingOccurrences(of: ",", with: ".") ?? "0") ?? 0))
                 
