@@ -27,7 +27,7 @@ class ReportStore: ObservableObject {
                           description: $0.description,
                           duration: $0.duration)
         })
-        self.allProjects = projects(from: reports, isOn: true)
+        self.allProjects = projects(from: self.allReports, isOn: true)
         updateReports()
     }
     
@@ -84,6 +84,12 @@ class ReportStore: ObservableObject {
         for i in 0..<reports.count {
             if reports[i].id == report.id {
                 reports[i] = report
+                break
+            }
+        }
+        for i in 0..<allReports.count {
+            if allReports[i].id == report.id {
+                allReports[i] = report
                 break
             }
         }

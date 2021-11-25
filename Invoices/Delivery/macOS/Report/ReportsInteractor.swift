@@ -17,8 +17,6 @@ class ReportsInteractor {
             return partialResult + report.duration
         }
         let extraDuration = duration - originalDuration
-        print("original duration \(originalDuration) extraDuration \(extraDuration)")
-        print("expected duration \(originalDuration + extraDuration)")
         
         // Group reports by projects then by groups
         var projects = [String: [String: [Report]]]()
@@ -39,27 +37,22 @@ class ReportsInteractor {
         }
         let extraDurationPerReport: Decimal = (extraDuration / nrOfReports).rounded(.down)
         var extraDurationUsed: Decimal = 0
-        print("extraDurationPerReport \(extraDurationPerReport)")
         
         for (projectName, groups) in projects {
             for (groupName, reports) in groups {
                 for i in 0..<reports.count {
                     let reportDuration = projects[projectName]![groupName]![i].duration
-                    print(">>>>> reportDuration \(reportDuration)")
                     if reportDuration + extraDurationPerReport < 0.5 {
                         extraDurationUsed += (reportDuration - 0.5)
-                        print("extraDurationUsed \(extraDurationUsed)    this time \(reportDuration - 0.5)")
                         projects[projectName]![groupName]![i].duration = 0.5
                     } else {
                         extraDurationUsed += extraDurationPerReport > 0 ? extraDurationPerReport : -extraDurationPerReport
                         projects[projectName]![groupName]![i].duration += extraDurationPerReport
-                        print("extraDurationUsed \(extraDurationUsed)")
                     }
                 }
             }
         }
         let extraDurationUnused: Decimal = (extraDuration > 0 ? extraDuration : -extraDuration) - extraDurationUsed
-        print("extraDurationUnused \(extraDurationUnused) = extraDuration \(extraDuration) - extraDurationUsed \(extraDurationUsed)")
         for (projectName, groups) in projects {
             for (groupName, reports) in groups {
                 for i in 0..<reports.count {
