@@ -24,9 +24,9 @@ class ReportsInteractor {
         
         for report in reports {
             var groups = projects[report.project_name] ?? [:]
-            var groupReports = groups[report.group ?? ""] ?? []
+            var groupReports = groups[report.group] ?? []
             groupReports.append(report)
-            groups[report.group ?? ""] = groupReports
+            groups[report.group] = groupReports
             projects[report.project_name] = groups
             nrOfReports += 1
         }
