@@ -64,6 +64,7 @@ struct ContentView: View {
                         Button("Open") {
                             openProject()
                         }
+                        .help("Chose a different location for your invoices.")
                         Divider()
                     }
                     ToolbarItem(placement: .principal) {
@@ -82,10 +83,11 @@ struct ContentView: View {
                             store.save()
                             showingAlert = true
                         }
+                        .help("Save current data to json and pdf.")
                         .alert(isPresented: $showingAlert) {
                             Alert(
                                 title: Text("Save success"),
-                                message: Text("Your pdfs are saved in directory. You can right click on any invoice to view it in Finder."),
+                                message: Text("Your pdf is saved in directory. You can right click on any invoice name to view it in Finder."),
                                 dismissButton: .default(Text("OK"))
                             )
                         }
@@ -101,48 +103,52 @@ struct ContentView: View {
             else if store.hasFolderSelected {
                 VStack(alignment: .center) {
                     
-                    Text("Invoice amount")
-                    BarChartView(config: store.chartConfig)
-                    .onAppear() {
-                        store.chartConfig.data.color = .red
-                        store.chartConfig.xAxis.labelsColor = .gray
-                        store.chartConfig.xAxis.ticksColor = .gray
-                        store.chartConfig.labelsCTFont = CTFontCreateWithName(("SFProText-Regular" as CFString), 10, nil)
-                        store.chartConfig.xAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
-                        store.chartConfig.yAxis.labelsColor = .gray
-                        store.chartConfig.yAxis.ticksColor = .gray
-                        store.chartConfig.yAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
-                        store.chartConfig.yAxis.minTicksSpacing = 30.0
-                        store.chartConfig.yAxis.formatter = { (value, decimals) in
-                            let format = value == 0 ? "" : "RON"
-                            return String(format: "%.\(decimals)f \(format)", value)
-                        }
+                    if store.chartEntries.isEmpty {
+                        Text("No invoices created yet.")
+                    } else {
+                        Text("Invoice amount")
+                        BarChartView(config: store.chartConfig)
+                            .onAppear() {
+                                store.chartConfig.data.color = .red
+                                store.chartConfig.xAxis.labelsColor = .gray
+                                store.chartConfig.xAxis.ticksColor = .gray
+                                store.chartConfig.labelsCTFont = CTFontCreateWithName(("SFProText-Regular" as CFString), 10, nil)
+                                store.chartConfig.xAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
+                                store.chartConfig.yAxis.labelsColor = .gray
+                                store.chartConfig.yAxis.ticksColor = .gray
+                                store.chartConfig.yAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
+                                store.chartConfig.yAxis.minTicksSpacing = 30.0
+                                store.chartConfig.yAxis.formatter = { (value, decimals) in
+                                    let format = value == 0 ? "" : "RON"
+                                    return String(format: "%.\(decimals)f \(format)", value)
+                                }
+                            }
+                            .frame(height: 300)
+                            .padding(20)
+                            .animation(.easeInOut)
+                        
+                        Spacer().frame(height: 30)
+                        Text("Rate")
+                        BarChartView(config: store.rateChartConfig)
+                            .onAppear() {
+                                store.rateChartConfig.data.color = .orange
+                                store.rateChartConfig.xAxis.labelsColor = .gray
+                                store.rateChartConfig.xAxis.ticksColor = .gray
+                                store.rateChartConfig.labelsCTFont = CTFontCreateWithName(("SFProText-Regular" as CFString), 10, nil)
+                                store.rateChartConfig.xAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
+                                store.rateChartConfig.yAxis.labelsColor = .gray
+                                store.rateChartConfig.yAxis.ticksColor = .gray
+                                store.rateChartConfig.yAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
+                                store.rateChartConfig.yAxis.minTicksSpacing = 30.0
+                                store.rateChartConfig.yAxis.formatter = { (value, decimals) in
+                                    let format = value == 0 ? "" : "€"
+                                    return String(format: "%.\(decimals)f \(format)", value)
+                                }
+                            }
+                            .frame(height: 150)
+                            .padding(20)
+                            .animation(.easeInOut)
                     }
-                    .frame(height: 300)
-                    .padding(20)
-                    .animation(.easeInOut)
-                    
-                    Spacer().frame(height: 30)
-                    Text("Rate")
-                    BarChartView(config: store.rateChartConfig)
-                    .onAppear() {
-                        store.rateChartConfig.data.color = .orange
-                        store.rateChartConfig.xAxis.labelsColor = .gray
-                        store.rateChartConfig.xAxis.ticksColor = .gray
-                        store.rateChartConfig.labelsCTFont = CTFontCreateWithName(("SFProText-Regular" as CFString), 10, nil)
-                        store.rateChartConfig.xAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
-                        store.rateChartConfig.yAxis.labelsColor = .gray
-                        store.rateChartConfig.yAxis.ticksColor = .gray
-                        store.rateChartConfig.yAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
-                        store.rateChartConfig.yAxis.minTicksSpacing = 30.0
-                        store.rateChartConfig.yAxis.formatter = { (value, decimals) in
-                            let format = value == 0 ? "" : "€"
-                            return String(format: "%.\(decimals)f \(format)", value)
-                        }
-                    }
-                    .frame(height: 150)
-                    .padding(20)
-                    .animation(.easeInOut)
                 }
                 .padding(20)
                 .toolbar {

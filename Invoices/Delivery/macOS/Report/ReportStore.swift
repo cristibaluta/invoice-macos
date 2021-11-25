@@ -28,11 +28,7 @@ class ReportStore: ObservableObject {
                           duration: $0.duration)
         })
         self.allProjects = projects(from: reports, isOn: true)
-        self.reports = allReports.filter({
-            let pn = $0.project_name
-            return self.allProjects.contains(where: {$0.name == pn && $0.isOn})
-        })
-        calculate()
+        updateReports()
     }
     
     func reloadData() {
@@ -66,9 +62,9 @@ class ReportStore: ObservableObject {
                 }
             }
             
-            self.allProjects = projects(from: allReports, isOn: false)
+            self.allProjects = projects(from: allReports, isOn: true)
+            updateReports()
             self.showingPopover = true
-            calculate()
         } catch {
             print(error)
         }
