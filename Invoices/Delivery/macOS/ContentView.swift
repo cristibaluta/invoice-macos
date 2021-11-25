@@ -41,7 +41,10 @@ struct ContentView: View {
                     switch store.section {
                         case 0:
                             if let invoiceStore = store.currentInvoiceStore {
-                                InvoiceView(store: invoiceStore)
+                                InvoiceView(store: invoiceStore) { data in
+                                    store.currentReportStore?.data.products = data.products
+                                    store.currentReportStore?.calculate()
+                                }
                             }
                         case 1:
                             if let reportStore = store.currentReportStore {

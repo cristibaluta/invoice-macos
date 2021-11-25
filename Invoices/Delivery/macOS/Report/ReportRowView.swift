@@ -37,7 +37,13 @@ struct ReportRowView: View {
                                   description: notes,
                                   duration: report.duration))
             }
-            Text(duration).frame(width: 50)
+            TextEditor(text: $duration).frame(width: 50).onChange(of: notes) {_ in
+                completion(Report(id: report.id,
+                                  project_name: report.project_name,
+                                  group: group,
+                                  description: notes,
+                                  duration: report.duration))
+            }
         }
         .padding(.bottom, 10)
         .contextMenu {

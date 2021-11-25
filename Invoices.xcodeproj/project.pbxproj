@@ -16,6 +16,10 @@
 		2867F84A27065729002CA8CC /* SandboxManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2867F84927065729002CA8CC /* SandboxManager.swift */; };
 		2867F84C270B595C002CA8CC /* CompanyDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2867F84B270B595C002CA8CC /* CompanyDetailsView.swift */; };
 		28C0435D274BA69F0057C0D0 /* BarChart in Frameworks */ = {isa = PBXBuildFile; productRef = 28C0435C274BA69F0057C0D0 /* BarChart */; };
+		28C04362274E2D7B0057C0D0 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04361274E2D7B0057C0D0 /* Report.swift */; };
+		28C04364274E2F140057C0D0 /* ReportsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04363274E2F140057C0D0 /* ReportsInteractor.swift */; };
+		28C0436E274E9EE00057C0D0 /* InvoicesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0436D274E9EE00057C0D0 /* InvoicesTests.swift */; };
+		28C04374274E9F1C0057C0D0 /* ReportsInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04365274E9D3E0057C0D0 /* ReportsInteractorTests.swift */; };
 		28C61819273BF43C0044ABBB /* InvoiceFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C61818273BF43C0044ABBB /* InvoiceFolder.swift */; };
 		28D81C302733D49000209EAC /* CompanyDetailsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C2F2733D49000209EAC /* CompanyDetailsStore.swift */; };
 		28D81C322733D94900209EAC /* InvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C312733D94900209EAC /* InvoiceView.swift */; };
@@ -38,6 +42,16 @@
 		28F91D5E26A1B33B0057C5CC /* ContentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F91D5D26A1B33B0057C5CC /* ContentStore.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		28C0436F274E9EE00057C0D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28F91D4226A1AC100057C5CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 28F91D4926A1AC100057C5CC;
+			remoteInfo = Invoices;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		2814C1E926E765690054FD5B /* PdfView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfView.swift; sourceTree = "<group>"; };
 		2814C1ED26E88F510054FD5B /* HtmlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlView.swift; sourceTree = "<group>"; };
@@ -47,6 +61,11 @@
 		2867F84727063C9C002CA8CC /* History.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		2867F84927065729002CA8CC /* SandboxManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxManager.swift; sourceTree = "<group>"; };
 		2867F84B270B595C002CA8CC /* CompanyDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyDetailsView.swift; sourceTree = "<group>"; };
+		28C04361274E2D7B0057C0D0 /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
+		28C04363274E2F140057C0D0 /* ReportsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsInteractor.swift; sourceTree = "<group>"; };
+		28C04365274E9D3E0057C0D0 /* ReportsInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsInteractorTests.swift; sourceTree = "<group>"; };
+		28C0436B274E9EE00057C0D0 /* InvoicesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InvoicesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		28C0436D274E9EE00057C0D0 /* InvoicesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesTests.swift; sourceTree = "<group>"; };
 		28C61818273BF43C0044ABBB /* InvoiceFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceFolder.swift; sourceTree = "<group>"; };
 		28D81C2F2733D49000209EAC /* CompanyDetailsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyDetailsStore.swift; sourceTree = "<group>"; };
 		28D81C312733D94900209EAC /* InvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceView.swift; sourceTree = "<group>"; };
@@ -71,6 +90,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		28C04368274E9EE00057C0D0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		28F91D4726A1AC100057C5CC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -95,11 +121,20 @@
 			path = templates;
 			sourceTree = "<group>";
 		};
+		28C0436C274E9EE00057C0D0 /* InvoicesTests */ = {
+			isa = PBXGroup;
+			children = (
+				28C0436D274E9EE00057C0D0 /* InvoicesTests.swift */,
+			);
+			path = InvoicesTests;
+			sourceTree = "<group>";
+		};
 		28C61817273BF4180044ABBB /* Entities */ = {
 			isa = PBXGroup;
 			children = (
 				2814C1F126E8E3E50054FD5B /* InvoiceData.swift */,
 				28C61818273BF43C0044ABBB /* InvoiceFolder.swift */,
+				28C04361274E2D7B0057C0D0 /* Report.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -140,6 +175,8 @@
 				28D81C4727380A2900209EAC /* ReportView.swift */,
 				28D81C4927380A4200209EAC /* ReportStore.swift */,
 				28D81C4C2738D2BA00209EAC /* ReportRowView.swift */,
+				28C04363274E2F140057C0D0 /* ReportsInteractor.swift */,
+				28C04365274E9D3E0057C0D0 /* ReportsInteractorTests.swift */,
 			);
 			path = Report;
 			sourceTree = "<group>";
@@ -171,6 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				28F91D4C26A1AC110057C5CC /* Invoices */,
+				28C0436C274E9EE00057C0D0 /* InvoicesTests */,
 				28F91D4B26A1AC100057C5CC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -179,6 +217,7 @@
 			isa = PBXGroup;
 			children = (
 				28F91D4A26A1AC100057C5CC /* Invoices.app */,
+				28C0436B274E9EE00057C0D0 /* InvoicesTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -209,6 +248,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		28C0436A274E9EE00057C0D0 /* InvoicesTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 28C04371274E9EE00057C0D0 /* Build configuration list for PBXNativeTarget "InvoicesTests" */;
+			buildPhases = (
+				28C04367274E9EE00057C0D0 /* Sources */,
+				28C04368274E9EE00057C0D0 /* Frameworks */,
+				28C04369274E9EE00057C0D0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				28C04370274E9EE00057C0D0 /* PBXTargetDependency */,
+			);
+			name = InvoicesTests;
+			productName = InvoicesTests;
+			productReference = 28C0436B274E9EE00057C0D0 /* InvoicesTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		28F91D4926A1AC100057C5CC /* Invoices */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 28F91D5A26A1AC150057C5CC /* Build configuration list for PBXNativeTarget "Invoices" */;
@@ -236,9 +293,13 @@
 		28F91D4226A1AC100057C5CC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1250;
+				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1300;
 				TargetAttributes = {
+					28C0436A274E9EE00057C0D0 = {
+						CreatedOnToolsVersion = 13.1;
+						TestTargetID = 28F91D4926A1AC100057C5CC;
+					};
 					28F91D4926A1AC100057C5CC = {
 						CreatedOnToolsVersion = 12.5;
 					};
@@ -262,11 +323,19 @@
 			projectRoot = "";
 			targets = (
 				28F91D4926A1AC100057C5CC /* Invoices */,
+				28C0436A274E9EE00057C0D0 /* InvoicesTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		28C04369274E9EE00057C0D0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		28F91D4826A1AC100057C5CC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -284,12 +353,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		28C04367274E9EE00057C0D0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28C04374274E9F1C0057C0D0 /* ReportsInteractorTests.swift in Sources */,
+				28C0436E274E9EE00057C0D0 /* InvoicesTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		28F91D4626A1AC100057C5CC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				28F91D5E26A1B33B0057C5CC /* ContentStore.swift in Sources */,
 				28D81C322733D94900209EAC /* InvoiceView.swift in Sources */,
+				28C04362274E2D7B0057C0D0 /* Report.swift in Sources */,
 				2814C1EA26E765690054FD5B /* PdfView.swift in Sources */,
 				28C61819273BF43C0044ABBB /* InvoiceFolder.swift in Sources */,
 				28D81C4D2738D2BA00209EAC /* ReportRowView.swift in Sources */,
@@ -299,6 +378,7 @@
 				2867F84827063C9C002CA8CC /* History.swift in Sources */,
 				28D81C4827380A2900209EAC /* ReportView.swift in Sources */,
 				2814C1EE26E88F510054FD5B /* HtmlView.swift in Sources */,
+				28C04364274E2F140057C0D0 /* ReportsInteractor.swift in Sources */,
 				28F91D5026A1AC110057C5CC /* ContentView.swift in Sources */,
 				2814C1F426E910930054FD5B /* Numbers.swift in Sources */,
 				2814C1F626E9323A0054FD5B /* Date.swift in Sources */,
@@ -313,7 +393,65 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		28C04370274E9EE00057C0D0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 28F91D4926A1AC100057C5CC /* Invoices */;
+			targetProxy = 28C0436F274E9EE00057C0D0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		28C04372274E9EE00057C0D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = U8W527Y939;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ro.imagin.InvoicesTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Invoices.app/Contents/MacOS/Invoices";
+			};
+			name = Debug;
+		};
+		28C04373274E9EE00057C0D0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = U8W527Y939;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ro.imagin.InvoicesTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Invoices.app/Contents/MacOS/Invoices";
+			};
+			name = Release;
+		};
 		28F91D5826A1AC150057C5CC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -490,6 +628,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		28C04371274E9EE00057C0D0 /* Build configuration list for PBXNativeTarget "InvoicesTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28C04372274E9EE00057C0D0 /* Debug */,
+				28C04373274E9EE00057C0D0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		28F91D4526A1AC100057C5CC /* Build configuration list for PBXProject "Invoices" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

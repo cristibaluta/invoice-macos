@@ -14,8 +14,11 @@ struct InvoiceView: View {
     @State var showingPopover = false
     @State var showingClient = false
     
-    init (store: InvoiceStore) {
+    private var completion: (InvoiceData) -> Void
+    
+    init (store: InvoiceStore, completion: @escaping (InvoiceData) -> Void) {
         self.store = store
+        self.completion = completion
         print("New invoiceview \(store.data.invoice_nr)")
     }
     
@@ -32,6 +35,7 @@ struct InvoiceView: View {
             InvoiceEditingView(store: store.editingStore) { data in
                 store.data = data
                 store.calculate()
+                completion(data)
             }
             .frame(width: 220, alignment: .trailing)
         }

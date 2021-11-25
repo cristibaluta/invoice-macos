@@ -8,61 +8,80 @@
 import SwiftUI
 import SwiftCSV
 
-struct Report: Identifiable {
-    var id = UUID()
-    var project_name: String
-    var group: String?
-    var description: String
-    var duration: Decimal
-}
-
 class ReportStore: ObservableObject {
     
     var printingData: Data?
     var data: InvoiceData
+    @Published var showingPopover = false
+    @Published var allProjects: [ReportProject] = []
     @Published var reports: [Report] = []
+    private var allReports: [Report] = []
     @Published var html: String
     
     init (data: InvoiceData) {
         self.html = ""
         self.data = data
-        self.reports = data.reports.map({
+        self.allReports = data.reports.map({
             return Report(project_name: $0.project_name,
                           group: $0.group,
                           description: $0.description,
                           duration: $0.duration)
         })
+        self.allProjects = projects(from: reports, isOn: true)
+        self.reports = allReports.filter({
+            let pn = $0.project_name
+            return self.allProjects.contains(where: {$0.name == pn && $0.isOn})
+        })
         calculate()
+    }
+    
+    func reloadData() {
+        
     }
     
     func openCsv (at fileUrl: URL) {
         do {
             let csv = try CSV(url: fileUrl, delimiter: ";")
-            var reports = [Report]()
+            allReports = [Report]()
             try csv.enumerateAsDict { dict in
-                let report = Report(project_name: dict["Project Name"] ?? "",
+                guard let projectName = dict["Project Name"], !projectName.isEmpty else {
+                    return
+                }
+                let report = Report(project_name: projectName,
                                     group: nil,
                                     description: dict["Work Description"] ?? "",
                                     duration: Decimal(Double(dict["Hours"]?.replacingOccurrences(of: ",", with: ".") ?? "0") ?? 0))
                 
-                // Find duplicate and add time
+                // Find duplicate and add times together
                 var foundDuplicate = false
-                for i in 0..<reports.count {
-                    if reports[i].description == report.description {
-                        reports[i].duration += report.duration
+                for i in 0..<self.allReports.count {
+                    if self.allReports[i].description == report.description {
+                        self.allReports[i].duration += report.duration
                         foundDuplicate = true
                         break
                     }
                 }
                 if !foundDuplicate {
-                    reports.append(report)
+                    self.allReports.append(report)
                 }
             }
-            self.reports = reports
+            
+            self.allProjects = projects(from: allReports, isOn: false)
+            self.showingPopover = true
             calculate()
         } catch {
             print(error)
         }
+    }
+    
+    private func projects (from reports: [Report], isOn: Bool) -> [ReportProject] {
+        var arr = [ReportProject]()
+        for report in reports {
+            if !arr.contains(where: {$0.name == report.project_name}) {
+                arr.append(ReportProject(name: report.project_name, isOn: isOn))
+            }
+        }
+        return arr
     }
     
     func updateReport (_ report: Report) {
@@ -72,6 +91,14 @@ class ReportStore: ObservableObject {
                 break
             }
         }
+        calculate()
+    }
+    
+    func updateReports() {
+        self.reports = allReports.filter({
+            let pn = $0.project_name
+            return self.allProjects.contains(where: {$0.name == pn && $0.isOn})
+        })
         calculate()
     }
     
@@ -98,48 +125,43 @@ class ReportStore: ObservableObject {
             }
             template = template.replacingOccurrences(of: "::units::", with: units.stringValue_grouped2)
             
-            // Group reports by projects then by groups
-            var projects = [String: [String: [Report]]]()
-            for report in reports {
-                var groups = projects[report.project_name] ?? [:]
-                var groupReports = groups[report.group ?? ""] ?? []
-                groupReports.append(report)
-                groups[report.group ?? ""] = groupReports
-                projects[report.project_name] = groups
-            }
+            let projects = ReportsInteractor().groupReports(reports, duration: units)
             
             /// Add rows
             var projectsHtml = ""
+            // Iterate over projects
             for (projectName, groups) in projects {
+                guard allProjects.first(where: {$0.name == projectName})?.isOn == true else {
+                    continue
+                }
                 var project = templateProject.replacingOccurrences(of: "::project_name::", with: projectName)
                 var rowsHtml = ""
                 
                 // Iterate over groups
                 for (groupName, reports) in groups {
-                    guard groupName != "" else {
+                    if groupName.isEmpty {
                         // No group, add each report as a new table row
                         for report in reports {
                             var row = templateRow
                             row = row.replacingOccurrences(of: "::task::", with: report.description)
-                            row = row.replacingOccurrences(of: "::duration::",
-                                                           with: report.duration.stringValue_grouped2)
+                            row = row.replacingOccurrences(of: "::duration::", with: report.duration.stringValue_grouped2)
                             rowsHtml += row
                         }
-                        continue
+                    } else {
+                        // Group found, add each report grouped together in a single row
+                        var groupedTasksHtml = "<p>\(groupName):</p><ul>"
+                        var duration: Decimal = 0.0
+                        for report in reports {
+                            groupedTasksHtml += "<li>\(report.description)</li>"
+                            duration += report.duration
+                        }
+                        groupedTasksHtml += "</ul>"
+                        
+                        var row = templateRow
+                        row = row.replacingOccurrences(of: "::task::", with: groupedTasksHtml)
+                        row = row.replacingOccurrences(of: "::duration::", with: duration.stringValue_grouped2)
+                        rowsHtml += row
                     }
-                    // Group found, add each report grouped together in a single row
-                    var groupedTasksHtml = "<p>\(groupName):</p><ul>"
-                    var duration: Decimal = 0.0
-                    for report in reports {
-                        groupedTasksHtml += "<li>\(report.description)</li>"
-                        duration += report.duration
-                    }
-                    groupedTasksHtml += "</ul>"
-                    var row = templateRow
-                    row = row.replacingOccurrences(of: "::task::", with: groupedTasksHtml)
-                    row = row.replacingOccurrences(of: "::duration::",
-                                                             with: duration.stringValue_grouped2)
-                    rowsHtml += row
                 }
                 
                 project = project.replacingOccurrences(of: "::rows::", with: rowsHtml)
