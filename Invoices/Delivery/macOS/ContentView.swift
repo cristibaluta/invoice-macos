@@ -42,7 +42,10 @@ struct ContentView: View {
                         case 0:
                             if let invoiceStore = store.currentInvoiceStore {
                                 InvoiceView(store: invoiceStore) { data in
-                                    store.currentReportStore?.data.products = data.products
+                                    // Merge invoice data by keeping reports
+                                    let reports = store.currentReportStore?.data.reports ?? []
+                                    store.currentReportStore?.data = data
+                                    store.currentReportStore?.data.reports = reports
                                     store.currentReportStore?.calculate()
                                 }
                             }
