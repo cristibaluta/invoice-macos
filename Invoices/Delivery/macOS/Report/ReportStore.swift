@@ -11,6 +11,7 @@ import SwiftCSV
 class ReportStore: ObservableObject {
     
     var printingData: Data?
+    var project: Project
     var data: InvoiceData
     @Published var showingPopover = false
     @Published var allProjects: [ReportProject] = []
@@ -18,8 +19,9 @@ class ReportStore: ObservableObject {
     private var allReports: [Report] = []
     @Published var html: String
     
-    init (data: InvoiceData) {
+    init (project: Project, data: InvoiceData) {
         self.html = ""
+        self.project = project
         self.data = data
         self.allReports = data.reports.map({
             return Report(project_name: $0.project_name,
@@ -29,10 +31,6 @@ class ReportStore: ObservableObject {
         })
         self.allProjects = projects(from: self.allReports, isOn: true)
         updateReports()
-    }
-    
-    func reloadData() {
-        
     }
     
     func openCsv (at fileUrl: URL) {
@@ -107,7 +105,8 @@ class ReportStore: ObservableObject {
     func calculate() {
         SandboxManager.executeInSelectedDir { url in
             /// Get template
-            let templateUrl = url.appendingPathComponent("templates")
+            let pUrl = url.appendingPathComponent(project.name)
+            let templateUrl = pUrl.appendingPathComponent("templates")
             let reportUrl = templateUrl.appendingPathComponent("template_report.html")
             let projectUrl = templateUrl.appendingPathComponent("template_report_project.html")
             let rowUrl = templateUrl.appendingPathComponent("template_report_row.html")
@@ -183,7 +182,8 @@ class ReportStore: ObservableObject {
             do {
                 // Generate folder if none exists
                 let folderName = "\(data.date.yyyyMMdd)-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)"
-                let invoiceUrl = url.appendingPathComponent(folderName)
+                let projectUrl = url.appendingPathComponent(project.name)
+                let invoiceUrl = projectUrl.appendingPathComponent(folderName)
                 try FileManager.default.createDirectory(at: invoiceUrl,
                                                         withIntermediateDirectories: true,
                                                         attributes: nil)
@@ -201,14 +201,33 @@ class ReportStore: ObservableObject {
                 let invoiceJsonUrl = invoiceUrl.appendingPathComponent("data.json")
                 let jsonData = try encoder.encode(data)
                 try jsonData.write(to: invoiceJsonUrl)
-                
-                // Save report pdf
-                let pdfName = "Report-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).pdf"
-                let reportPdfUrl = invoiceUrl.appendingPathComponent(pdfName)
-                try printingData?.write(to: reportPdfUrl)
             }
             catch {
                 print(error)
+            }
+        }
+    }
+    
+    func export (isPdf: Bool) {
+        let fileName = "Report-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).\(isPdf ? "pdf" : "html")"
+        let panel = NSSavePanel()
+        panel.isExtensionHidden = false
+        panel.canCreateDirectories = true
+        panel.nameFieldStringValue = fileName
+        panel.begin { result in
+            if result == NSApplication.ModalResponse.OK {
+                if let url = panel.url {
+                    do {
+                        if isPdf {
+                            try self.printingData?.write(to: url)
+                        } else {
+                            try self.html.write(to: url, atomically: true, encoding: .utf8)
+                        }
+                    }
+                    catch {
+                        print(error)
+                    }
+                }
             }
         }
     }

@@ -10,22 +10,24 @@ import SwiftUI
 class InvoiceStore: ObservableObject {
     
     var invoicePrintData: Data?
+    var project: Project
     var data: InvoiceData
     @Published var html: String
     @Published var editingStore: InvoiceEditingStore
     
-    init (data: InvoiceData) {
+    init (project: Project, data: InvoiceData) {
         self.html = ""
+        self.project = project
         self.data = data
         self.editingStore = InvoiceEditingStore(data: data)
         calculate()
     }
     
     func calculate() {
-        print("Calculate \(data.invoice_nr)")
         SandboxManager.executeInSelectedDir { url in
             /// Get template
-            let templateUrl = url.appendingPathComponent("templates")
+            let projectUrl = url.appendingPathComponent(project.name)
+            let templateUrl = projectUrl.appendingPathComponent("templates")
             guard var template = try? String(contentsOfFile: templateUrl.appendingPathComponent("template_invoice.html").path),
                   let templateRow = try? String(contentsOfFile: templateUrl.appendingPathComponent("template_invoice_row.html").path) else {
                   html = "Error: Templates are missing!"
@@ -33,7 +35,6 @@ class InvoiceStore: ObservableObject {
             }
             
             data.calculate()
-//            print(data)
             
             // Replace
             template = data.toHtmlUsingTemplate(template)
@@ -64,13 +65,14 @@ class InvoiceStore: ObservableObject {
         }
     }
     
-    func save (completion: (InvoiceFolder?) -> Void) {
+    func save (completion: @escaping (InvoiceFolder?) -> Void) {
         SandboxManager.executeInSelectedDir { url in
             do {
                 // Generate folder if none exists
                 let invoiceNr = "\(data.invoice_series)\(data.invoice_nr.prefixedWith0)"
                 let folderName = "\(data.date.yyyyMMdd)-\(invoiceNr)"
-                let invoiceUrl = url.appendingPathComponent(folderName)
+                let projectUrl = url.appendingPathComponent(project.name)
+                let invoiceUrl = projectUrl.appendingPathComponent(folderName)
                 try FileManager.default.createDirectory(at: invoiceUrl,
                                                         withIntermediateDirectories: true,
                                                         attributes: nil)
@@ -81,14 +83,6 @@ class InvoiceStore: ObservableObject {
                 let invoiceJsonUrl = invoiceUrl.appendingPathComponent("data.json")
                 let jsonData = try encoder.encode(data)
                 try jsonData.write(to: invoiceJsonUrl)
-                
-                // Save invoice html + pdf
-//                let invoiceHtmlUrl = invoiceUrl.appendingPathComponent("invoice.html")
-//                try html.write(to: invoiceHtmlUrl, atomically: true, encoding: .utf8)
-                let pdfName = "Invoice-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).pdf"
-                let invoicePdfUrl = invoiceUrl.appendingPathComponent(pdfName)
-                try invoicePrintData?.write(to: invoicePdfUrl)
-                
                 completion(InvoiceFolder(date: data.date, invoiceNr: invoiceNr, name: folderName))
             }
             catch {
@@ -98,4 +92,27 @@ class InvoiceStore: ObservableObject {
         }
     }
     
+    func export (isPdf: Bool) {
+        let fileName = "Invoice-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).\(isPdf ? "pdf" : "html")"
+        let panel = NSSavePanel()
+        panel.isExtensionHidden = false
+        panel.canCreateDirectories = true
+        panel.nameFieldStringValue = fileName
+        panel.begin { result in
+            if result == NSApplication.ModalResponse.OK {
+                if let url = panel.url {
+                    do {
+                        if isPdf {
+                            try self.invoicePrintData?.write(to: url)
+                        } else {
+                            try self.html.write(to: url, atomically: true, encoding: .utf8)                            
+                        }
+                    }
+                    catch {
+                        print(error)
+                    }
+                }
+            }
+        }
+    }
 }

@@ -20,6 +20,11 @@
 		28C04364274E2F140057C0D0 /* ReportsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04363274E2F140057C0D0 /* ReportsInteractor.swift */; };
 		28C0436E274E9EE00057C0D0 /* InvoicesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0436D274E9EE00057C0D0 /* InvoicesTests.swift */; };
 		28C04374274E9F1C0057C0D0 /* ReportsInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04365274E9D3E0057C0D0 /* ReportsInteractorTests.swift */; };
+		28C0438327563CA60057C0D0 /* ChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0438227563CA60057C0D0 /* ChartsView.swift */; };
+		28C04385275656230057C0D0 /* ProjectsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04384275656230057C0D0 /* ProjectsManager.swift */; };
+		28C04387275656DA0057C0D0 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04386275656DA0057C0D0 /* Project.swift */; };
+		28C04389275659690057C0D0 /* InvoicesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04388275659690057C0D0 /* InvoicesManager.swift */; };
+		28C0438D275888680057C0D0 /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0438C275888680057C0D0 /* Toolbar.swift */; };
 		28C61819273BF43C0044ABBB /* InvoiceFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C61818273BF43C0044ABBB /* InvoiceFolder.swift */; };
 		28D81C302733D49000209EAC /* CompanyDetailsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C2F2733D49000209EAC /* CompanyDetailsStore.swift */; };
 		28D81C322733D94900209EAC /* InvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C312733D94900209EAC /* InvoiceView.swift */; };
@@ -66,6 +71,11 @@
 		28C04365274E9D3E0057C0D0 /* ReportsInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsInteractorTests.swift; sourceTree = "<group>"; };
 		28C0436B274E9EE00057C0D0 /* InvoicesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InvoicesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		28C0436D274E9EE00057C0D0 /* InvoicesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesTests.swift; sourceTree = "<group>"; };
+		28C0438227563CA60057C0D0 /* ChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsView.swift; sourceTree = "<group>"; };
+		28C04384275656230057C0D0 /* ProjectsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsManager.swift; sourceTree = "<group>"; };
+		28C04386275656DA0057C0D0 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		28C04388275659690057C0D0 /* InvoicesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesManager.swift; sourceTree = "<group>"; };
+		28C0438C275888680057C0D0 /* Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
 		28C61818273BF43C0044ABBB /* InvoiceFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceFolder.swift; sourceTree = "<group>"; };
 		28D81C2F2733D49000209EAC /* CompanyDetailsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyDetailsStore.swift; sourceTree = "<group>"; };
 		28D81C312733D94900209EAC /* InvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceView.swift; sourceTree = "<group>"; };
@@ -132,6 +142,7 @@
 		28C61817273BF4180044ABBB /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				28C04386275656DA0057C0D0 /* Project.swift */,
 				2814C1F126E8E3E50054FD5B /* InvoiceData.swift */,
 				28C61818273BF43C0044ABBB /* InvoiceFolder.swift */,
 				28C04361274E2D7B0057C0D0 /* Report.swift */,
@@ -197,6 +208,8 @@
 				2867F84927065729002CA8CC /* SandboxManager.swift */,
 				28F91D4F26A1AC110057C5CC /* ContentView.swift */,
 				28F91D5D26A1B33B0057C5CC /* ContentStore.swift */,
+				28C0438227563CA60057C0D0 /* ChartsView.swift */,
+				28C0438C275888680057C0D0 /* Toolbar.swift */,
 				28D81C442737CAE100209EAC /* Invoice */,
 				28D81C452737CAF100209EAC /* Report */,
 				28D81C462737CB0800209EAC /* Components */,
@@ -226,6 +239,8 @@
 			isa = PBXGroup;
 			children = (
 				28F91D4D26A1AC110057C5CC /* InvoicesApp.swift */,
+				28C04384275656230057C0D0 /* ProjectsManager.swift */,
+				28C04388275659690057C0D0 /* InvoicesManager.swift */,
 				28C61817273BF4180044ABBB /* Entities */,
 				28D81C2C2733B0A300209EAC /* Extensions */,
 				28D81C2B2733B04B00209EAC /* Delivery */,
@@ -369,8 +384,11 @@
 				28F91D5E26A1B33B0057C5CC /* ContentStore.swift in Sources */,
 				28D81C322733D94900209EAC /* InvoiceView.swift in Sources */,
 				28C04362274E2D7B0057C0D0 /* Report.swift in Sources */,
+				28C04387275656DA0057C0D0 /* Project.swift in Sources */,
 				2814C1EA26E765690054FD5B /* PdfView.swift in Sources */,
+				28C04389275659690057C0D0 /* InvoicesManager.swift in Sources */,
 				28C61819273BF43C0044ABBB /* InvoiceFolder.swift in Sources */,
+				28C04385275656230057C0D0 /* ProjectsManager.swift in Sources */,
 				28D81C4D2738D2BA00209EAC /* ReportRowView.swift in Sources */,
 				2867F84C270B595C002CA8CC /* CompanyDetailsView.swift in Sources */,
 				28D81C4027358BE600209EAC /* InvoiceEditingStore.swift in Sources */,
@@ -381,7 +399,9 @@
 				28C04364274E2F140057C0D0 /* ReportsInteractor.swift in Sources */,
 				28F91D5026A1AC110057C5CC /* ContentView.swift in Sources */,
 				2814C1F426E910930054FD5B /* Numbers.swift in Sources */,
+				28C0438D275888680057C0D0 /* Toolbar.swift in Sources */,
 				2814C1F626E9323A0054FD5B /* Date.swift in Sources */,
+				28C0438327563CA60057C0D0 /* ChartsView.swift in Sources */,
 				28F91D4E26A1AC110057C5CC /* InvoicesApp.swift in Sources */,
 				28D81C3E27358BD300209EAC /* InvoiceEditingView.swift in Sources */,
 				28D81C342733D95700209EAC /* InvoiceStore.swift in Sources */,
@@ -576,7 +596,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"Invoices/Preview Content\"";
 				DEVELOPMENT_TEAM = U8W527Y939;
 				ENABLE_APP_SANDBOX = YES;
@@ -605,7 +625,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"Invoices/Preview Content\"";
 				DEVELOPMENT_TEAM = U8W527Y939;
 				ENABLE_APP_SANDBOX = YES;
