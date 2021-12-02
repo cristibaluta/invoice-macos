@@ -127,11 +127,13 @@ final class ContentStore: ObservableObject {
                 do {
                     let jsonData = try Data(contentsOf: invoiceUrl)
                     let invoice = try JSONDecoder().decode(InvoiceData.self, from: jsonData)
-                    let price = ChartDataEntry(x: "\(invoice.invoice_nr)", y: invoice.amount_total_vat.doubleValue)
+                    let price = invoice.amount_total_vat.doubleValue// + Double.random(in: 0..<10000)
                     total += invoice.amount_total_vat
-                    prices.append(price)
-                    let rate = ChartDataEntry(x: "\(invoice.invoice_nr)", y: invoice.products[0].rate.doubleValue)
-                    rates.append(rate)
+                    let priceEntry = ChartDataEntry(x: "\(invoice.invoice_nr)", y: price)
+                    prices.append(priceEntry)
+                    let rate = invoice.products[0].rate.doubleValue// + Double.random(in: 0..<100)
+                    let rateEntry = ChartDataEntry(x: "\(invoice.invoice_nr)", y: rate)
+                    rates.append(rateEntry)
                     showChart(prices, rates)
                 } catch {
                     print("\(error)")

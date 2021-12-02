@@ -44,9 +44,9 @@ struct ContentView: View {
 //                                }
                             }
 //                            .alert(isPresented: $showingDeleteProject) {
-//                                Alert(title: Text("Confirm delete"),
-//                                      message: Text("Are you sure you want to delete project '\(project.name)'?"),
-//                                      primaryButton: .default(Text("Yes")) {showingDeleteProject = false},
+//                                Alert(title: Text("Delete project"),
+//                                      message: Text("Are you sure you want to delete project '\(project.name)'? This operation cannot be undone."),
+//                                      primaryButton: .default(Text("Delete")) {showingDeleteProject = false},
 //                                      secondaryButton: .cancel() {showingDeleteProject = false}
 //                                )
 //                            }
