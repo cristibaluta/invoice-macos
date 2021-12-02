@@ -183,7 +183,6 @@ extension ContentStore {
     }
     
     func showSection (_ section: Int) {
-        print(section)
         self.section = section
         switch section {
             case 0:

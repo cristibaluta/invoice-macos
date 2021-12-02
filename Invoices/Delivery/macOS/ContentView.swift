@@ -16,7 +16,6 @@ struct ContentView: View {
     
     init (store: ContentStore) {
         self.store = store
-        print("Init ContentView")
     }
     
     var body: some View {

@@ -88,12 +88,6 @@ class ReportsInteractorTests: XCTestCase {
         XCTAssertTrue(groups["g3"]![0].duration >= 0.5, "")
         XCTAssertTrue(groups["g4"]![0].duration >= 0.5, "")
         
-        print(groups["g1"]![0].duration +
-              groups["g2"]![0].duration +
-              groups["g2"]![1].duration +
-              groups["g2"]![2].duration +
-              groups["g3"]![0].duration +
-              groups["g4"]![0].duration)
         XCTAssertTrue(groups["g1"]![0].duration +
                       groups["g2"]![0].duration +
                       groups["g2"]![1].duration +
