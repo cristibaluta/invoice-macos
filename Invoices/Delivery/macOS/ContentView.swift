@@ -56,7 +56,9 @@ struct ContentView: View {
                         
                         Divider()
                         
-                        if !self.store.invoices.isEmpty {
+                        if self.store.invoices.isEmpty {
+                            Text("No invoices!")
+                        } else {
                             Button("+") {
                                 store.generateNewInvoice()
                             }
@@ -103,7 +105,8 @@ struct ContentView: View {
                     
                 case .noInvoices:
                     VStack(alignment: .center) {
-                        Text("Create your first invoice.")
+                        Text("Create your first invoice!").bold()
+                        Text("Each project has its own templates and can be edited from Finder. You can right click on any project or invoice to view the files in Finder.")
                         Button("New invoice") {
                             store.generateNewInvoice()
                         }
