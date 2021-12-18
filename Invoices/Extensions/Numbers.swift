@@ -27,9 +27,19 @@ extension Decimal {
         formatter.decimalSeparator = "."
         formatter.groupingSeparator = ","
 
-        return formatter.string(from: self as NSDecimalNumber) ?? "-"
+        return formatter.string(from: self as NSDecimalNumber) ?? ""
     }
     
+    var stringValue: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 16
+        formatter.decimalSeparator = "."
+        formatter.groupingSeparator = ""
+
+        return formatter.string(from: self as NSDecimalNumber) ?? ""
+    }
     var stringValue_2: String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -38,7 +48,7 @@ extension Decimal {
         formatter.decimalSeparator = "."
         formatter.groupingSeparator = ""
 
-        return formatter.string(from: self as NSDecimalNumber) ?? "-"
+        return formatter.string(from: self as NSDecimalNumber) ?? ""
     }
     var stringValue_4: String {
         let formatter = NumberFormatter()
@@ -48,7 +58,7 @@ extension Decimal {
         formatter.decimalSeparator = "."
         formatter.groupingSeparator = ""
 
-        return formatter.string(from: self as NSDecimalNumber) ?? "-"
+        return formatter.string(from: self as NSDecimalNumber) ?? ""
     }
     
     var doubleValue: Double {

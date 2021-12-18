@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AppKit
 
 class InvoiceEditingStore: ObservableObject {
     
@@ -65,7 +64,7 @@ class InvoiceEditingStore: ObservableObject {
             if isFixedTotal {
                 data.amount_total_vat = Decimal(string: amountTotalVat) ?? 0
                 data.calculate()
-                units = data.products[0].units.stringValue_2
+                units = data.products[0].units.stringValue
             }
         }
     }
@@ -101,7 +100,7 @@ class InvoiceEditingStore: ObservableObject {
         
         rate = data.products[0].rate.stringValue_2
         exchangeRate = data.products[0].exchange_rate.stringValue_4
-        units = data.products[0].units.stringValue_2
+        units = data.products[0].units.stringValue
         unitsName = data.products[0].units_name
         productName = data.products[0].product_name
         

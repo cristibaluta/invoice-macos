@@ -103,7 +103,7 @@ class ReportStore: ObservableObject {
     }
     
     func calculate() {
-        SandboxManager.executeInSelectedDir { url in
+        AppFilesManager.executeInSelectedDir { url in
             /// Get template
             let pUrl = url.appendingPathComponent(project.name)
             let templateUrl = pUrl.appendingPathComponent("templates")
@@ -178,7 +178,7 @@ class ReportStore: ObservableObject {
     }
     
     func save() {
-        SandboxManager.executeInSelectedDir { url in
+        AppFilesManager.executeInSelectedDir { url in
             do {
                 // Generate folder if none exists
                 let folderName = "\(data.date.yyyyMMdd)-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)"
@@ -209,6 +209,9 @@ class ReportStore: ObservableObject {
     }
     
     func export (isPdf: Bool) {
+        #if os(iOS)
+        
+        #else
         let fileName = "Report-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).\(isPdf ? "pdf" : "html")"
         let panel = NSSavePanel()
         panel.isExtensionHidden = false
@@ -230,5 +233,6 @@ class ReportStore: ObservableObject {
                 }
             }
         }
+        #endif
     }
 }

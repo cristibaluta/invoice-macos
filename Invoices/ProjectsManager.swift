@@ -13,9 +13,10 @@ class ProjectsManager {
     
     func getProjects (completion: ([Project]) -> Void) {
         
-        SandboxManager.executeInSelectedDir { url in
+        AppFilesManager.executeInSelectedDir { url in
             do {
                 let folders = try FileManager.default.contentsOfDirectory(atPath: url.path)
+                print("Projects: \(folders)")
                 let projects: [Project] = folders.compactMap({
                     if $0.hasPrefix(".") {
                         return nil
@@ -31,7 +32,7 @@ class ProjectsManager {
     }
     
     func createProject (_ name: String, completion: (Project?) -> Void) {
-        SandboxManager.executeInSelectedDir { url in
+        AppFilesManager.executeInSelectedDir { url in
             do {
                 // Generate folder if none exists
                 let project = Project(name: name)

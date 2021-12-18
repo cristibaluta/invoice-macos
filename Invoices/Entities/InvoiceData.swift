@@ -40,9 +40,9 @@ struct InvoiceData: Codable, PropertyLoopable {
         try container.encode(products, forKey: .products)
         try container.encode(reports, forKey: .reports)
         try container.encode(currency, forKey: .currency)
-        try container.encode(vat.stringValue_2, forKey: .vat)
-        try container.encode(amount_total.stringValue_2, forKey: .amount_total)
-        try container.encode(amount_total_vat.stringValue_2, forKey: .amount_total_vat)
+        try container.encode(vat.stringValue, forKey: .vat)
+        try container.encode(amount_total.stringValue, forKey: .amount_total)
+        try container.encode(amount_total_vat.stringValue, forKey: .amount_total_vat)
     }
     
     init (from decoder: Decoder) throws {
@@ -172,12 +172,12 @@ struct InvoiceProduct: Codable {
     func encode (to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(product_name, forKey: .product_name)
-        try container.encode(rate.stringValue_2, forKey: .rate)
-        try container.encode(exchange_rate.stringValue_4, forKey: .exchange_rate)
-        try container.encode(units.stringValue_2, forKey: .units)
+        try container.encode(rate.stringValue, forKey: .rate)
+        try container.encode(exchange_rate.stringValue, forKey: .exchange_rate)
+        try container.encode(units.stringValue, forKey: .units)
         try container.encode(units_name, forKey: .units_name)
-        try container.encode(amount_per_unit.stringValue_4, forKey: .amount_per_unit)
-        try container.encode(amount.stringValue_2, forKey: .amount)
+        try container.encode(amount_per_unit.stringValue, forKey: .amount_per_unit)
+        try container.encode(amount.stringValue, forKey: .amount)
     }
     
     init (from decoder: Decoder) throws {
@@ -223,7 +223,7 @@ struct InvoiceReport: Codable {
         try container.encode(project_name, forKey: .project_name)
         try container.encode(group, forKey: .group)
         try container.encode(description, forKey: .description)
-        try container.encode(duration.stringValue_2, forKey: .duration)
+        try container.encode(duration.stringValue, forKey: .duration)
     }
     
     init (from decoder: Decoder) throws {

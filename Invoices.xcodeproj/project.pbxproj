@@ -7,14 +7,48 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2814C1EA26E765690054FD5B /* PdfView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C1E926E765690054FD5B /* PdfView.swift */; };
 		2814C1EE26E88F510054FD5B /* HtmlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C1ED26E88F510054FD5B /* HtmlView.swift */; };
 		2814C1F226E8E3E50054FD5B /* InvoiceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C1F126E8E3E50054FD5B /* InvoiceData.swift */; };
 		2814C1F426E910930054FD5B /* Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C1F326E910930054FD5B /* Numbers.swift */; };
 		2814C1F626E9323A0054FD5B /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C1F526E9323A0054FD5B /* Date.swift */; };
-		2867F84827063C9C002CA8CC /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2867F84727063C9C002CA8CC /* History.swift */; };
-		2867F84A27065729002CA8CC /* SandboxManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2867F84927065729002CA8CC /* SandboxManager.swift */; };
+		2867F84A27065729002CA8CC /* AppFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2867F84927065729002CA8CC /* AppFilesManager.swift */; };
 		2867F84C270B595C002CA8CC /* CompanyDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2867F84B270B595C002CA8CC /* CompanyDetailsView.swift */; };
+		28A73D072763B93700F727C3 /* Invoices_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73D062763B93700F727C3 /* Invoices_iOSApp.swift */; };
+		28A73D0B2763B93900F727C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28A73D0A2763B93900F727C3 /* Assets.xcassets */; };
+		28A73D0E2763B93900F727C3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28A73D0D2763B93900F727C3 /* Preview Assets.xcassets */; };
+		28A73D132763BF4B00F727C3 /* ProjectsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04384275656230057C0D0 /* ProjectsManager.swift */; };
+		28A73D142763BF4F00F727C3 /* InvoicesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04388275659690057C0D0 /* InvoicesManager.swift */; };
+		28A73D152763BF5500F727C3 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04386275656DA0057C0D0 /* Project.swift */; };
+		28A73D162763BF5800F727C3 /* InvoiceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C1F126E8E3E50054FD5B /* InvoiceData.swift */; };
+		28A73D172763BF5B00F727C3 /* InvoiceFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C61818273BF43C0044ABBB /* InvoiceFolder.swift */; };
+		28A73D182763BF6100F727C3 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04361274E2D7B0057C0D0 /* Report.swift */; };
+		28A73D192763BF6700F727C3 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C1F526E9323A0054FD5B /* Date.swift */; };
+		28A73D1A2763BF6A00F727C3 /* Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C1F326E910930054FD5B /* Numbers.swift */; };
+		28A73D1C2763BF7100F727C3 /* AppFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2867F84927065729002CA8CC /* AppFilesManager.swift */; };
+		28A73D1D2763BF7500F727C3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F91D4F26A1AC110057C5CC /* ContentView.swift */; };
+		28A73D1E2763BF7800F727C3 /* ContentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F91D5D26A1B33B0057C5CC /* ContentStore.swift */; };
+		28A73D1F2763BF7B00F727C3 /* ChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0438227563CA60057C0D0 /* ChartsView.swift */; };
+		28A73D202763BF7E00F727C3 /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0438C275888680057C0D0 /* Toolbar.swift */; };
+		28A73D212763BF8800F727C3 /* InvoiceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C332733D95700209EAC /* InvoiceStore.swift */; };
+		28A73D222763BF8800F727C3 /* InvoiceEditingStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C3F27358BE600209EAC /* InvoiceEditingStore.swift */; };
+		28A73D232763BF8800F727C3 /* InvoiceEditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C3D27358BD200209EAC /* InvoiceEditingView.swift */; };
+		28A73D242763BF8800F727C3 /* CompanyDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2867F84B270B595C002CA8CC /* CompanyDetailsView.swift */; };
+		28A73D252763BF8800F727C3 /* CompanyDetailsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C2F2733D49000209EAC /* CompanyDetailsStore.swift */; };
+		28A73D262763BF8800F727C3 /* InvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C312733D94900209EAC /* InvoiceView.swift */; };
+		28A73D272763BF9C00F727C3 /* ReportsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04363274E2F140057C0D0 /* ReportsInteractor.swift */; };
+		28A73D282763BF9C00F727C3 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C4727380A2900209EAC /* ReportView.swift */; };
+		28A73D292763BF9C00F727C3 /* ReportStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C4927380A4200209EAC /* ReportStore.swift */; };
+		28A73D2A2763BF9C00F727C3 /* ReportRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C4C2738D2BA00209EAC /* ReportRowView.swift */; };
+		28A73D2B2763BFA600F727C3 /* HtmlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C1ED26E88F510054FD5B /* HtmlView.swift */; };
+		28A73D2D2763BFB100F727C3 /* template_invoice_row.html in Resources */ = {isa = PBXBuildFile; fileRef = 28D81C522738F32100209EAC /* template_invoice_row.html */; };
+		28A73D2E2763BFB100F727C3 /* template_invoice.html in Resources */ = {isa = PBXBuildFile; fileRef = 28D81C4E2738F32100209EAC /* template_invoice.html */; };
+		28A73D2F2763BFB100F727C3 /* template_report_project.html in Resources */ = {isa = PBXBuildFile; fileRef = 28D81C502738F32100209EAC /* template_report_project.html */; };
+		28A73D302763BFB100F727C3 /* template_report_row.html in Resources */ = {isa = PBXBuildFile; fileRef = 28D81C512738F32100209EAC /* template_report_row.html */; };
+		28A73D312763BFB100F727C3 /* template_report.html in Resources */ = {isa = PBXBuildFile; fileRef = 28D81C4F2738F32100209EAC /* template_report.html */; };
+		28A73D352763C28A00F727C3 /* BarChart in Frameworks */ = {isa = PBXBuildFile; productRef = 28A73D342763C28A00F727C3 /* BarChart */; };
+		28A73D372763C29500F727C3 /* SwiftCSV in Frameworks */ = {isa = PBXBuildFile; productRef = 28A73D362763C29500F727C3 /* SwiftCSV */; };
+		28A73D402764D2C400F727C3 /* IcloudFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73D3F2764D2C400F727C3 /* IcloudFilesManager.swift */; };
+		28A73D412764D9A600F727C3 /* IcloudFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73D3F2764D2C400F727C3 /* IcloudFilesManager.swift */; };
 		28C0435D274BA69F0057C0D0 /* BarChart in Frameworks */ = {isa = PBXBuildFile; productRef = 28C0435C274BA69F0057C0D0 /* BarChart */; };
 		28C04362274E2D7B0057C0D0 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04361274E2D7B0057C0D0 /* Report.swift */; };
 		28C04364274E2F140057C0D0 /* ReportsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04363274E2F140057C0D0 /* ReportsInteractor.swift */; };
@@ -26,6 +60,7 @@
 		28C04389275659690057C0D0 /* InvoicesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04388275659690057C0D0 /* InvoicesManager.swift */; };
 		28C0438D275888680057C0D0 /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0438C275888680057C0D0 /* Toolbar.swift */; };
 		28C61819273BF43C0044ABBB /* InvoiceFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C61818273BF43C0044ABBB /* InvoiceFolder.swift */; };
+		28CE1DDD276392A000491447 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CE1DDC2763929F00491447 /* CloudKit.framework */; };
 		28D81C302733D49000209EAC /* CompanyDetailsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C2F2733D49000209EAC /* CompanyDetailsStore.swift */; };
 		28D81C322733D94900209EAC /* InvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C312733D94900209EAC /* InvoiceView.swift */; };
 		28D81C342733D95700209EAC /* InvoiceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C332733D95700209EAC /* InvoiceStore.swift */; };
@@ -64,8 +99,16 @@
 		2814C1F326E910930054FD5B /* Numbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numbers.swift; sourceTree = "<group>"; };
 		2814C1F526E9323A0054FD5B /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		2867F84727063C9C002CA8CC /* History.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
-		2867F84927065729002CA8CC /* SandboxManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxManager.swift; sourceTree = "<group>"; };
+		2867F84927065729002CA8CC /* AppFilesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFilesManager.swift; sourceTree = "<group>"; };
 		2867F84B270B595C002CA8CC /* CompanyDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyDetailsView.swift; sourceTree = "<group>"; };
+		28A73D042763B93700F727C3 /* Invoices.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Invoices.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		28A73D062763B93700F727C3 /* Invoices_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invoices_iOSApp.swift; sourceTree = "<group>"; };
+		28A73D0A2763B93900F727C3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		28A73D0D2763B93900F727C3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		28A73D122763B9A700F727C3 /* Invoices iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Invoices iOS.entitlements"; sourceTree = "<group>"; };
+		28A73D332763C05100F727C3 /* Invoices.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Invoices.entitlements; sourceTree = "<group>"; };
+		28A73D382763CFA100F727C3 /* Invoices-iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Invoices-iOS-Info.plist"; sourceTree = SOURCE_ROOT; };
+		28A73D3F2764D2C400F727C3 /* IcloudFilesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IcloudFilesManager.swift; sourceTree = "<group>"; };
 		28C04361274E2D7B0057C0D0 /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
 		28C04363274E2F140057C0D0 /* ReportsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsInteractor.swift; sourceTree = "<group>"; };
 		28C04365274E9D3E0057C0D0 /* ReportsInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsInteractorTests.swift; sourceTree = "<group>"; };
@@ -77,6 +120,7 @@
 		28C04388275659690057C0D0 /* InvoicesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesManager.swift; sourceTree = "<group>"; };
 		28C0438C275888680057C0D0 /* Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
 		28C61818273BF43C0044ABBB /* InvoiceFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceFolder.swift; sourceTree = "<group>"; };
+		28CE1DDC2763929F00491447 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		28D81C2F2733D49000209EAC /* CompanyDetailsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyDetailsStore.swift; sourceTree = "<group>"; };
 		28D81C312733D94900209EAC /* InvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceView.swift; sourceTree = "<group>"; };
 		28D81C332733D95700209EAC /* InvoiceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceStore.swift; sourceTree = "<group>"; };
@@ -100,6 +144,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		28A73D012763B93700F727C3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28A73D352763C28A00F727C3 /* BarChart in Frameworks */,
+				28A73D372763C29500F727C3 /* SwiftCSV in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		28C04368274E9EE00057C0D0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -111,6 +164,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28CE1DDD276392A000491447 /* CloudKit.framework in Frameworks */,
 				28D81C432736434C00209EAC /* SwiftCSV in Frameworks */,
 				28C0435D274BA69F0057C0D0 /* BarChart in Frameworks */,
 			);
@@ -131,6 +185,26 @@
 			path = templates;
 			sourceTree = "<group>";
 		};
+		28A73D052763B93700F727C3 /* Invoices iOS */ = {
+			isa = PBXGroup;
+			children = (
+				28A73D382763CFA100F727C3 /* Invoices-iOS-Info.plist */,
+				28A73D122763B9A700F727C3 /* Invoices iOS.entitlements */,
+				28A73D062763B93700F727C3 /* Invoices_iOSApp.swift */,
+				28A73D0A2763B93900F727C3 /* Assets.xcassets */,
+				28A73D0C2763B93900F727C3 /* Preview Content */,
+			);
+			path = "Invoices iOS";
+			sourceTree = "<group>";
+		};
+		28A73D0C2763B93900F727C3 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				28A73D0D2763B93900F727C3 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		28C0436C274E9EE00057C0D0 /* InvoicesTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -148,6 +222,14 @@
 				28C04361274E2D7B0057C0D0 /* Report.swift */,
 			);
 			path = Entities;
+			sourceTree = "<group>";
+		};
+		28CE1DDB2763929F00491447 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				28CE1DDC2763929F00491447 /* CloudKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		28D81C2B2733B04B00209EAC /* Delivery */ = {
@@ -205,7 +287,8 @@
 			isa = PBXGroup;
 			children = (
 				2867F84727063C9C002CA8CC /* History.swift */,
-				2867F84927065729002CA8CC /* SandboxManager.swift */,
+				2867F84927065729002CA8CC /* AppFilesManager.swift */,
+				28A73D3F2764D2C400F727C3 /* IcloudFilesManager.swift */,
 				28F91D4F26A1AC110057C5CC /* ContentView.swift */,
 				28F91D5D26A1B33B0057C5CC /* ContentStore.swift */,
 				28C0438227563CA60057C0D0 /* ChartsView.swift */,
@@ -222,7 +305,9 @@
 			children = (
 				28F91D4C26A1AC110057C5CC /* Invoices */,
 				28C0436C274E9EE00057C0D0 /* InvoicesTests */,
+				28A73D052763B93700F727C3 /* Invoices iOS */,
 				28F91D4B26A1AC100057C5CC /* Products */,
+				28CE1DDB2763929F00491447 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -231,6 +316,7 @@
 			children = (
 				28F91D4A26A1AC100057C5CC /* Invoices.app */,
 				28C0436B274E9EE00057C0D0 /* InvoicesTests.xctest */,
+				28A73D042763B93700F727C3 /* Invoices.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -246,6 +332,7 @@
 				28D81C2B2733B04B00209EAC /* Delivery */,
 				2867F84027062EFC002CA8CC /* templates */,
 				28F91D5126A1AC150057C5CC /* Assets.xcassets */,
+				28A73D332763C05100F727C3 /* Invoices.entitlements */,
 				28F91D5626A1AC150057C5CC /* Info.plist */,
 				28F91D5326A1AC150057C5CC /* Preview Content */,
 			);
@@ -263,6 +350,27 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		28A73D032763B93700F727C3 /* Invoices iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 28A73D0F2763B93900F727C3 /* Build configuration list for PBXNativeTarget "Invoices iOS" */;
+			buildPhases = (
+				28A73D002763B93700F727C3 /* Sources */,
+				28A73D012763B93700F727C3 /* Frameworks */,
+				28A73D022763B93700F727C3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Invoices iOS";
+			packageProductDependencies = (
+				28A73D342763C28A00F727C3 /* BarChart */,
+				28A73D362763C29500F727C3 /* SwiftCSV */,
+			);
+			productName = "Invoices iOS";
+			productReference = 28A73D042763B93700F727C3 /* Invoices.app */;
+			productType = "com.apple.product-type.application";
+		};
 		28C0436A274E9EE00057C0D0 /* InvoicesTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 28C04371274E9EE00057C0D0 /* Build configuration list for PBXNativeTarget "InvoicesTests" */;
@@ -311,6 +419,9 @@
 				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1300;
 				TargetAttributes = {
+					28A73D032763B93700F727C3 = {
+						CreatedOnToolsVersion = 13.1;
+					};
 					28C0436A274E9EE00057C0D0 = {
 						CreatedOnToolsVersion = 13.1;
 						TestTargetID = 28F91D4926A1AC100057C5CC;
@@ -338,12 +449,27 @@
 			projectRoot = "";
 			targets = (
 				28F91D4926A1AC100057C5CC /* Invoices */,
+				28A73D032763B93700F727C3 /* Invoices iOS */,
 				28C0436A274E9EE00057C0D0 /* InvoicesTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		28A73D022763B93700F727C3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28A73D312763BFB100F727C3 /* template_report.html in Resources */,
+				28A73D2E2763BFB100F727C3 /* template_invoice.html in Resources */,
+				28A73D0E2763B93900F727C3 /* Preview Assets.xcassets in Resources */,
+				28A73D2F2763BFB100F727C3 /* template_report_project.html in Resources */,
+				28A73D2D2763BFB100F727C3 /* template_invoice_row.html in Resources */,
+				28A73D0B2763B93900F727C3 /* Assets.xcassets in Resources */,
+				28A73D302763BFB100F727C3 /* template_report_row.html in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		28C04369274E9EE00057C0D0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -368,6 +494,39 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		28A73D002763B93700F727C3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28A73D212763BF8800F727C3 /* InvoiceStore.swift in Sources */,
+				28A73D2B2763BFA600F727C3 /* HtmlView.swift in Sources */,
+				28A73D282763BF9C00F727C3 /* ReportView.swift in Sources */,
+				28A73D292763BF9C00F727C3 /* ReportStore.swift in Sources */,
+				28A73D072763B93700F727C3 /* Invoices_iOSApp.swift in Sources */,
+				28A73D242763BF8800F727C3 /* CompanyDetailsView.swift in Sources */,
+				28A73D252763BF8800F727C3 /* CompanyDetailsStore.swift in Sources */,
+				28A73D272763BF9C00F727C3 /* ReportsInteractor.swift in Sources */,
+				28A73D1F2763BF7B00F727C3 /* ChartsView.swift in Sources */,
+				28A73D412764D9A600F727C3 /* IcloudFilesManager.swift in Sources */,
+				28A73D262763BF8800F727C3 /* InvoiceView.swift in Sources */,
+				28A73D1A2763BF6A00F727C3 /* Numbers.swift in Sources */,
+				28A73D132763BF4B00F727C3 /* ProjectsManager.swift in Sources */,
+				28A73D182763BF6100F727C3 /* Report.swift in Sources */,
+				28A73D162763BF5800F727C3 /* InvoiceData.swift in Sources */,
+				28A73D152763BF5500F727C3 /* Project.swift in Sources */,
+				28A73D222763BF8800F727C3 /* InvoiceEditingStore.swift in Sources */,
+				28A73D172763BF5B00F727C3 /* InvoiceFolder.swift in Sources */,
+				28A73D232763BF8800F727C3 /* InvoiceEditingView.swift in Sources */,
+				28A73D1C2763BF7100F727C3 /* AppFilesManager.swift in Sources */,
+				28A73D202763BF7E00F727C3 /* Toolbar.swift in Sources */,
+				28A73D1D2763BF7500F727C3 /* ContentView.swift in Sources */,
+				28A73D192763BF6700F727C3 /* Date.swift in Sources */,
+				28A73D142763BF4F00F727C3 /* InvoicesManager.swift in Sources */,
+				28A73D1E2763BF7800F727C3 /* ContentStore.swift in Sources */,
+				28A73D2A2763BF9C00F727C3 /* ReportRowView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		28C04367274E9EE00057C0D0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -385,15 +544,14 @@
 				28D81C322733D94900209EAC /* InvoiceView.swift in Sources */,
 				28C04362274E2D7B0057C0D0 /* Report.swift in Sources */,
 				28C04387275656DA0057C0D0 /* Project.swift in Sources */,
-				2814C1EA26E765690054FD5B /* PdfView.swift in Sources */,
 				28C04389275659690057C0D0 /* InvoicesManager.swift in Sources */,
 				28C61819273BF43C0044ABBB /* InvoiceFolder.swift in Sources */,
 				28C04385275656230057C0D0 /* ProjectsManager.swift in Sources */,
 				28D81C4D2738D2BA00209EAC /* ReportRowView.swift in Sources */,
 				2867F84C270B595C002CA8CC /* CompanyDetailsView.swift in Sources */,
+				28A73D402764D2C400F727C3 /* IcloudFilesManager.swift in Sources */,
 				28D81C4027358BE600209EAC /* InvoiceEditingStore.swift in Sources */,
 				2814C1F226E8E3E50054FD5B /* InvoiceData.swift in Sources */,
-				2867F84827063C9C002CA8CC /* History.swift in Sources */,
 				28D81C4827380A2900209EAC /* ReportView.swift in Sources */,
 				2814C1EE26E88F510054FD5B /* HtmlView.swift in Sources */,
 				28C04364274E2F140057C0D0 /* ReportsInteractor.swift in Sources */,
@@ -406,7 +564,7 @@
 				28D81C3E27358BD300209EAC /* InvoiceEditingView.swift in Sources */,
 				28D81C342733D95700209EAC /* InvoiceStore.swift in Sources */,
 				28D81C302733D49000209EAC /* CompanyDetailsStore.swift in Sources */,
-				2867F84A27065729002CA8CC /* SandboxManager.swift in Sources */,
+				2867F84A27065729002CA8CC /* AppFilesManager.swift in Sources */,
 				28D81C4A27380A4200209EAC /* ReportStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -422,6 +580,89 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		28A73D102763B93900F727C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_ENTITLEMENTS = "Invoices iOS/Invoices iOS.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Invoices iOS/Preview Content\"";
+				DEVELOPMENT_TEAM = 5NHDC5EV44;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = NO;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Invoices-iOS-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ro.imagin.Invoices;
+				PRODUCT_NAME = Invoices;
+				PROVISIONING_PROFILE_SPECIFIER = "Invoices dev iOS profile";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "Invoices dev mac profile";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		28A73D112763B93900F727C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_ENTITLEMENTS = "Invoices iOS/Invoices iOS.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Invoices iOS/Preview Content\"";
+				DEVELOPMENT_TEAM = 5NHDC5EV44;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = NO;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Invoices-iOS-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ro.imagin.Invoices;
+				PRODUCT_NAME = Invoices;
+				PROVISIONING_PROFILE_SPECIFIER = "Invoices dev iOS profile";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "Invoices dev mac profile";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		28C04372274E9EE00057C0D0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -593,12 +834,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Invoices/Invoices.entitlements;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"Invoices/Preview Content\"";
-				DEVELOPMENT_TEAM = U8W527Y939;
+				DEVELOPMENT_TEAM = 5NHDC5EV44;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -609,8 +850,10 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = ro.imagin.Invoices;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Invoices dev mac profile";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -622,12 +865,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Invoices/Invoices.entitlements;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"Invoices/Preview Content\"";
-				DEVELOPMENT_TEAM = U8W527Y939;
+				DEVELOPMENT_TEAM = 5NHDC5EV44;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -638,8 +881,10 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = ro.imagin.Invoices;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Invoices dev mac profile";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -648,6 +893,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		28A73D0F2763B93900F727C3 /* Build configuration list for PBXNativeTarget "Invoices iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28A73D102763B93900F727C3 /* Debug */,
+				28A73D112763B93900F727C3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		28C04371274E9EE00057C0D0 /* Build configuration list for PBXNativeTarget "InvoicesTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -697,6 +951,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		28A73D342763C28A00F727C3 /* BarChart */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 28C0435B274BA69F0057C0D0 /* XCRemoteSwiftPackageReference "BarChart" */;
+			productName = BarChart;
+		};
+		28A73D362763C29500F727C3 /* SwiftCSV */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 28D81C412736434C00209EAC /* XCRemoteSwiftPackageReference "SwiftCSV" */;
+			productName = SwiftCSV;
+		};
 		28C0435C274BA69F0057C0D0 /* BarChart */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 28C0435B274BA69F0057C0D0 /* XCRemoteSwiftPackageReference "BarChart" */;

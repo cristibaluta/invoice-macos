@@ -8,8 +8,15 @@
 import Foundation
 import SwiftUI
 import WebKit
+#if os(iOS)
+    import UIKit
+    typealias RCViewRepresentable = UIViewRepresentable
+#else
+    import AppKit
+    typealias RCViewRepresentable = NSViewRepresentable
+#endif
 
-struct HtmlView: NSViewRepresentable {
+struct HtmlView: RCViewRepresentable {
     
     let htmlString: String?
     let callback: (Data) -> ()
@@ -19,6 +26,29 @@ struct HtmlView: NSViewRepresentable {
         self.callback = callback
     }
     
+#if os(iOS)
+    func makeUIView(context: UIViewRepresentableContext<HtmlView>) -> WKWebView {
+        return WKWebView()
+    }
+
+    func updateUIView(_ webView: WKWebView, context: UIViewRepresentableContext<HtmlView>) {
+        
+        webView.loadHTMLString(htmlString ?? "none", baseURL: nil)
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            let config = WebKit.WKPDFConfiguration()
+            config.rect = CGRect(x: 0, y: 0, width: 900, height: 1285)
+            webView.createPDF(configuration: config) { result in
+                switch result {
+                    case .success(let data):
+                        callback(data)
+                    case .failure(let error):
+                        print(error)
+                }
+            }
+        }
+    }
+#else
     func makeNSView(context: NSViewRepresentableContext<HtmlView>) -> WKWebView {
         return WKWebView()
     }
@@ -38,20 +68,7 @@ struct HtmlView: NSViewRepresentable {
                         print(error)
                 }
             }
-            
-//            webView.evaluateJavaScript("document.getElementById('email').value", completionHandler: { result, error in
-//                print(">>>> js evaluating email")
-//                print(result)
-//                print(error)
-//            })
-//
-//            let builderBlock = unsafeBitCast({ msg in print(msg)}, to: AnyObject.self)
-//            let ctx = webView.value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as? JSContext
-//            ctx?.setObject(builderBlock, forKeyedSubscript: "myUpdateCallback" as (NSCopying & NSObjectProtocol))
-////            ctx["myUpdateCallback"] = { msg in
-////                print(msg)
-////            };
-//            ctx?.evaluateScript("document.getElementById('email').addEventListener('input', myUpdateCallback, false);")
         }
     }
+#endif
 }

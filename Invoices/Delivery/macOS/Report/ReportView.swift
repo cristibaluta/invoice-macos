@@ -21,18 +21,22 @@ struct ReportView: View {
     var body: some View {
         VStack {
             HStack(alignment: .center) {
+                #if os(iOS)
+                    
+                #else
                 Button("Import CSV worklogs") {
                     let panel = NSOpenPanel()
                     panel.canChooseFiles = true
                     panel.canChooseDirectories = false
                     panel.allowsMultipleSelection = false
-//                    panel.allowedContentTypes = ["csv"]
+                    //                    panel.allowedContentTypes = ["csv"]
                     if panel.runModal() == .OK {
                         if let url = panel.urls.first {
                             store.openCsv(at: url)
                         }
                     }
                 }
+                #endif
                 Button("Edit") {
                     store.showingPopover = true
                 }

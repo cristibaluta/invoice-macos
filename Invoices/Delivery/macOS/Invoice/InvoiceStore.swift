@@ -24,7 +24,7 @@ class InvoiceStore: ObservableObject {
     }
     
     func calculate() {
-        SandboxManager.executeInSelectedDir { url in
+        AppFilesManager.executeInSelectedDir { url in
             /// Get template
             let projectUrl = url.appendingPathComponent(project.name)
             let templateUrl = projectUrl.appendingPathComponent("templates")
@@ -66,7 +66,7 @@ class InvoiceStore: ObservableObject {
     }
     
     func save (completion: @escaping (InvoiceFolder?) -> Void) {
-        SandboxManager.executeInSelectedDir { url in
+        AppFilesManager.executeInSelectedDir { url in
             do {
                 // Generate folder if none exists
                 let invoiceNr = "\(data.invoice_series)\(data.invoice_nr.prefixedWith0)"
@@ -93,6 +93,9 @@ class InvoiceStore: ObservableObject {
     }
     
     func export (isPdf: Bool) {
+#if os(iOS)
+        print("exporting for ios")
+#else
         let fileName = "Invoice-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).\(isPdf ? "pdf" : "html")"
         let panel = NSSavePanel()
         panel.isExtensionHidden = false
@@ -105,7 +108,7 @@ class InvoiceStore: ObservableObject {
                         if isPdf {
                             try self.invoicePrintData?.write(to: url)
                         } else {
-                            try self.html.write(to: url, atomically: true, encoding: .utf8)                            
+                            try self.html.write(to: url, atomically: true, encoding: .utf8)
                         }
                     }
                     catch {
@@ -114,5 +117,6 @@ class InvoiceStore: ObservableObject {
                 }
             }
         }
+#endif
     }
 }

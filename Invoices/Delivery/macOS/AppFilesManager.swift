@@ -13,14 +13,15 @@ func getDocumentsDirectory() -> URL {
     return documentsDirectory
 }
 
-class SandboxManager {
+class AppFilesManager {
     
     static func executeInSelectedDir (_ block: (URL) -> Void) {
+//        IcloudFilesManager.default.executeInSelectedDir(block)
         block(getDocumentsDirectory())
+    }
+}
 //        if let url = History().getLastProjectDir() {
 //            let _ = url.startAccessingSecurityScopedResource()
 //            block(url)
 //            url.stopAccessingSecurityScopedResource()
 //        }
-    }
-}

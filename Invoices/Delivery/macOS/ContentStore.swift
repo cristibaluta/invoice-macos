@@ -124,6 +124,16 @@ final class ContentStore: ObservableObject {
             for invoice in invoices {
                 // Load all invoices data and display a chart
                 let invoiceUrl = projectUrl.appendingPathComponent(invoice.name).appendingPathComponent("data.json")
+                if FileManager.default.fileExists(atPath: invoiceUrl.path) {
+                    print("File exists \(invoiceUrl.path)")
+                } else {
+                    print("Start downloading \(invoiceUrl.path)")
+                    do {
+                        try FileManager.default.startDownloadingUbiquitousItem(at: invoiceUrl)
+                    } catch {
+                        print("Error while loading Backup File \(error)")
+                    }
+                }
                 do {
                     let jsonData = try Data(contentsOf: invoiceUrl)
                     let invoice = try JSONDecoder().decode(InvoiceData.self, from: jsonData)
@@ -151,7 +161,7 @@ final class ContentStore: ObservableObject {
         selectedInvoice = invoice
         invoiceName = invoice.name
         
-        SandboxManager.executeInSelectedDir { url in
+        AppFilesManager.executeInSelectedDir { url in
             let projectUrl = url.appendingPathComponent(selectedProject?.name ?? "")
             let invoiceUrl = projectUrl.appendingPathComponent(invoice.name).appendingPathComponent("data.json")
             do {
@@ -254,20 +264,28 @@ extension ContentStore {
 extension ContentStore {
     
     func showInFinder (_ project: Project) {
-        SandboxManager.executeInSelectedDir { url in
+        #if os(iOS)
+            
+        #else
+        IcloudFilesManager.default.executeInSelectedDir { url in
             let url = url.appendingPathComponent(project.name)
             NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: url.path)
         }
+        #endif
     }
     
     func showInFinder (_ invoice: InvoiceFolder) {
-        SandboxManager.executeInSelectedDir { url in
-            let invoiceUrl = url.appendingPathComponent(invoice.name)
+        #if os(iOS)
+            
+        #else
+        IcloudFilesManager.default.executeInSelectedDir { url in
+            let invoiceUrl = url.appendingPathComponent(selectedProject?.name ?? "").appendingPathComponent(invoice.name)
             NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: invoiceUrl.path)
         }
+        #endif
     }
     
-    private func showInFinderAndSelectLastComponent(of url: URL) {
-        NSWorkspace.shared.activateFileViewerSelecting([url])
-    }
+//    private func showInFinderAndSelectLastComponent(of url: URL) {
+//        NSWorkspace.shared.activateFileViewerSelecting([url])
+//    }
 }

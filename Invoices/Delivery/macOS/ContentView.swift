@@ -92,24 +92,28 @@ struct ContentView: View {
             switch store.viewState {
                 case .noProjects:
                     VStack(alignment: .center) {
-                        Text("Create a new project!").bold()
+                        Text("Create a new project!").font(.system(size: 40)).bold().padding(20)
                         Text("In a project you can keep invoices from the same series. Each new invoice will use data from the previous invoice and the number will increase automatically.")
+                            .multilineTextAlignment(.center).padding(20)
                         HStack {
-                            TextField("Project name", text: $store.projectName).frame(width: 160)
+                            TextField("Project name", text: $store.projectName).font(.system(size: 20)).frame(width: 160)
                             Button("Create") {
                                 store.createProject(store.projectName)
                             }
                         }
                     }
+                    .padding(40)
                     
                 case .noInvoices:
                     VStack(alignment: .center) {
-                        Text("Create your first invoice!").bold()
+                        Text("Create your first invoice!").font(.system(size: 40)).bold().padding(20)
                         Text("Each project has its own templates and can be edited from Finder. You can right click on any project or invoice to view the files in Finder.")
+                            .multilineTextAlignment(.center).padding(20)
                         Button("New invoice") {
                             store.generateNewInvoice()
                         }
                     }
+                    .padding(40)
                     
                 case .charts(let priceChart, let rateChart):
                     ChartsView(store: store, priceChartConfig: priceChart, rateChartConfig: rateChart)
