@@ -24,7 +24,7 @@ class InvoiceStore: ObservableObject {
     }
     
     func calculate() {
-        AppFilesManager.executeInSelectedDir { url in
+        AppFilesManager.default.executeInSelectedDir { url in
             /// Get template
             let projectUrl = url.appendingPathComponent(project.name)
             let templateUrl = projectUrl.appendingPathComponent("templates")
@@ -66,7 +66,7 @@ class InvoiceStore: ObservableObject {
     }
     
     func save (completion: @escaping (InvoiceFolder?) -> Void) {
-        AppFilesManager.executeInSelectedDir { url in
+        AppFilesManager.default.executeInSelectedDir { url in
             do {
                 // Generate folder if none exists
                 let invoiceNr = "\(data.invoice_series)\(data.invoice_nr.prefixedWith0)"
@@ -83,6 +83,11 @@ class InvoiceStore: ObservableObject {
                 let invoiceJsonUrl = invoiceUrl.appendingPathComponent("data.json")
                 let jsonData = try encoder.encode(data)
                 try jsonData.write(to: invoiceJsonUrl)
+                // Save pdf
+                let pdfName = "Invoice-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).pdf"
+                let pdfUrl = invoiceUrl.appendingPathComponent(pdfName)
+                try self.invoicePrintData?.write(to: pdfUrl)
+                
                 completion(InvoiceFolder(date: data.date, invoiceNr: invoiceNr, name: folderName))
             }
             catch {

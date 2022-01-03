@@ -18,20 +18,20 @@ struct ChartsView: View {
         
         VStack(alignment: .center) {
             
-            Text("Invoiced amount. All time total: \(store.totalPrice) RON")
+            Text("Invoiced amount").bold()
+            Text("All time total: \(store.totalPrice) RON")
             BarChartView(config: priceChartConfig)
-                .frame(height: 300)
-                .padding(20)
-                .animation(.easeInOut)
+            .frame(height: 300)
+            .padding(20)
+            .animation(.easeInOut)
             
             Spacer().frame(height: 30)
             
-            Text("Hourly rate")
+            Text("Hourly rate").bold()
             BarChartView(config: rateChartConfig)
-                .frame(height: 150)
-                .padding(20)
-                .animation(.easeInOut)
+            .frame(height: 150)
+            .padding(20)
+            .animation(.easeInOut)
         }
-        .padding(20)
     }
 }

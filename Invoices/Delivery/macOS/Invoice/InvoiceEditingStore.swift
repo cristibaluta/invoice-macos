@@ -86,6 +86,7 @@ class InvoiceEditingStore: ObservableObject {
     }
     
     var data: InvoiceData
+    @Published var companies: [Company] = []
     var isInitStage = true
     
     init (data: InvoiceData) {
@@ -104,6 +105,9 @@ class InvoiceEditingStore: ObservableObject {
         unitsName = data.products[0].units_name
         productName = data.products[0].product_name
         
+        CompaniesManager.shared.getCompanies { companies in
+            self.companies = companies.map({ Company(name: $0.name, details: $0) })
+        }
         isInitStage = false
     }
 }

@@ -14,8 +14,9 @@ func getDocumentsDirectory() -> URL {
 }
 
 class AppFilesManager {
+    static let `default` = AppFilesManager()
     
-    static func executeInSelectedDir (_ block: (URL) -> Void) {
+    func executeInSelectedDir (_ block: (URL) -> Void) {
 //        IcloudFilesManager.default.executeInSelectedDir(block)
         block(getDocumentsDirectory())
     }

@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "RCPreferences",
+        "repositoryURL": "https://github.com/ralcr/RCPreferences",
+        "state": {
+          "branch": "master",
+          "revision": "0fa2ff20175e7f2e745d25db7ba047e94eebe210",
+          "version": null
+        }
+      },
+      {
         "package": "SwiftCSV",
         "repositoryURL": "https://github.com/swiftcsv/SwiftCSV",
         "state": {

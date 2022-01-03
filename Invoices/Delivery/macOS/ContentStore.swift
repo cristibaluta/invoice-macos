@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import BarChart
+import RCPreferences
 
 enum DrawerState {
     case noProjects
@@ -19,7 +20,9 @@ enum ViewState {
     case noProjects
     case noInvoices
     case charts(ChartConfiguration, ChartConfiguration)
+    case newInvoice(InvoiceStore)
     case invoice(InvoiceStore)
+    case company(CompanyDetails?)
     case report(ReportStore)
     case error(String, String)
 }
@@ -48,13 +51,18 @@ final class ContentStore: ObservableObject {
     @Published var projectName: String = ""
     @Published var invoiceName: String = ""
     @Published var section: Int = 0
-    @Published var selectedProject: Project?
+    @Published var selectedProject: Project? {
+        didSet {
+            pref.set(selectedProject?.name ?? "", forKey: .lastProject)
+        }
+    }
     @Published var selectedInvoice: InvoiceFolder?
     @Published var totalPrice: String = ""
     var priceChartConfig = ChartConfiguration()
     var rateChartConfig = ChartConfiguration()
     var priceChartEntries: [ChartDataEntry] = []
     var rateChartEntries: [ChartDataEntry] = []
+    private var pref = RCPreferences<UserPreferences>()
     
     init() {
 //        History().clear()
@@ -92,10 +100,10 @@ final class ContentStore: ObservableObject {
     func reloadProjects() {
         ProjectsManager.shared.getProjects() { projects in
             self.projects = projects
-            if let firstProject = projects.first {
+            if let lastProject = projects.first(where: {$0.name == pref.string(.lastProject)}) ?? projects.first {
                 self.drawerState = .projects(projects)
                 self.viewState = .noProjects
-                self.loadProject(firstProject)
+                self.loadProject(lastProject)
             } else {
                 self.drawerState = .noProjects
                 self.viewState = .noProjects
@@ -161,7 +169,7 @@ final class ContentStore: ObservableObject {
         selectedInvoice = invoice
         invoiceName = invoice.name
         
-        AppFilesManager.executeInSelectedDir { url in
+        AppFilesManager.default.executeInSelectedDir { url in
             let projectUrl = url.appendingPathComponent(selectedProject?.name ?? "")
             let invoiceUrl = projectUrl.appendingPathComponent(invoice.name).appendingPathComponent("data.json")
             do {
@@ -214,10 +222,18 @@ extension ContentStore {
             self.selectedInvoice = invoiceFolder
             self.invoiceName = invoiceFolder.name
             self.currentInvoiceData = invoiceData
-            if let store = self.invoiceStore {
-                viewState = .invoice(store)
+            guard let store = self.invoiceStore else {
+                return
             }
+            self.viewState = .newInvoice(store)
         }
+    }
+    
+    func showInvoice() {
+        guard let store = self.invoiceStore else {
+            return
+        }
+        viewState = .invoice(store)
     }
     
 //    func openProject() {
@@ -267,7 +283,7 @@ extension ContentStore {
         #if os(iOS)
             
         #else
-        IcloudFilesManager.default.executeInSelectedDir { url in
+        AppFilesManager.default.executeInSelectedDir { url in
             let url = url.appendingPathComponent(project.name)
             NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: url.path)
         }
@@ -278,7 +294,7 @@ extension ContentStore {
         #if os(iOS)
             
         #else
-        IcloudFilesManager.default.executeInSelectedDir { url in
+        AppFilesManager.default.executeInSelectedDir { url in
             let invoiceUrl = url.appendingPathComponent(selectedProject?.name ?? "").appendingPathComponent(invoice.name)
             NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: invoiceUrl.path)
         }

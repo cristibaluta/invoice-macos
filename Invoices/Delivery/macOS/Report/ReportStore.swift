@@ -103,7 +103,7 @@ class ReportStore: ObservableObject {
     }
     
     func calculate() {
-        AppFilesManager.executeInSelectedDir { url in
+        AppFilesManager.default.executeInSelectedDir { url in
             /// Get template
             let pUrl = url.appendingPathComponent(project.name)
             let templateUrl = pUrl.appendingPathComponent("templates")
@@ -178,7 +178,7 @@ class ReportStore: ObservableObject {
     }
     
     func save() {
-        AppFilesManager.executeInSelectedDir { url in
+        AppFilesManager.default.executeInSelectedDir { url in
             do {
                 // Generate folder if none exists
                 let folderName = "\(data.date.yyyyMMdd)-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)"

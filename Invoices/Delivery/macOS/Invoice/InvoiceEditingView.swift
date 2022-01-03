@@ -11,8 +11,6 @@ struct InvoiceEditingView: View {
     
     @ObservedObject var store: InvoiceEditingStore
     private var completion: (InvoiceData) -> Void
-    @State var showingContractor = false
-    @State var showingClient = false
     
     init (store: InvoiceEditingStore, completion: @escaping (InvoiceData) -> Void) {
         self.store = store
@@ -77,7 +75,6 @@ struct InvoiceEditingView: View {
                         } else {
                             Text(store.units).font(.system(size: 12))
                         }
-                        
                     }
                     HStack(alignment: .center) {
                         Text("Units name:").font(.system(size: 12))
@@ -115,28 +112,35 @@ struct InvoiceEditingView: View {
                 Divider().padding(.top, 10).padding(.bottom, 10)
                 
                 Group {
-                    Button("Contractor") {
-                        showingContractor.toggle()
-                        showingClient = false
-                    }
-                    if showingContractor {
-                        CompanyDetailsView(store: CompanyDetailsStore(data: store.data.contractor)) { companyData in
-                            store.data.contractor = companyData
-                            completion(store.data)
+                    HStack(alignment: .center) {
+                        Text("Contractor:").font(.system(size: 12))
+                        Menu {
+                            ForEach(store.companies) { company in
+                                Button(company.name, action: {
+                                    store.contractorData = company.details
+                                    completion(store.data)
+                                })
+                            }
+                            Button("Add new", action: {
+                            })
+                        } label: {
+                            Text(store.contractorData.name)
                         }
-                        Divider()
                     }
-                    
-                    Button("Client") {
-                        showingClient.toggle()
-                        showingContractor = false
-                    }
-                    if showingClient {
-                        CompanyDetailsView(store: CompanyDetailsStore(data: store.data.client)) { companyData in
-                            store.data.client = companyData
-                            completion(store.data)
+                    HStack(alignment: .center) {
+                        Text("Client:").font(.system(size: 12))
+                        Menu {
+                            ForEach(store.companies) { company in
+                                Button(company.name, action: {
+                                    store.clientData = company.details
+                                    completion(store.data)
+                                })
+                            }
+                            Button("Add new", action: {
+                            })
+                        } label: {
+                            Text(store.clientData.name)
                         }
-                        Divider()
                     }
                     Spacer()
                 }

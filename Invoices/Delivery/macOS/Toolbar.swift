@@ -41,7 +41,7 @@ struct Toolbar: ViewModifier {
                         VStack {
                             switch store.section {
                                 case 0:
-                                    Text("Export current Invoice to file")
+                                    Text("Export Invoice to file")
                                     Divider()
                                     HStack {
                                         Button("pdf") {
@@ -52,7 +52,7 @@ struct Toolbar: ViewModifier {
                                         }
                                     }
                                 case 1:
-                                    Text("Export current Report to file")
+                                    Text("Export Report to file")
                                     Divider()
                                     HStack {
                                         Button("pdf") {

@@ -10,9 +10,6 @@ import SwiftUI
 struct ContentView: View {
     
     @ObservedObject var store: ContentStore
-    @State private var showingExportPopover = false
-    @State private var showingDeleteProject = false
-    @State private var showingDeleteInvoice = false
     
     init (store: ContentStore) {
         self.store = store
@@ -20,103 +17,32 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            // Drawer
+            // Sidebar
             switch store.drawerState {
                 case .noProjects:
                     Text("No projects!")
                 case .projects(_), .invoices(_):
-                    VStack {
-                        List(store.projects, id: \.self, selection: $store.selectedProject) { project in
-                            Text(project.name)
-                            .onTapGesture {
-                                store.loadProject(project)
-                            }
-                            .contextMenu {
-                                Button(action: {
-                                    store.showInFinder(project)
-                                }) {
-                                    Text("Show in Finder")
-                                }
-//                                Button(action: {
-//                                    showingDeleteProject = true
-//                                }) {
-//                                    Text("Delete")
-//                                }
-                            }
-//                            .alert(isPresented: $showingDeleteProject) {
-//                                Alert(title: Text("Delete project"),
-//                                      message: Text("Are you sure you want to delete project '\(project.name)'? This operation cannot be undone."),
-//                                      primaryButton: .default(Text("Delete")) {showingDeleteProject = false},
-//                                      secondaryButton: .cancel() {showingDeleteProject = false}
-//                                )
-//                            }
-                        }
-                        .frame(height: 100)
-                        
-                        Divider()
-                        
-                        if self.store.invoices.isEmpty {
-                            Text("No invoices!")
-                        } else {
-                            Button("+") {
-                                store.generateNewInvoice()
-                            }
-                            .help("Create a new invoice using data from the last invoice.")
-                        }
-                        
-                        List(self.store.invoices, id: \.self, selection: $store.selectedInvoice) { invoice in
-                            Text(invoice.name)
-                            .onTapGesture {
-                                store.loadInvoice(invoice)
-                            }
-                            .contextMenu {
-                                Button(action: {
-                                    store.showInFinder(invoice)
-                                }) {
-                                    Text("Show in Finder")
-                                }
-                            }
-                        }
-                    }
-                    .toolbar {
-                        ToolbarItemGroup(placement: .automatic) {
-                            Spacer()
-                            Button("+") {
-                                store.viewState = .noProjects
-                            }
-                            .help("Create a new project.")
-                        }
-                    }
+                    SidebarView(store: store)
             }
             
             switch store.viewState {
                 case .noProjects:
-                    VStack(alignment: .center) {
-                        Text("Create a new project!").font(.system(size: 40)).bold().padding(20)
-                        Text("In a project you can keep invoices from the same series. Each new invoice will use data from the previous invoice and the number will increase automatically.")
-                            .multilineTextAlignment(.center).padding(20)
-                        HStack {
-                            TextField("Project name", text: $store.projectName).font(.system(size: 20)).frame(width: 160)
-                            Button("Create") {
-                                store.createProject(store.projectName)
-                            }
-                        }
-                    }
+                    NoProjectsView(store: store)
                     .padding(40)
                     
                 case .noInvoices:
-                    VStack(alignment: .center) {
-                        Text("Create your first invoice!").font(.system(size: 40)).bold().padding(20)
-                        Text("Each project has its own templates and can be edited from Finder. You can right click on any project or invoice to view the files in Finder.")
-                            .multilineTextAlignment(.center).padding(20)
-                        Button("New invoice") {
-                            store.generateNewInvoice()
-                        }
-                    }
+                    NoInvoicesView(store: store)
                     .padding(40)
                     
+                case .newInvoice(let invoiceStore):
+                    NewInvoiceView(store: invoiceStore) {
+                        store.viewState = .invoice(invoiceStore)
+                    }
+                    .padding(40)
+                
                 case .charts(let priceChart, let rateChart):
                     ChartsView(store: store, priceChartConfig: priceChart, rateChartConfig: rateChart)
+                    .padding(40)
                     
                 case .invoice(let invoiceStore):
                     InvoiceView(store: invoiceStore) { data in
@@ -128,6 +54,12 @@ struct ContentView: View {
                     }
                     .modifier(Toolbar(store: store))
                     
+                case .company(let companyDetails):
+                    NewCompanyView(store: CompaniesStore(data: companyDetails), callback: {
+                        store.viewState = .noInvoices
+                    })
+                    .padding(40)
+                    
                 case .report(let reportStore):
                     ReportView(store: reportStore).frame(width: 920)
                     .modifier(Toolbar(store: store))
@@ -137,7 +69,7 @@ struct ContentView: View {
                         Text(title).bold()
                         Text(message)
                     }
-                    .padding(20)
+                    .padding(40)
             }
         }
         .frame(maxWidth: .infinity, minHeight: 600, maxHeight: .infinity, alignment: .topLeading)

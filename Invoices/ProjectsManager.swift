@@ -13,7 +13,7 @@ class ProjectsManager {
     
     func getProjects (completion: ([Project]) -> Void) {
         
-        AppFilesManager.executeInSelectedDir { url in
+        AppFilesManager.default.executeInSelectedDir { url in
             do {
                 let folders = try FileManager.default.contentsOfDirectory(atPath: url.path)
                 print("Projects: \(folders)")
@@ -32,7 +32,7 @@ class ProjectsManager {
     }
     
     func createProject (_ name: String, completion: (Project?) -> Void) {
-        AppFilesManager.executeInSelectedDir { url in
+        AppFilesManager.default.executeInSelectedDir { url in
             do {
                 // Generate folder if none exists
                 let project = Project(name: name)

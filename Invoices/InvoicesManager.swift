@@ -13,7 +13,7 @@ class InvoicesManager {
     
     func getInvoices (for project: Project, completion: (URL, [InvoiceFolder]) -> Void) {
         
-        AppFilesManager.executeInSelectedDir { url in
+        AppFilesManager.default.executeInSelectedDir { url in
             let projectUrl = url.appendingPathComponent(project.name)
             do {
                 var folders = try FileManager.default.contentsOfDirectory(atPath: projectUrl.path)
@@ -37,7 +37,7 @@ class InvoicesManager {
     }
     
     func generateNewInvoice (in project: Project, using invoice: InvoiceFolder?, completion: (InvoiceFolder, InvoiceData) -> Void) {
-        AppFilesManager.executeInSelectedDir { url in
+        AppFilesManager.default.executeInSelectedDir { url in
             do {
                 /// Read data from last invoice
                 if let lastInvoice = invoice {
