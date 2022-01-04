@@ -46,17 +46,11 @@ struct SidebarView: View {
                         Text("Show in Finder")
                     }
                     Button(action: {
-                        showingDeleteAlert = true
-                        store.deleteInvoice(invoice)
+                        store.viewState = .deleteInvoice(invoice)
                     }) {
                         Text("Delete")
                     }
                 }
-//                .alert(isPresented: $showingDeleteAlert) {
-//                    Alert(title: Text("Delete invoice?"),
-//                          message: Text("Delete invoice?"),
-//                          dismissButton: .default(Text("Got it!")))
-//                }
             }
         }
         .toolbar {

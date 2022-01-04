@@ -22,6 +22,7 @@ enum ViewState {
     case charts(ChartConfiguration, ChartConfiguration)
     case newInvoice(InvoiceStore)
     case invoice(InvoiceStore)
+    case deleteInvoice(InvoiceFolder)
     case company(CompanyDetails?)
     case report(ReportStore)
     case error(String, String)
@@ -186,10 +187,12 @@ final class ContentStore: ObservableObject {
 
 extension ContentStore {
     
-    func showChart(_ prices: [ChartDataEntry], _ rates: [ChartDataEntry]) {
+    func showChart(_ prices: [ChartDataEntry]?, _ rates: [ChartDataEntry]?) {
         DispatchQueue.main.async {
-            self.priceChartEntries = prices.reversed()
-            self.rateChartEntries = rates.reversed()
+            if let prices = prices, let rates = rates {
+                self.priceChartEntries = prices.reversed()
+                self.rateChartEntries = rates.reversed()
+            }
             self.priceChartConfig.data.entries = self.priceChartEntries
             self.rateChartConfig.data.entries = self.rateChartEntries
             self.viewState = .charts(self.priceChartConfig, self.rateChartConfig)

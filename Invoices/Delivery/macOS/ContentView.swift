@@ -54,6 +54,10 @@ struct ContentView: View {
                     }
                     .modifier(Toolbar(store: store))
                     
+                case .deleteInvoice(let invoice):
+                    DeleteConfirmationView(store: store, invoice: invoice)
+                    .padding(40)
+                
                 case .company(let companyDetails):
                     NewCompanyView(store: CompaniesStore(data: companyDetails), callback: {
                         store.viewState = .noInvoices
