@@ -8,15 +8,12 @@
 import Foundation
 
 final class CompaniesStore: ObservableObject {
+    
     var data: CompanyDetails
+    var companyDetailsStore: CompanyDetailsStore
     
     init (data: CompanyDetails?) {
         self.data = data ?? CompaniesManager.shared.emptyCompanyDetails
-    }
-    
-    func save (completion: () -> Void) {
-        CompaniesManager.shared.save(data) { _ in
-            completion()
-        }
+        self.companyDetailsStore = CompanyDetailsStore(data: self.data)
     }
 }

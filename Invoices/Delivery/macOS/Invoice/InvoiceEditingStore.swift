@@ -86,11 +86,13 @@ class InvoiceEditingStore: ObservableObject {
     }
     
     var data: InvoiceData
+    var clientDetailsStore: CompanyDetailsStore
+    var contractorDetailsStore: CompanyDetailsStore
     @Published var companies: [Company] = []
-    var isInitStage = true
     
     init (data: InvoiceData) {
         self.data = data
+        
         invoiceSeries = data.invoice_series
         invoiceNr = String(data.invoice_nr)
         date = Date(yyyyMMdd: data.invoice_date) ?? Date()
@@ -105,9 +107,15 @@ class InvoiceEditingStore: ObservableObject {
         unitsName = data.products[0].units_name
         productName = data.products[0].product_name
         
+        clientDetailsStore = CompanyDetailsStore(data: CompaniesManager.shared.emptyCompanyDetails)
+        contractorDetailsStore = CompanyDetailsStore(data: CompaniesManager.shared.emptyCompanyDetails)
+        
+        reloadCompanies()
+    }
+    
+    func reloadCompanies() {
         CompaniesManager.shared.getCompanies { companies in
             self.companies = companies.map({ Company(name: $0.name, details: $0) })
         }
-        isInitStage = false
     }
 }

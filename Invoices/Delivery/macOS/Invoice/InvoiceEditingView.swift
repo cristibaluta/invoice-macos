@@ -10,6 +10,8 @@ import SwiftUI
 struct InvoiceEditingView: View {
     
     @ObservedObject var store: InvoiceEditingStore
+    @State var isAddingNewClient = false
+    @State var isAddingNewContractor = false
     private var completion: (InvoiceData) -> Void
     
     init (store: InvoiceEditingStore, completion: @escaping (InvoiceData) -> Void) {
@@ -121,12 +123,38 @@ struct InvoiceEditingView: View {
                                     completion(store.data)
                                 })
                             }
+                            Divider()
                             Button("Add new", action: {
+                                isAddingNewContractor = true
                             })
                         } label: {
                             Text(store.contractorData.name)
                         }
                     }
+                    .popover(isPresented: $isAddingNewContractor) {
+                        VStack(alignment: .leading) {
+                            CompanyDetailsView(store: store.contractorDetailsStore) { company in
+                                store.contractorData = company
+                            }
+                            .padding(20)
+                            HStack {
+                                Button("Cancel", action: {
+                                    isAddingNewContractor = false
+                                })
+                                Button("Save", action: {
+                                    store.contractorDetailsStore.save() {
+                                        isAddingNewContractor = false
+                                        store.reloadCompanies()
+                                        store.contractorData = store.contractorDetailsStore.data
+                                        completion(store.data)
+                                    }
+                                })
+                            }
+                            .padding(20)
+                        }
+                        .frame(width: 400)
+                    }
+                    
                     HStack(alignment: .center) {
                         Text("Client:").font(.system(size: 12))
                         Menu {
@@ -136,11 +164,36 @@ struct InvoiceEditingView: View {
                                     completion(store.data)
                                 })
                             }
+                            Divider()
                             Button("Add new", action: {
+                                isAddingNewClient = true
                             })
                         } label: {
                             Text(store.clientData.name)
                         }
+                    }
+                    .popover(isPresented: $isAddingNewClient) {
+                        VStack(alignment: .leading) {
+                            CompanyDetailsView(store: store.clientDetailsStore) { company in
+                                store.clientData = company
+                            }
+                            .padding(20)
+                            HStack {
+                                Button("Cancel", action: {
+                                    isAddingNewClient = false
+                                })
+                                Button("Save", action: {
+                                    store.clientDetailsStore.save() {
+                                        isAddingNewClient = false
+                                        store.reloadCompanies()
+                                        store.clientData = store.clientDetailsStore.data
+                                        completion(store.data)
+                                    }
+                                })
+                            }
+                            .padding(20)
+                        }
+                        .frame(width: 400)
                     }
                     Spacer()
                 }

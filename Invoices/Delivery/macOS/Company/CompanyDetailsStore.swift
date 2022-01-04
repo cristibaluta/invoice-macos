@@ -76,4 +76,10 @@ class CompanyDetailsStore: ObservableObject {
         phone = data.phone ?? ""
         web = data.web ?? ""
     }
+    
+    func save (completion: () -> Void) {
+        CompaniesManager.shared.save(data) { _ in
+            completion()
+        }
+    }
 }

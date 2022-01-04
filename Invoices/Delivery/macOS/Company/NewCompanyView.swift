@@ -27,7 +27,7 @@ struct NewCompanyView: View {
             
             VStack(alignment: .leading) {
                 Spacer().frame(height: 10)
-                CompanyDetailsView(store: CompanyDetailsStore(data: store.data)) { companyData in
+                CompanyDetailsView(store: store.companyDetailsStore) { companyData in
                     store.data = companyData
                 }
                 
@@ -38,7 +38,7 @@ struct NewCompanyView: View {
                         callback()
                     }
                     Button("Save") {
-                        store.save() {
+                        store.companyDetailsStore.save() {
                             callback()
                         }
                     }

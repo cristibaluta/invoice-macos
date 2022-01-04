@@ -67,7 +67,6 @@ struct SidebarView: View {
                         }
                         Button("New Invoice") {
                             showingAddPopover = false
-//                            store.viewState = .newInvoice
                             store.generateNewInvoice()
                         }
                         Button("New company") {
