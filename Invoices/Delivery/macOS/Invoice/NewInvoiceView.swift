@@ -20,13 +20,13 @@ struct NewInvoiceView: View {
     var body: some View {
         HStack(alignment: .top) {
             Spacer()
-            Text("New invoice!").font(.system(size: 40)).bold()
+            Text("New invoice").font(.system(size: 40)).bold()
             
             Divider().frame(height: 200)
             
             VStack(alignment: .leading) {
                 Spacer().frame(height: 10)
-                Text("\(store.editingStore.invoiceSeries)-\(store.editingStore.invoiceNr)")
+                Text("\(store.editingStore.invoiceSeries)\(store.editingStore.invoiceNr)")
                     .font(.system(size: 20)).bold()
                 Text(store.editingStore.date.mediumDate)
                 .font(.system(size: 20))

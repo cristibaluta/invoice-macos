@@ -50,26 +50,32 @@ struct InvoiceEditingView: View {
                 
                 Group {
                     HStack(alignment: .center) {
-                        Text("Product:").font(.system(size: 12))
+                        Text("Product(1):").font(.system(size: 12))
                         TextField("", text: $store.productName).onChange(of: store.productName) { _ in
                             completion(store.data)
                         }.font(.system(size: 12))
                     }
                     HStack(alignment: .center) {
-                        Text("Rate:").font(.system(size: 12))
+                        Text("Rate(2):").font(.system(size: 12))
                         TextField("", text: $store.rate).onChange(of: store.rate) { _ in
                             completion(store.data)
                         }.font(.system(size: 12))
                     }
                     HStack(alignment: .center) {
-                        Text("Exchange Rate:").font(.system(size: 12))
+                        Text("Exchange Rate(3):").font(.system(size: 12))
                         TextField("", text: $store.exchangeRate).onChange(of: store.exchangeRate) { _ in
                             completion(store.data)
                         }
                         .font(.system(size: 12))
                     }
                     HStack(alignment: .center) {
-                        Text("Units:").font(.system(size: 12))
+                        Text("Units name(4):").font(.system(size: 12))
+                        TextField("", text: $store.unitsName).onChange(of: store.unitsName) { _ in
+                            completion(store.data)
+                        }.font(.system(size: 12))
+                    }
+                    HStack(alignment: .center) {
+                        Text("Units(5):").font(.system(size: 12))
                         if !store.isFixedTotal {
                             TextField("", text: $store.units).onChange(of: store.units) { _ in
                                 completion(store.data)
@@ -77,12 +83,6 @@ struct InvoiceEditingView: View {
                         } else {
                             Text(store.units).font(.system(size: 12))
                         }
-                    }
-                    HStack(alignment: .center) {
-                        Text("Units name:").font(.system(size: 12))
-                        TextField("", text: $store.unitsName).onChange(of: store.unitsName) { _ in
-                            completion(store.data)
-                        }.font(.system(size: 12))
                     }
                     HStack(alignment: .center) {
                         Text("VAT:").font(.system(size: 12))
