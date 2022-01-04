@@ -301,6 +301,22 @@ extension ContentStore {
         #endif
     }
     
+    func deleteInvoice (_ invoice: InvoiceFolder) {
+        #if os(iOS)
+            
+        #else
+        AppFilesManager.default.executeInSelectedDir { url in
+            let invoiceUrl = url.appendingPathComponent(selectedProject?.name ?? "").appendingPathComponent(invoice.name)
+            do {
+                try FileManager.default.removeItem(at: invoiceUrl)
+                reloadProjects()
+            } catch {
+                
+            }
+        }
+        #endif
+    }
+    
 //    private func showInFinderAndSelectLastComponent(of url: URL) {
 //        NSWorkspace.shared.activateFileViewerSelecting([url])
 //    }

@@ -11,6 +11,7 @@ struct SidebarView: View {
     
     @ObservedObject var store: ContentStore
     @State private var showingAddPopover = false
+    @State private var showingDeleteAlert = false
     
     init (store: ContentStore) {
         self.store = store
@@ -44,7 +45,18 @@ struct SidebarView: View {
                     }) {
                         Text("Show in Finder")
                     }
+                    Button(action: {
+                        showingDeleteAlert = true
+                        store.deleteInvoice(invoice)
+                    }) {
+                        Text("Delete")
+                    }
                 }
+//                .alert(isPresented: $showingDeleteAlert) {
+//                    Alert(title: Text("Delete invoice?"),
+//                          message: Text("Delete invoice?"),
+//                          dismissButton: .default(Text("Got it!")))
+//                }
             }
         }
         .toolbar {

@@ -235,6 +235,15 @@
 			path = Charts;
 			sourceTree = "<group>";
 		};
+		28737A752783C506004D56C1 /* Sidebar */ = {
+			isa = PBXGroup;
+			children = (
+				28737A5D277BB9D3004D56C1 /* SidebarView.swift */,
+				28737A59277BB842004D56C1 /* NoProjectsView.swift */,
+			);
+			path = Sidebar;
+			sourceTree = "<group>";
+		};
 		28A73D052763B93700F727C3 /* Invoices iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -343,9 +352,8 @@
 			children = (
 				28F91D4F26A1AC110057C5CC /* ContentView.swift */,
 				28F91D5D26A1B33B0057C5CC /* ContentStore.swift */,
-				28737A59277BB842004D56C1 /* NoProjectsView.swift */,
-				28737A5D277BB9D3004D56C1 /* SidebarView.swift */,
 				28C0438C275888680057C0D0 /* Toolbar.swift */,
+				28737A752783C506004D56C1 /* Sidebar */,
 				28737A7427831375004D56C1 /* Charts */,
 				28737A69278310A2004D56C1 /* Company */,
 				28D81C442737CAE100209EAC /* Invoice */,

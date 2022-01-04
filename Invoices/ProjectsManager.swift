@@ -21,6 +21,9 @@ class ProjectsManager {
                     if $0.hasPrefix(".") {
                         return nil
                     }
+                    if $0.hasSuffix(".json") {
+                        return nil
+                    }
                     return Project(name: $0)
                 })
                 completion(projects)
