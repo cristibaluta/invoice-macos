@@ -21,7 +21,7 @@ struct NoInvoicesView: View {
             Text("Each project has its own templates and can be edited from Finder. You can right click on any invoice to view the files in Finder.")
                 .multilineTextAlignment(.center).padding(20)
             Button("New invoice") {
-                store.generateNewInvoice()
+                store.generateNewInvoice(using: nil)
             }
         }
     }

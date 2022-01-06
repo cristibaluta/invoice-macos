@@ -21,7 +21,7 @@ struct NewCompanyView: View {
         HStack(alignment: .top) {
             Spacer()
             
-            Text("New company!").font(.system(size: 40)).bold()
+            Text("New company").font(.system(size: 40)).bold()
             
             Divider().frame(height: 360)
             

@@ -29,7 +29,26 @@
 		28737A7227831336004D56C1 /* NewInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A5F277BBC6D004D56C1 /* NewInvoiceView.swift */; };
 		28737A7327831336004D56C1 /* NoInvoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A5B277BB8B3004D56C1 /* NoInvoicesView.swift */; };
 		28737A772783E1BD004D56C1 /* DeleteConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A762783E1BD004D56C1 /* DeleteConfirmationView.swift */; };
-		28A73D072763B93700F727C3 /* Invoices_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73D062763B93700F727C3 /* Invoices_iOSApp.swift */; };
+		28737A7927848F97004D56C1 /* RCPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 28737A7827848F97004D56C1 /* RCPreferences */; };
+		28737A7B27848FBD004D56C1 /* NoProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A59277BB842004D56C1 /* NoProjectsView.swift */; };
+		28737A7C27848FCD004D56C1 /* InvoiceProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A7027831170004D56C1 /* InvoiceProduct.swift */; };
+		28737A7D27848FD3004D56C1 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A67277C83AC004D56C1 /* Company.swift */; };
+		28737A7E27848FD3004D56C1 /* InvoiceReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A6E27831131004D56C1 /* InvoiceReport.swift */; };
+		28737A7F27848FD3004D56C1 /* CompanyDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A6A278310CD004D56C1 /* CompanyDetails.swift */; };
+		28737A8027848FE3004D56C1 /* CompaniesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A65277C7442004D56C1 /* CompaniesManager.swift */; };
+		28737A812784906B004D56C1 /* NewCompanyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A61277C2E66004D56C1 /* NewCompanyView.swift */; };
+		28737A8227849072004D56C1 /* CompanyDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2867F84B270B595C002CA8CC /* CompanyDetailsView.swift */; };
+		28737A8327849072004D56C1 /* CompanyDetailsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C2F2733D49000209EAC /* CompanyDetailsStore.swift */; };
+		28737A8427849072004D56C1 /* CompaniesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A63277C2EB8004D56C1 /* CompaniesStore.swift */; };
+		28737A8527849082004D56C1 /* DeleteConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A762783E1BD004D56C1 /* DeleteConfirmationView.swift */; };
+		28737A86278490EA004D56C1 /* PropertyLoopable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A6C2783110B004D56C1 /* PropertyLoopable.swift */; };
+		28737A8727849BDA004D56C1 /* InvoicesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F91D4D26A1AC110057C5CC /* InvoicesApp.swift */; };
+		28737A8927849F0B004D56C1 /* WindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A8827849F0B004D56C1 /* WindowView.swift */; };
+		28737A8B27862F64004D56C1 /* WindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A8A27862F63004D56C1 /* WindowView.swift */; };
+		28737A8D27862F72004D56C1 /* WindowStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A8C27862F72004D56C1 /* WindowStore.swift */; };
+		28737A8F27863751004D56C1 /* WindowStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A8C27862F72004D56C1 /* WindowStore.swift */; };
+		28737A9527878B49004D56C1 /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A9127878B16004D56C1 /* ProjectsView.swift */; };
+		28737A9627878B4E004D56C1 /* InvoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A9327878B33004D56C1 /* InvoicesView.swift */; };
 		28A73D0B2763B93900F727C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28A73D0A2763B93900F727C3 /* Assets.xcassets */; };
 		28A73D0E2763B93900F727C3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28A73D0D2763B93900F727C3 /* Preview Assets.xcassets */; };
 		28A73D132763BF4B00F727C3 /* ProjectsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04384275656230057C0D0 /* ProjectsManager.swift */; };
@@ -41,10 +60,8 @@
 		28A73D192763BF6700F727C3 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C1F526E9323A0054FD5B /* Date.swift */; };
 		28A73D1A2763BF6A00F727C3 /* Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C1F326E910930054FD5B /* Numbers.swift */; };
 		28A73D1C2763BF7100F727C3 /* AppFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2867F84927065729002CA8CC /* AppFilesManager.swift */; };
-		28A73D1D2763BF7500F727C3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F91D4F26A1AC110057C5CC /* ContentView.swift */; };
 		28A73D1E2763BF7800F727C3 /* ContentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F91D5D26A1B33B0057C5CC /* ContentStore.swift */; };
 		28A73D1F2763BF7B00F727C3 /* ChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0438227563CA60057C0D0 /* ChartsView.swift */; };
-		28A73D202763BF7E00F727C3 /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0438C275888680057C0D0 /* Toolbar.swift */; };
 		28A73D212763BF8800F727C3 /* InvoiceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C332733D95700209EAC /* InvoiceStore.swift */; };
 		28A73D222763BF8800F727C3 /* InvoiceEditingStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C3F27358BE600209EAC /* InvoiceEditingStore.swift */; };
 		28A73D232763BF8800F727C3 /* InvoiceEditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C3D27358BD200209EAC /* InvoiceEditingView.swift */; };
@@ -127,8 +144,12 @@
 		28737A6E27831131004D56C1 /* InvoiceReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceReport.swift; sourceTree = "<group>"; };
 		28737A7027831170004D56C1 /* InvoiceProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceProduct.swift; sourceTree = "<group>"; };
 		28737A762783E1BD004D56C1 /* DeleteConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmationView.swift; sourceTree = "<group>"; };
+		28737A8827849F0B004D56C1 /* WindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowView.swift; sourceTree = "<group>"; };
+		28737A8A27862F63004D56C1 /* WindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowView.swift; sourceTree = "<group>"; };
+		28737A8C27862F72004D56C1 /* WindowStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowStore.swift; sourceTree = "<group>"; };
+		28737A9127878B16004D56C1 /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
+		28737A9327878B33004D56C1 /* InvoicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesView.swift; sourceTree = "<group>"; };
 		28A73D042763B93700F727C3 /* Invoices.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Invoices.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		28A73D062763B93700F727C3 /* Invoices_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invoices_iOSApp.swift; sourceTree = "<group>"; };
 		28A73D0A2763B93900F727C3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		28A73D0D2763B93900F727C3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		28A73D122763B9A700F727C3 /* Invoices iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Invoices iOS.entitlements"; sourceTree = "<group>"; };
@@ -174,6 +195,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28A73D352763C28A00F727C3 /* BarChart in Frameworks */,
+				28737A7927848F97004D56C1 /* RCPreferences in Frameworks */,
 				28A73D372763C29500F727C3 /* SwiftCSV in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -214,6 +236,9 @@
 		28737A55277740B0004D56C1 /* iPad */ = {
 			isa = PBXGroup;
 			children = (
+				28737A8827849F0B004D56C1 /* WindowView.swift */,
+				28737A9127878B16004D56C1 /* ProjectsView.swift */,
+				28737A9327878B33004D56C1 /* InvoicesView.swift */,
 			);
 			path = iPad;
 			sourceTree = "<group>";
@@ -251,7 +276,6 @@
 			children = (
 				28A73D382763CFA100F727C3 /* Invoices-iOS-Info.plist */,
 				28A73D122763B9A700F727C3 /* Invoices iOS.entitlements */,
-				28A73D062763B93700F727C3 /* Invoices_iOSApp.swift */,
 				28A73D0A2763B93900F727C3 /* Assets.xcassets */,
 				28A73D0C2763B93900F727C3 /* Preview Content */,
 			);
@@ -264,13 +288,6 @@
 				28A73D0D2763B93900F727C3 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		28C0436C274E9EE00057C0D0 /* InvoicesTests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = InvoicesTests;
 			sourceTree = "<group>";
 		};
 		28C61817273BF4180044ABBB /* Entities */ = {
@@ -296,13 +313,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		28D81C2B2733B04B00209EAC /* Delivery */ = {
+		28D81C2B2733B04B00209EAC /* Deliverables */ = {
 			isa = PBXGroup;
 			children = (
+				28F91D4D26A1AC110057C5CC /* InvoicesApp.swift */,
 				28737A55277740B0004D56C1 /* iPad */,
 				28D81C4B27380F5F00209EAC /* macOS */,
 			);
-			path = Delivery;
+			path = Deliverables;
 			sourceTree = "<group>";
 		};
 		28D81C2C2733B0A300209EAC /* Extensions */ = {
@@ -353,6 +371,8 @@
 		28D81C4B27380F5F00209EAC /* macOS */ = {
 			isa = PBXGroup;
 			children = (
+				28737A8A27862F63004D56C1 /* WindowView.swift */,
+				28737A8C27862F72004D56C1 /* WindowStore.swift */,
 				28F91D4F26A1AC110057C5CC /* ContentView.swift */,
 				28F91D5D26A1B33B0057C5CC /* ContentStore.swift */,
 				28C0438C275888680057C0D0 /* Toolbar.swift */,
@@ -370,7 +390,6 @@
 			isa = PBXGroup;
 			children = (
 				28F91D4C26A1AC110057C5CC /* Invoices */,
-				28C0436C274E9EE00057C0D0 /* InvoicesTests */,
 				28A73D052763B93700F727C3 /* Invoices iOS */,
 				28F91D4B26A1AC100057C5CC /* Products */,
 				28CE1DDB2763929F00491447 /* Frameworks */,
@@ -390,7 +409,6 @@
 		28F91D4C26A1AC110057C5CC /* Invoices */ = {
 			isa = PBXGroup;
 			children = (
-				28F91D4D26A1AC110057C5CC /* InvoicesApp.swift */,
 				28C04384275656230057C0D0 /* ProjectsManager.swift */,
 				28C04388275659690057C0D0 /* InvoicesManager.swift */,
 				28737A65277C7442004D56C1 /* CompaniesManager.swift */,
@@ -399,7 +417,7 @@
 				28A73D3F2764D2C400F727C3 /* IcloudFilesManager.swift */,
 				28C61817273BF4180044ABBB /* Entities */,
 				28D81C2C2733B0A300209EAC /* Extensions */,
-				28D81C2B2733B04B00209EAC /* Delivery */,
+				28D81C2B2733B04B00209EAC /* Deliverables */,
 				2867F84027062EFC002CA8CC /* templates */,
 				28F91D5126A1AC150057C5CC /* Assets.xcassets */,
 				28A73D332763C05100F727C3 /* Invoices.entitlements */,
@@ -436,6 +454,7 @@
 			packageProductDependencies = (
 				28A73D342763C28A00F727C3 /* BarChart */,
 				28A73D362763C29500F727C3 /* SwiftCSV */,
+				28737A7827848F97004D56C1 /* RCPreferences */,
 			);
 			productName = "Invoices iOS";
 			productReference = 28A73D042763B93700F727C3 /* Invoices.app */;
@@ -571,30 +590,44 @@
 			buildActionMask = 2147483647;
 			files = (
 				28A73D212763BF8800F727C3 /* InvoiceStore.swift in Sources */,
+				28737A8F27863751004D56C1 /* WindowStore.swift in Sources */,
+				28737A86278490EA004D56C1 /* PropertyLoopable.swift in Sources */,
+				28737A812784906B004D56C1 /* NewCompanyView.swift in Sources */,
 				28A73D2B2763BFA600F727C3 /* HtmlView.swift in Sources */,
 				28A73D282763BF9C00F727C3 /* ReportView.swift in Sources */,
 				28A73D292763BF9C00F727C3 /* ReportStore.swift in Sources */,
-				28A73D072763B93700F727C3 /* Invoices_iOSApp.swift in Sources */,
 				28737A7327831336004D56C1 /* NoInvoicesView.swift in Sources */,
 				28A73D272763BF9C00F727C3 /* ReportsInteractor.swift in Sources */,
 				28A73D1F2763BF7B00F727C3 /* ChartsView.swift in Sources */,
 				28A73D412764D9A600F727C3 /* IcloudFilesManager.swift in Sources */,
+				28737A8327849072004D56C1 /* CompanyDetailsStore.swift in Sources */,
 				28A73D262763BF8800F727C3 /* InvoiceView.swift in Sources */,
 				28A73D1A2763BF6A00F727C3 /* Numbers.swift in Sources */,
 				28A73D132763BF4B00F727C3 /* ProjectsManager.swift in Sources */,
+				28737A7F27848FD3004D56C1 /* CompanyDetails.swift in Sources */,
+				28737A9627878B4E004D56C1 /* InvoicesView.swift in Sources */,
 				28A73D182763BF6100F727C3 /* Report.swift in Sources */,
 				28A73D162763BF5800F727C3 /* InvoiceData.swift in Sources */,
+				28737A9527878B49004D56C1 /* ProjectsView.swift in Sources */,
 				28A73D152763BF5500F727C3 /* Project.swift in Sources */,
+				28737A8427849072004D56C1 /* CompaniesStore.swift in Sources */,
 				28A73D222763BF8800F727C3 /* InvoiceEditingStore.swift in Sources */,
 				28A73D172763BF5B00F727C3 /* InvoiceFolder.swift in Sources */,
 				28A73D232763BF8800F727C3 /* InvoiceEditingView.swift in Sources */,
 				28A73D1C2763BF7100F727C3 /* AppFilesManager.swift in Sources */,
-				28A73D202763BF7E00F727C3 /* Toolbar.swift in Sources */,
-				28A73D1D2763BF7500F727C3 /* ContentView.swift in Sources */,
+				28737A8227849072004D56C1 /* CompanyDetailsView.swift in Sources */,
+				28737A8927849F0B004D56C1 /* WindowView.swift in Sources */,
+				28737A8027848FE3004D56C1 /* CompaniesManager.swift in Sources */,
+				28737A8727849BDA004D56C1 /* InvoicesApp.swift in Sources */,
 				28A73D192763BF6700F727C3 /* Date.swift in Sources */,
+				28737A7D27848FD3004D56C1 /* Company.swift in Sources */,
 				28A73D142763BF4F00F727C3 /* InvoicesManager.swift in Sources */,
+				28737A7C27848FCD004D56C1 /* InvoiceProduct.swift in Sources */,
+				28737A8527849082004D56C1 /* DeleteConfirmationView.swift in Sources */,
 				28737A7227831336004D56C1 /* NewInvoiceView.swift in Sources */,
+				28737A7B27848FBD004D56C1 /* NoProjectsView.swift in Sources */,
 				28A73D1E2763BF7800F727C3 /* ContentStore.swift in Sources */,
+				28737A7E27848FD3004D56C1 /* InvoiceReport.swift in Sources */,
 				28A73D2A2763BF9C00F727C3 /* ReportRowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -617,6 +650,7 @@
 				28C04362274E2D7B0057C0D0 /* Report.swift in Sources */,
 				28C04387275656DA0057C0D0 /* Project.swift in Sources */,
 				28C04389275659690057C0D0 /* InvoicesManager.swift in Sources */,
+				28737A8B27862F64004D56C1 /* WindowView.swift in Sources */,
 				28C61819273BF43C0044ABBB /* InvoiceFolder.swift in Sources */,
 				28737A5C277BB8B3004D56C1 /* NoInvoicesView.swift in Sources */,
 				28C04385275656230057C0D0 /* ProjectsManager.swift in Sources */,
@@ -636,6 +670,7 @@
 				28C0438D275888680057C0D0 /* Toolbar.swift in Sources */,
 				28737A62277C2E66004D56C1 /* NewCompanyView.swift in Sources */,
 				28737A772783E1BD004D56C1 /* DeleteConfirmationView.swift in Sources */,
+				28737A8D27862F72004D56C1 /* WindowStore.swift in Sources */,
 				28737A66277C7442004D56C1 /* CompaniesManager.swift in Sources */,
 				2814C1F626E9323A0054FD5B /* Date.swift in Sources */,
 				28C0438327563CA60057C0D0 /* ChartsView.swift in Sources */,
@@ -1044,6 +1079,11 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		28737A57277B2ADC004D56C1 /* RCPreferences */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 28737A56277B2ADC004D56C1 /* XCRemoteSwiftPackageReference "RCPreferences" */;
+			productName = RCPreferences;
+		};
+		28737A7827848F97004D56C1 /* RCPreferences */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 28737A56277B2ADC004D56C1 /* XCRemoteSwiftPackageReference "RCPreferences" */;
 			productName = RCPreferences;

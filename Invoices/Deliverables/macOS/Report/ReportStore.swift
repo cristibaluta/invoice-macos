@@ -201,6 +201,10 @@ class ReportStore: ObservableObject {
                 let invoiceJsonUrl = invoiceUrl.appendingPathComponent("data.json")
                 let jsonData = try encoder.encode(data)
                 try jsonData.write(to: invoiceJsonUrl)
+                // Save pdf
+                let pdfName = "Report-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).pdf"
+                let pdfUrl = invoiceUrl.appendingPathComponent(pdfName)
+                try self.printingData?.write(to: pdfUrl)
             }
             catch {
                 print(error)

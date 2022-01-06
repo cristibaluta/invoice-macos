@@ -36,7 +36,10 @@ class InvoicesManager {
         }
     }
     
-    func generateNewInvoice (in project: Project, using invoice: InvoiceFolder?, completion: (InvoiceFolder, InvoiceData) -> Void) {
+    func generateNewInvoice (in project: Project,
+                             using invoice: InvoiceFolder?,
+                             completion: (InvoiceFolder, InvoiceData) -> Void) {
+        
         AppFilesManager.default.executeInSelectedDir { url in
             do {
                 /// Read data from last invoice

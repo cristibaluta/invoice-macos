@@ -23,7 +23,18 @@ enum UserPreferences: String, RCPreferencesProtocol {
 struct InvoicesApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(store: ContentStore())
+            WindowView(store: WindowStore())
         }
+        .commands {
+            SidebarCommands()
+        }
+        #if os(macOS)
+        Settings {
+            VStack{
+                Text("Settings view")
+            }
+            .frame(width: 500, height: 500)
+        }
+        #endif
     }
 }
