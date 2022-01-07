@@ -22,12 +22,31 @@ struct WindowView: View {
             NavigationView {
                 switch store.sidebarState {
                     case .noProjects:
-                        Spacer()
+                        NoProjectsView(store: store.contentStore)
                     case .projects(_):
                         ProjectsView(store: store)
-                    case .invoices(let invoices):
-                        InvoicesView(store: store.contentStore)
+                    case .invoices(_):
+                        ProjectsView(store: store)
                 }
+            }
+            .tabItem { Label("Invoices", systemImage: "list.bullet") }
+            .tag(0)
+
+            NavigationView {
+                
+            }
+            .tabItem { Label("Companies", systemImage: "heart.fill") }
+            .tag(1)
+            
+            NavigationView {
+                
+            }
+            .tabItem { Label("Settings", systemImage: "gearshape.fill") }
+            .tag(2)
+        }
+    }
+}
+
 //                switch store.viewState {
 //                    case .noProjects:
 //                        NoProjectsView(store: store)
@@ -78,48 +97,3 @@ struct WindowView: View {
 //                        }
 //                        .padding(40)
 //                }
-            }
-            .tabItem { Label("Invoices", systemImage: "list.bullet") }
-            .tag(0)
-
-            NavigationView {
-                
-            }
-            .tabItem { Label("Companies", systemImage: "heart.fill") }
-            .tag(1)
-        }
-        .navigationTitle("Invoices")
-    }
-}
-
-//var sideBar: some View {
-//  List(selection: $selection) {
-//    NavigationLink(
-//      destination: GemList(),
-//      tag: NavigationItem.all,
-//      selection: $selection
-//    ) {
-//      Label("All", systemImage: "list.bullet")
-//    }
-//    .tag(NavigationItem.all)
-//    NavigationLink(
-//      destination: FavoriteGems(),
-//      tag: NavigationItem.favorites,
-//      selection: $selection
-//    ) {
-//      Label("Favorites", systemImage: "heart")
-//    }
-//    .tag(NavigationItem.favorites)
-//  }
-//  // 3
-//  .frame(minWidth: 200)
-//  .listStyle(SidebarListStyle())
-//  .toolbar {
-//    // 4
-//    ToolbarItem {
-//      Button(action: toggleSideBar) {
-//        Label("Toggle Sidebar", systemImage: "sidebar.left")
-//      }
-//    }
-//  }
-//}

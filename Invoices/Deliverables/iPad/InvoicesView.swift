@@ -9,11 +9,13 @@ import SwiftUI
 
 struct InvoicesView: View {
     
-    @ObservedObject var store: ContentStore
+    @ObservedObject var store: WindowStore
     @State var selection: Int?
+    private var project: Project
     
-    init (store: ContentStore) {
+    init (store: WindowStore, project: Project) {
         self.store = store
+        self.project = project
     }
     
     var body: some View {
@@ -26,6 +28,19 @@ struct InvoicesView: View {
                 Label(invoice.name, systemImage: "doc.text")
             }
             .tag(0)
+        }
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("Invoices").font(.headline)
+            }
+            ToolbarItem(placement: .primaryAction) {
+                Button("Add") {
+                    
+                }
+            }
+        }
+        .onAppear {
+            store.loadProject(project)
         }
     }
 }

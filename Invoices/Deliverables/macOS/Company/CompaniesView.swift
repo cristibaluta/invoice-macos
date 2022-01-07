@@ -1,13 +1,13 @@
 //
-//  ProjectsView.swift
+//  CompaniesView.swift
 //  Invoices
 //
-//  Created by Cristian Baluta on 06.01.2022.
+//  Created by Cristian Baluta on 07.01.2022.
 //
 
 import SwiftUI
 
-struct ProjectsView: View {
+struct CompaniesView: View {
     
     @ObservedObject var store: WindowStore
     @State var selection: Int?
@@ -30,7 +30,7 @@ struct ProjectsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text("Projects").font(.headline)
+                Text("Companies").font(.headline)
             }
             ToolbarItem(placement: .primaryAction) {
                 Button("Add") {

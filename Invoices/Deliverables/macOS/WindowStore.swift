@@ -65,15 +65,6 @@ final class WindowStore: ObservableObject {
         }
     }
     
-    func createProject (_ name: String) {
-        guard !name.isEmpty else {
-            return
-        }
-        ProjectsManager.shared.createProject(name) { project in
-            self.reloadProjects()
-        }
-    }
-    
     func loadProject(_ project: Project) {
         
         selectedProject = project
@@ -117,6 +108,15 @@ final class WindowStore: ObservableObject {
 //            if invoices.isEmpty {
 //                viewState = .noInvoices
 //            }
+        }
+    }
+    
+    func createProject (_ name: String) {
+        guard !name.isEmpty else {
+            return
+        }
+        ProjectsManager.shared.createProject(name) { project in
+            self.reloadProjects()
         }
     }
     

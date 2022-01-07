@@ -49,6 +49,8 @@
 		28737A8F27863751004D56C1 /* WindowStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A8C27862F72004D56C1 /* WindowStore.swift */; };
 		28737A9527878B49004D56C1 /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A9127878B16004D56C1 /* ProjectsView.swift */; };
 		28737A9627878B4E004D56C1 /* InvoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A9327878B33004D56C1 /* InvoicesView.swift */; };
+		28737A982787A42F004D56C1 /* CompaniesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A972787A42F004D56C1 /* CompaniesView.swift */; };
+		28737A992787A42F004D56C1 /* CompaniesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A972787A42F004D56C1 /* CompaniesView.swift */; };
 		28A73D0B2763B93900F727C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28A73D0A2763B93900F727C3 /* Assets.xcassets */; };
 		28A73D0E2763B93900F727C3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28A73D0D2763B93900F727C3 /* Preview Assets.xcassets */; };
 		28A73D132763BF4B00F727C3 /* ProjectsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C04384275656230057C0D0 /* ProjectsManager.swift */; };
@@ -149,6 +151,7 @@
 		28737A8C27862F72004D56C1 /* WindowStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowStore.swift; sourceTree = "<group>"; };
 		28737A9127878B16004D56C1 /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		28737A9327878B33004D56C1 /* InvoicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesView.swift; sourceTree = "<group>"; };
+		28737A972787A42F004D56C1 /* CompaniesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesView.swift; sourceTree = "<group>"; };
 		28A73D042763B93700F727C3 /* Invoices.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Invoices.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28A73D0A2763B93900F727C3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		28A73D0D2763B93900F727C3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -247,6 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				28737A61277C2E66004D56C1 /* NewCompanyView.swift */,
+				28737A972787A42F004D56C1 /* CompaniesView.swift */,
 				28737A63277C2EB8004D56C1 /* CompaniesStore.swift */,
 				2867F84B270B595C002CA8CC /* CompanyDetailsView.swift */,
 				28D81C2F2733D49000209EAC /* CompanyDetailsStore.swift */,
@@ -606,6 +610,7 @@
 				28A73D132763BF4B00F727C3 /* ProjectsManager.swift in Sources */,
 				28737A7F27848FD3004D56C1 /* CompanyDetails.swift in Sources */,
 				28737A9627878B4E004D56C1 /* InvoicesView.swift in Sources */,
+				28737A992787A42F004D56C1 /* CompaniesView.swift in Sources */,
 				28A73D182763BF6100F727C3 /* Report.swift in Sources */,
 				28A73D162763BF5800F727C3 /* InvoiceData.swift in Sources */,
 				28737A9527878B49004D56C1 /* ProjectsView.swift in Sources */,
@@ -650,6 +655,7 @@
 				28C04362274E2D7B0057C0D0 /* Report.swift in Sources */,
 				28C04387275656DA0057C0D0 /* Project.swift in Sources */,
 				28C04389275659690057C0D0 /* InvoicesManager.swift in Sources */,
+				28737A982787A42F004D56C1 /* CompaniesView.swift in Sources */,
 				28737A8B27862F64004D56C1 /* WindowView.swift in Sources */,
 				28C61819273BF43C0044ABBB /* InvoiceFolder.swift in Sources */,
 				28737A5C277BB8B3004D56C1 /* NoInvoicesView.swift in Sources */,
