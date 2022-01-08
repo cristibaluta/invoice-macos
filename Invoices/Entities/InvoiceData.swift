@@ -13,8 +13,8 @@ struct InvoiceData: Codable, PropertyLoopable {
     var invoice_nr: Int
     var invoice_date: String
     
-    var client: CompanyDetails
-    var contractor: CompanyDetails
+    var client: CompanyData
+    var contractor: CompanyData
     
     var products: [InvoiceProduct]
     var reports: [InvoiceReport]
@@ -50,8 +50,8 @@ struct InvoiceData: Codable, PropertyLoopable {
         invoice_series = try container.decode(String.self, forKey: .invoice_series)
         invoice_nr = try container.decode(Int.self, forKey: .invoice_nr)
         invoice_date = try container.decode(String.self, forKey: .invoice_date)
-        client = try container.decode(CompanyDetails.self, forKey: .client)
-        contractor = try container.decode(CompanyDetails.self, forKey: .contractor)
+        client = try container.decode(CompanyData.self, forKey: .client)
+        contractor = try container.decode(CompanyData.self, forKey: .contractor)
         products = try container.decode([InvoiceProduct].self, forKey: .products)
         reports = try container.decode([InvoiceReport].self, forKey: .reports)
         currency = try container.decode(String.self, forKey: .currency)
@@ -63,8 +63,8 @@ struct InvoiceData: Codable, PropertyLoopable {
     init (invoice_series: String,
           invoice_nr: Int,
           invoice_date: String,
-          client: CompanyDetails,
-          contractor: CompanyDetails,
+          client: CompanyData,
+          contractor: CompanyData,
           products: [InvoiceProduct],
           reports: [InvoiceReport],
           currency: String,

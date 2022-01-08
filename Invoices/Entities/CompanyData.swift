@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CompanyDetails: Codable, Hashable, PropertyLoopable {
+struct CompanyData: Codable, Hashable, PropertyLoopable {
     var name: String
     var orc: String
     var cui: String

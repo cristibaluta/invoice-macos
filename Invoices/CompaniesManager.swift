@@ -11,8 +11,8 @@ class CompaniesManager {
     
     static let shared = CompaniesManager()
     
-    var emptyCompanyDetails: CompanyDetails {
-        return CompanyDetails(name: "",
+    var emptyCompanyDetails: CompanyData {
+        return CompanyData(name: "",
                               orc: "",
                               cui: "",
                               address: "",
@@ -23,19 +23,19 @@ class CompaniesManager {
                               phone: nil,
                               web: nil)
     }
-    private var companies: [CompanyDetails] = []
+    private var companies: [CompanyData] = []
     
     init() {
         
     }
     
-    func getCompanies (completion: ([CompanyDetails]) -> Void) {
+    func getCompanies (completion: ([CompanyData]) -> Void) {
         
         AppFilesManager.default.executeInSelectedDir { url in
             let companiesUrl = url.appendingPathComponent("companies.json")
             do {
                 let jsonData = try Data(contentsOf: companiesUrl)
-                let companies = try JSONDecoder().decode([CompanyDetails].self, from: jsonData)
+                let companies = try JSONDecoder().decode([CompanyData].self, from: jsonData)
                 self.companies = companies
                 completion(companies)
             }
@@ -46,7 +46,7 @@ class CompaniesManager {
         }
     }
     
-    func save (_ data: CompanyDetails, completion: (CompanyDetails?) -> Void) {
+    func save (_ data: CompanyData, completion: (CompanyData?) -> Void) {
         getCompanies { companies in
             var companies = companies
             var found = false

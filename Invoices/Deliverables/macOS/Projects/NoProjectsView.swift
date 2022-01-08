@@ -8,11 +8,17 @@
 import SwiftUI
 
 struct NoProjectsView: View {
+#if os(iOS)
+    typealias Stack = VStack
+#else
+    typealias Stack = HStack
+#endif
+    @ObservedObject var store: WindowStore
+    var completion: (() -> Void)?
     
-    @ObservedObject var store: ContentStore
-    
-    init (store: ContentStore) {
+    init (store: WindowStore, completion: @escaping () -> Void) {
         self.store = store
+        self.completion = completion
     }
     
     var body: some View {
@@ -22,10 +28,11 @@ struct NoProjectsView: View {
             Text("In a project you can keep invoices from the same series.")
                 .multilineTextAlignment(.center)
             Spacer()
-            HStack {
-                TextField("Project name", text: $store.projectName).frame(width: 160)
+            Stack {
+                TextField("Project name", text: $store.projectName).frame(width: 160).multilineTextAlignment(.center)
                 Button("Create") {
-//                    store.createProject(store.projectName)
+                    store.createProject(store.projectName)
+                    completion?()
                 }
             }
             Spacer()

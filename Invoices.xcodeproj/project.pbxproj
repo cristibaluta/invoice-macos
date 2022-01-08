@@ -22,7 +22,7 @@
 		28737A64277C2EB8004D56C1 /* CompaniesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A63277C2EB8004D56C1 /* CompaniesStore.swift */; };
 		28737A66277C7442004D56C1 /* CompaniesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A65277C7442004D56C1 /* CompaniesManager.swift */; };
 		28737A68277C83AC004D56C1 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A67277C83AC004D56C1 /* Company.swift */; };
-		28737A6B278310CD004D56C1 /* CompanyDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A6A278310CD004D56C1 /* CompanyDetails.swift */; };
+		28737A6B278310CD004D56C1 /* CompanyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A6A278310CD004D56C1 /* CompanyData.swift */; };
 		28737A6D2783110B004D56C1 /* PropertyLoopable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A6C2783110B004D56C1 /* PropertyLoopable.swift */; };
 		28737A6F27831131004D56C1 /* InvoiceReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A6E27831131004D56C1 /* InvoiceReport.swift */; };
 		28737A7127831170004D56C1 /* InvoiceProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A7027831170004D56C1 /* InvoiceProduct.swift */; };
@@ -34,7 +34,7 @@
 		28737A7C27848FCD004D56C1 /* InvoiceProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A7027831170004D56C1 /* InvoiceProduct.swift */; };
 		28737A7D27848FD3004D56C1 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A67277C83AC004D56C1 /* Company.swift */; };
 		28737A7E27848FD3004D56C1 /* InvoiceReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A6E27831131004D56C1 /* InvoiceReport.swift */; };
-		28737A7F27848FD3004D56C1 /* CompanyDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A6A278310CD004D56C1 /* CompanyDetails.swift */; };
+		28737A7F27848FD3004D56C1 /* CompanyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A6A278310CD004D56C1 /* CompanyData.swift */; };
 		28737A8027848FE3004D56C1 /* CompaniesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A65277C7442004D56C1 /* CompaniesManager.swift */; };
 		28737A812784906B004D56C1 /* NewCompanyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A61277C2E66004D56C1 /* NewCompanyView.swift */; };
 		28737A8227849072004D56C1 /* CompanyDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2867F84B270B595C002CA8CC /* CompanyDetailsView.swift */; };
@@ -141,7 +141,7 @@
 		28737A63277C2EB8004D56C1 /* CompaniesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesStore.swift; sourceTree = "<group>"; };
 		28737A65277C7442004D56C1 /* CompaniesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesManager.swift; sourceTree = "<group>"; };
 		28737A67277C83AC004D56C1 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
-		28737A6A278310CD004D56C1 /* CompanyDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyDetails.swift; sourceTree = "<group>"; };
+		28737A6A278310CD004D56C1 /* CompanyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyData.swift; sourceTree = "<group>"; };
 		28737A6C2783110B004D56C1 /* PropertyLoopable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyLoopable.swift; sourceTree = "<group>"; };
 		28737A6E27831131004D56C1 /* InvoiceReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceReport.swift; sourceTree = "<group>"; };
 		28737A7027831170004D56C1 /* InvoiceProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceProduct.swift; sourceTree = "<group>"; };
@@ -249,11 +249,11 @@
 		28737A69278310A2004D56C1 /* Company */ = {
 			isa = PBXGroup;
 			children = (
-				28737A61277C2E66004D56C1 /* NewCompanyView.swift */,
 				28737A972787A42F004D56C1 /* CompaniesView.swift */,
 				28737A63277C2EB8004D56C1 /* CompaniesStore.swift */,
 				2867F84B270B595C002CA8CC /* CompanyDetailsView.swift */,
 				28D81C2F2733D49000209EAC /* CompanyDetailsStore.swift */,
+				28737A61277C2E66004D56C1 /* NewCompanyView.swift */,
 			);
 			path = Company;
 			sourceTree = "<group>";
@@ -270,9 +270,16 @@
 			isa = PBXGroup;
 			children = (
 				28737A5D277BB9D3004D56C1 /* SidebarView.swift */,
-				28737A59277BB842004D56C1 /* NoProjectsView.swift */,
 			);
 			path = Sidebar;
+			sourceTree = "<group>";
+		};
+		28737A9A2789CA5F004D56C1 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				28737A59277BB842004D56C1 /* NoProjectsView.swift */,
+			);
+			path = Projects;
 			sourceTree = "<group>";
 		};
 		28A73D052763B93700F727C3 /* Invoices iOS */ = {
@@ -304,7 +311,7 @@
 				28C61818273BF43C0044ABBB /* InvoiceFolder.swift */,
 				28C04361274E2D7B0057C0D0 /* Report.swift */,
 				28737A67277C83AC004D56C1 /* Company.swift */,
-				28737A6A278310CD004D56C1 /* CompanyDetails.swift */,
+				28737A6A278310CD004D56C1 /* CompanyData.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -380,6 +387,7 @@
 				28F91D4F26A1AC110057C5CC /* ContentView.swift */,
 				28F91D5D26A1B33B0057C5CC /* ContentStore.swift */,
 				28C0438C275888680057C0D0 /* Toolbar.swift */,
+				28737A9A2789CA5F004D56C1 /* Projects */,
 				28737A752783C506004D56C1 /* Sidebar */,
 				28737A7427831375004D56C1 /* Charts */,
 				28737A69278310A2004D56C1 /* Company */,
@@ -608,7 +616,7 @@
 				28A73D262763BF8800F727C3 /* InvoiceView.swift in Sources */,
 				28A73D1A2763BF6A00F727C3 /* Numbers.swift in Sources */,
 				28A73D132763BF4B00F727C3 /* ProjectsManager.swift in Sources */,
-				28737A7F27848FD3004D56C1 /* CompanyDetails.swift in Sources */,
+				28737A7F27848FD3004D56C1 /* CompanyData.swift in Sources */,
 				28737A9627878B4E004D56C1 /* InvoicesView.swift in Sources */,
 				28737A992787A42F004D56C1 /* CompaniesView.swift in Sources */,
 				28A73D182763BF6100F727C3 /* Report.swift in Sources */,
@@ -680,7 +688,7 @@
 				28737A66277C7442004D56C1 /* CompaniesManager.swift in Sources */,
 				2814C1F626E9323A0054FD5B /* Date.swift in Sources */,
 				28C0438327563CA60057C0D0 /* ChartsView.swift in Sources */,
-				28737A6B278310CD004D56C1 /* CompanyDetails.swift in Sources */,
+				28737A6B278310CD004D56C1 /* CompanyData.swift in Sources */,
 				28F91D4E26A1AC110057C5CC /* InvoicesApp.swift in Sources */,
 				28737A6F27831131004D56C1 /* InvoiceReport.swift in Sources */,
 				28D81C3E27358BD300209EAC /* InvoiceEditingView.swift in Sources */,
@@ -712,9 +720,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_ENTITLEMENTS = "Invoices iOS/Invoices iOS.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Invoices iOS/Preview Content\"";
 				DEVELOPMENT_TEAM = 5NHDC5EV44;
@@ -736,7 +744,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ro.imagin.Invoices;
 				PRODUCT_NAME = Invoices;
-				PROVISIONING_PROFILE_SPECIFIER = "Invoices dev iOS profile";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "Invoices dev mac profile";
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
@@ -753,9 +761,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_ENTITLEMENTS = "Invoices iOS/Invoices iOS.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Invoices iOS/Preview Content\"";
 				DEVELOPMENT_TEAM = 5NHDC5EV44;
@@ -777,7 +785,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ro.imagin.Invoices;
 				PRODUCT_NAME = Invoices;
-				PROVISIONING_PROFILE_SPECIFIER = "Invoices dev iOS profile";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "Invoices dev mac profile";
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;

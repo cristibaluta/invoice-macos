@@ -22,22 +22,22 @@ struct WindowView: View {
             NavigationView {
                 switch store.sidebarState {
                     case .noProjects:
-                        NoProjectsView(store: store.contentStore)
-                    case .projects(_):
-                        ProjectsView(store: store)
-                    case .invoices(_):
+                        NoProjectsView(store: store) {
+                            store.reloadProjects()
+                        }
+                    default:
                         ProjectsView(store: store)
                 }
             }
             .tabItem { Label("Invoices", systemImage: "list.bullet") }
             .tag(0)
-
+            //
             NavigationView {
-                
+                CompaniesView(store: CompaniesStore(data: nil))
             }
             .tabItem { Label("Companies", systemImage: "heart.fill") }
             .tag(1)
-            
+            //
             NavigationView {
                 
             }

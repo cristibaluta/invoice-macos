@@ -10,5 +10,5 @@ import Foundation
 struct Company: Identifiable, Hashable {
     var id = UUID()
     var name: String
-    var details: CompanyDetails
+    var details: CompanyData
 }

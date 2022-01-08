@@ -60,9 +60,9 @@ class CompanyDetailsStore: ObservableObject {
         }
     }
     
-    var data: CompanyDetails
+    var data: CompanyData
     
-    init (data: CompanyDetails) {
+    init (data: CompanyData) {
         self.data = data
         
         name = data.name

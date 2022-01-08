@@ -74,12 +74,12 @@ class InvoiceEditingStore: ObservableObject {
         }
     }
     
-    var clientData: CompanyDetails {
+    var clientData: CompanyData {
         didSet {
             data.client = clientData
         }
     }
-    var contractorData: CompanyDetails {
+    var contractorData: CompanyData {
         didSet {
             data.contractor = contractorData
         }

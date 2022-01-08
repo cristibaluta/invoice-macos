@@ -9,23 +9,22 @@ import SwiftUI
 
 struct CompaniesView: View {
     
-    @ObservedObject var store: WindowStore
+    @ObservedObject var store: CompaniesStore
     @State var selection: Int?
     
-    init (store: WindowStore) {
+    init (store: CompaniesStore) {
         self.store = store
     }
     
     var body: some View {
-        List(store.projects, id: \.self, selection: $store.selectedInvoice) { project in
+        List(store.companies, id: \.self, selection: $store.selectedCompany) { company in
             NavigationLink(
-                destination: InvoicesView(store: store, project: project),
+                destination: NewCompanyView(store: store, company: company) { store.reload() },
                 tag: 0,
                 selection: $selection
             ) {
-                Label(project.name, systemImage: "list.bullet")
+                Text(company.name)
             }
-            .tag(0)
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -33,8 +32,12 @@ struct CompaniesView: View {
                 Text("Companies").font(.headline)
             }
             ToolbarItem(placement: .primaryAction) {
-                Button("Add") {
-                    print("Help tapped!")
+                NavigationLink(
+                    destination: NewCompanyView(store: store, company: nil) { store.reload() },
+                    tag: 1,
+                    selection: $selection
+                ) {
+                    Text("Add")
                 }
             }
         }

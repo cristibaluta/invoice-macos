@@ -22,7 +22,7 @@ enum ViewState {
     case newInvoice(InvoiceStore)
     case invoice(InvoiceStore)
     case deleteInvoice(InvoiceFolder)
-    case company(CompanyDetails?)
+    case company(CompanyData?)
     case report(ReportStore)
     case error(String, String)
 }

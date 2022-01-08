@@ -33,8 +33,12 @@ struct ProjectsView: View {
                 Text("Projects").font(.headline)
             }
             ToolbarItem(placement: .primaryAction) {
-                Button("Add") {
-                    print("Help tapped!")
+                NavigationLink(
+                    destination: NoProjectsView(store: store) { store.reloadProjects() },
+                    tag: 1,
+                    selection: $selection
+                ) {
+                    Text("Add")
                 }
             }
         }

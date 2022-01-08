@@ -11,12 +11,15 @@ struct NewCompanyView: View {
     
     @ObservedObject var store: CompaniesStore
     var callback: () -> Void
+    var company: CompanyData?
     
-    init (store: CompaniesStore, callback: @escaping () -> Void) {
+    init (store: CompaniesStore, company: CompanyData?, callback: @escaping () -> Void) {
         self.store = store
+        self.company = company
         self.callback = callback
     }
     
+    #if os(macOS)
     var body: some View {
         HStack(alignment: .top) {
             Spacer()
@@ -49,4 +52,33 @@ struct NewCompanyView: View {
             Spacer()
         }
     }
+    #else
+    @Environment(\.presentationMode) var presentationMode
+    var body: some View {
+        CompanyDetailsView(store: store.companyDetailsStore) { companyData in
+//            store.data = companyData
+        }
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text(company?.name ?? "New company").font(.headline)
+            }
+            ToolbarItem(placement: .primaryAction) {
+                Button("Save") {
+                    store.companyDetailsStore.save() {
+                        callback()
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
+                }
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }, label: { Image(systemName: "arrow.left") }))
+        .onAppear {
+            self.store.selectedCompany = company
+        }
+    }
+    #endif
 }
