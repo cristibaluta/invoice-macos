@@ -19,7 +19,8 @@ struct ContentView: View {
         
         switch store.viewState {
             case .noProjects:
-                NoProjectsView(store: store)
+                Text("No projects")
+//                NoProjectsView(store: store)
                 .padding(40)
                 
             case .noInvoices:
@@ -50,8 +51,8 @@ struct ContentView: View {
                 DeleteConfirmationView(store: store, invoice: invoice)
                 .padding(40)
             
-            case .company(let companyDetails):
-                NewCompanyView(store: CompaniesStore(data: companyDetails), callback: {
+            case .company(let companyData):
+                NewCompanyView(store: CompaniesStore(data: companyData), company: companyData, callback: {
                     store.viewState = .noInvoices
                 })
                 .padding(40)

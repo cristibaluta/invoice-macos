@@ -26,7 +26,6 @@ struct CompaniesView: View {
                 Text(company.name)
             }
         }
-        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("Companies").font(.headline)
@@ -41,5 +40,8 @@ struct CompaniesView: View {
                 }
             }
         }
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
     }
 }

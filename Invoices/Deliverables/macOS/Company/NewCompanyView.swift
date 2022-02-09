@@ -31,7 +31,7 @@ struct NewCompanyView: View {
             VStack(alignment: .leading) {
                 Spacer().frame(height: 10)
                 CompanyDetailsView(store: store.companyDetailsStore) { companyData in
-                    store.data = companyData
+//                    store.data = companyData
                 }
                 
                 Spacer().frame(height: 30)

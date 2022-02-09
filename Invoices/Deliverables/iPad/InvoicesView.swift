@@ -21,7 +21,7 @@ struct InvoicesView: View {
     var body: some View {
         List(store.invoices, id: \.self, selection: $store.selectedInvoice) { invoice in
             NavigationLink(
-              destination: Spacer(),
+                destination: InvoiceView(store: InvoiceStore(project: store.selectedProject!, data: store.selectedInvoice!)) { _ in },
               tag: 0,
               selection: $selection
             ) {
