@@ -24,15 +24,6 @@
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>NSUbiquitousContainers</key>
 	<dict>
-		<key>5NHDC5EV44.com.ralcr.utilitati</key>
-		<dict>
-			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
-			<true/>
-			<key>NSUbiquitousContainerName</key>
-			<string>Invoices</string>
-			<key>NSUbiquitousContainerSupportedFolderLevels</key>
-			<string>Any</string>
-		</dict>
 		<key>iCloud.5NHDC5EV44.ro.imagin.Invoices</key>
 		<dict>
 			<key>NSUbiquitousContainerIsDocumentScopePublic</key>

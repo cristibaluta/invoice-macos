@@ -1,34 +1,32 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "BarChart",
-        "repositoryURL": "https://github.com/dawigr/BarChart.git",
-        "state": {
-          "branch": null,
-          "revision": "9de87b161763ff44f589ed4822773c174384a9a2",
-          "version": "1.3.2"
-        }
-      },
-      {
-        "package": "RCPreferences",
-        "repositoryURL": "https://github.com/ralcr/RCPreferences",
-        "state": {
-          "branch": "master",
-          "revision": "0fa2ff20175e7f2e745d25db7ba047e94eebe210",
-          "version": null
-        }
-      },
-      {
-        "package": "SwiftCSV",
-        "repositoryURL": "https://github.com/swiftcsv/SwiftCSV",
-        "state": {
-          "branch": null,
-          "revision": "039cc273dcc91f4c9d85e05a2514bbe63e7dde60",
-          "version": "0.6.1"
-        }
+  "pins" : [
+    {
+      "identity" : "barchart",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dawigr/BarChart.git",
+      "state" : {
+        "revision" : "9de87b161763ff44f589ed4822773c174384a9a2",
+        "version" : "1.3.2"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "rcpreferences",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/cristibaluta/RCPreferences",
+      "state" : {
+        "branch" : "master",
+        "revision" : "0fa2ff20175e7f2e745d25db7ba047e94eebe210"
+      }
+    },
+    {
+      "identity" : "swiftcsv",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftcsv/SwiftCSV",
+      "state" : {
+        "revision" : "039cc273dcc91f4c9d85e05a2514bbe63e7dde60",
+        "version" : "0.6.1"
+      }
+    }
+  ],
+  "version" : 2
 }
