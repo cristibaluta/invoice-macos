@@ -14,9 +14,3 @@ struct Report: Identifiable {
     var description: String
     var duration: Decimal
 }
-
-struct ReportProject: Identifiable {
-    var id = UUID()
-    var name: String
-    var isOn: Bool
-}

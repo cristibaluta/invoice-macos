@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct InvoiceFolder: Identifiable, Hashable {
+struct Invoice: Identifiable, Hashable {
     var id = UUID()
     var date: Date
     var invoiceNr: String

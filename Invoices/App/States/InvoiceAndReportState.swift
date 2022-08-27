@@ -31,7 +31,7 @@ class InvoiceAndReportState: ObservableObject {
     private var cancellable: Cancellable?
     private var cancellables = Set<AnyCancellable>()
 
-    var project: Project
+    var folder: Folder
     var pdfData: Data?
     var data: InvoiceData {
         didSet {
@@ -43,15 +43,15 @@ class InvoiceAndReportState: ObservableObject {
     private let htmlSubject = PassthroughSubject<String, Never>()
 
 
-    init (project: Project,
+    init (folder: Folder,
           data: InvoiceData,
           invoicesInteractor: InvoicesInteractor,
           reportsInteractor: ReportsInteractor) {
 
-        self.project = project
+        self.folder = folder
         self.data = data
-        self.invoiceState = InvoiceState(project: project, data: data, invoicesInteractor: invoicesInteractor)
-        self.reportState = ReportState(project: project, data: data, reportsInteractor: reportsInteractor)
+        self.invoiceState = InvoiceState(folder: folder, data: data, invoicesInteractor: invoicesInteractor)
+        self.reportState = ReportState(folder: folder, data: data, reportsInteractor: reportsInteractor)
         self.invoiceEditorState = InvoiceEditorState(data: data)
         self.reportEditorState = ReportEditorState(data: data)
 

@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct ProjectsListScreen: View {
+struct FoldersListScreen: View {
 
-    @EnvironmentObject var projectsState: ProjectsState
+    @EnvironmentObject var foldersState: FoldersState
 
     
     var body: some View {
@@ -17,18 +17,18 @@ struct ProjectsListScreen: View {
         let _ = Self._printChanges()
 
         List {
-            ForEach(projectsState.projects, id: \.self) { proj in
-                NavigationLink(destination: InvoicesListScreen(project: proj)) {
-                    Label(proj.name, systemImage: "list.bullet")
+            ForEach(foldersState.folders, id: \.self) { f in
+                NavigationLink(destination: InvoicesListScreen(folder: f)) {
+                    Label(f.name, systemImage: "list.bullet")
                 }
             }
             .onDelete(perform: delete)
         }
         .refreshable {
-            projectsState.refresh()
+            foldersState.refresh()
         }
         .onAppear {
-            projectsState.refresh()
+            foldersState.refresh()
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -36,9 +36,9 @@ struct ProjectsListScreen: View {
             }
             ToolbarItem(placement: .primaryAction) {
                 Button("New") {
-                    projectsState.isShowingNewProjectSheet = true
+                    foldersState.isShowingNewFolderSheet = true
                 }
-                .sheet(isPresented: $projectsState.isShowingNewProjectSheet) {
+                .sheet(isPresented: $foldersState.isShowingNewFolderSheet) {
                     NewProjectSheet()
                 }
             }
@@ -50,6 +50,6 @@ struct ProjectsListScreen: View {
         guard let index = offsets.first else {
             return
         }
-        projectsState.deleteProject(at: index)
+        foldersState.deleteFolder(at: index)
     }
 }

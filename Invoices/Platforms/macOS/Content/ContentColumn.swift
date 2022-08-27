@@ -15,7 +15,7 @@ enum ViewType {
     case noInvoices
     case charts(ChartConfiguration, ChartConfiguration, Decimal)
     case newInvoice(InvoiceAndReportState)
-    case deleteInvoice(InvoiceFolder)
+    case deleteInvoice(Invoice)
     case invoice(InvoiceAndReportState)
     case report(InvoiceAndReportState)
     case company(CompanyData)
@@ -39,7 +39,7 @@ class ContentColumnState: ObservableObject {
 struct ContentColumn: View {
 
     @EnvironmentObject private var contentColumnState: ContentColumnState
-    @EnvironmentObject private var projectsState: ProjectsState
+    @EnvironmentObject private var foldersState: FoldersState
     @EnvironmentObject private var companiesState: CompaniesState
 
     var body: some View {
@@ -48,9 +48,9 @@ struct ContentColumn: View {
 
         switch contentColumnState.type {
             case .noProjects:
-                NewProjectView { newProjectName in
-                    projectsState.createProject(named: newProjectName) { proj in
-                        self.projectsState.selectedProject = proj
+                NewFolderView { newProjectName in
+                    foldersState.createFolder(named: newProjectName) { proj in
+                        self.foldersState.selectedFolder = proj
                     }
                 }
 

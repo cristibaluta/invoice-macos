@@ -15,9 +15,9 @@ class InvoiceAndReportScreenState: ObservableObject {
             self.html = invoiceReportState.html
         }
     }
-    var invoice: InvoiceFolder
+    var invoice: Invoice
 
-    init(invoice: InvoiceFolder, invoiceReportState: InvoiceAndReportState) {
+    init(invoice: Invoice, invoiceReportState: InvoiceAndReportState) {
         print(">>>>>> init InvoiceAndReportScreenState")
         self.invoice = invoice
         self.invoiceReportState = invoiceReportState

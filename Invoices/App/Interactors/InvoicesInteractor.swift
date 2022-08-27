@@ -16,14 +16,14 @@ class InvoicesInteractor {
         self.repository = repository
     }
 
-    func refreshInvoicesList (for project: Project) -> AnyPublisher<[InvoiceFolder], Never> {
+    func refreshInvoicesList (for folder: Folder) -> AnyPublisher<[Invoice], Never> {
 
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
-        let projectUrl = documentsDirectory.appendingPathComponent(project.name)
+        let folderUrl = documentsDirectory.appendingPathComponent(folder.name)
 
         return repository
-            .readFolderContent(at: projectUrl)
+            .readFolderContent(at: folderUrl)
             .compactMap { file in
                 if file.hasPrefix(".") {
                     return nil
@@ -34,7 +34,7 @@ class InvoicesInteractor {
                 let comps: [String] = file.components(separatedBy: "-")
                 if let dateComp = comps.first, let date = Date(yyyyMMdd: dateComp) {
                     let invoiceNrComp = comps.last ?? ""
-                    return InvoiceFolder(date: date, invoiceNr: invoiceNrComp, name: file)
+                    return Invoice(date: date, invoiceNr: invoiceNrComp, name: file)
                 }
                 return nil
             }
@@ -42,13 +42,13 @@ class InvoicesInteractor {
             .eraseToAnyPublisher()
     }
 
-    func readInvoice (for invoiceFolder: InvoiceFolder, in project: Project) -> AnyPublisher<InvoiceData, Never> {
+    func readInvoice (for invoice: Invoice, in folder: Folder) -> AnyPublisher<InvoiceData, Never> {
 
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
         let invoiceUrl = documentsDirectory
-            .appendingPathComponent(project.name)
-            .appendingPathComponent(invoiceFolder.name)
+            .appendingPathComponent(folder.name)
+            .appendingPathComponent(invoice.name)
             .appendingPathComponent("data.json")
         print(invoiceUrl)
         
@@ -59,12 +59,12 @@ class InvoicesInteractor {
             .eraseToAnyPublisher()
     }
 
-    func readInvoiceTemplates (in project: Project) -> AnyPublisher<(String, String), Never> {
+    func readInvoiceTemplates (in folder: Folder) -> AnyPublisher<(String, String), Never> {
 
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
-        let projectUrl = documentsDirectory.appendingPathComponent(project.name)
-        let templatesUrl = projectUrl.appendingPathComponent("templates")
+        let folderUrl = documentsDirectory.appendingPathComponent(folder.name)
+        let templatesUrl = folderUrl.appendingPathComponent("templates")
 
         let template_invoice = repository
             .readFile(at: templatesUrl.appendingPathComponent("template_invoice.html"))
@@ -79,15 +79,15 @@ class InvoicesInteractor {
         return publisher
     }
 
-    func saveInvoice (data: InvoiceData, pdfData: Data?, in project: Project, completion: @escaping (InvoiceFolder) -> Void) {
+    func saveInvoice (data: InvoiceData, pdfData: Data?, in folder: Folder, completion: @escaping (Invoice) -> Void) {
 
         repository.execute { baseUrl in
             // Generate folder if none exists
             let invoiceNr = "\(data.invoice_series)\(data.invoice_nr.prefixedWith0)"
             let invoiceFolderName = "\(data.date.yyyyMMdd)-\(invoiceNr)"
 
-            let projectUrl = baseUrl.appendingPathComponent(project.name)
-            let invoiceUrl = projectUrl.appendingPathComponent(invoiceFolderName)
+            let folderUrl = baseUrl.appendingPathComponent(folder.name)
+            let invoiceUrl = folderUrl.appendingPathComponent(invoiceFolderName)
 
             do {
                 // Create folder if does not exist
@@ -103,7 +103,7 @@ class InvoicesInteractor {
 
                 let _ = Publishers.Zip(write_folder, write_json)
                 .sink { x in
-                    completion(InvoiceFolder(date: data.date, invoiceNr: invoiceNr, name: invoiceFolderName))
+                    completion(Invoice(date: data.date, invoiceNr: invoiceNr, name: invoiceFolderName))
                 }
 
                 // Save pdf
@@ -117,11 +117,11 @@ class InvoicesInteractor {
         }
     }
 
-    func deleteInvoice (_ invoice: InvoiceFolder, in project: Project, completion: (Bool) -> Void) {
+    func deleteInvoice (_ invoice: Invoice, in folder: Folder, completion: (Bool) -> Void) {
 
         repository.execute { baseUrl in
-            let projectUrl = baseUrl.appendingPathComponent(project.name)
-            let invoiceUrl = projectUrl.appendingPathComponent(invoice.name)
+            let folderUrl = baseUrl.appendingPathComponent(folder.name)
+            let invoiceUrl = folderUrl.appendingPathComponent(invoice.name)
             _ = repository.removeItem(at: invoiceUrl)
             completion(true)
         }

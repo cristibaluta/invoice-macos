@@ -16,12 +16,12 @@ class ReportsInteractor {
         self.repository = repository
     }
 
-    func readReportTemplates (in project: Project) -> AnyPublisher<(String, String, String), Never> {
+    func readReportTemplates (in folder: Folder) -> AnyPublisher<(String, String, String), Never> {
 
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
-        let projectUrl = documentsDirectory.appendingPathComponent(project.name)
-        let templatesUrl = projectUrl.appendingPathComponent("templates")
+        let folderUrl = documentsDirectory.appendingPathComponent(folder.name)
+        let templatesUrl = folderUrl.appendingPathComponent("templates")
 
         let t1 = repository
             .readFile(at: templatesUrl.appendingPathComponent("template_report.html"))
@@ -96,15 +96,15 @@ class ReportsInteractor {
         return projects
     }
 
-    func saveReport (data: InvoiceData, pdfData: Data?, in project: Project, completion: @escaping (InvoiceFolder) -> Void) {
+    func saveReport (data: InvoiceData, pdfData: Data?, in folder: Folder, completion: @escaping (Invoice) -> Void) {
 
         repository.execute { baseUrl in
             // Generate folder if none exists
             let invoiceNr = "\(data.invoice_series)\(data.invoice_nr.prefixedWith0)"
-            let invoiceFolderName = "\(data.date.yyyyMMdd)-\(invoiceNr)"
+            let invoiceName = "\(data.date.yyyyMMdd)-\(invoiceNr)"
 
-            let projectUrl = baseUrl.appendingPathComponent(project.name)
-            let invoiceUrl = projectUrl.appendingPathComponent(invoiceFolderName)
+            let folderUrl = baseUrl.appendingPathComponent(folder.name)
+            let invoiceUrl = folderUrl.appendingPathComponent(invoiceName)
 
             do {
                 // Create folder if does not exist
@@ -120,7 +120,7 @@ class ReportsInteractor {
 
                 let _ = Publishers.Zip(write_folder, write_json)
                 .sink { x in
-                    completion(InvoiceFolder(date: data.date, invoiceNr: invoiceNr, name: invoiceFolderName))
+                    completion(Invoice(date: data.date, invoiceNr: invoiceNr, name: invoiceName))
                 }
 
                 // Save pdf

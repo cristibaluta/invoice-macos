@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct NewProjectView: View {
+struct NewFolderView: View {
 
 #if os(iOS)
     typealias Stack = VStack
@@ -16,7 +16,7 @@ struct NewProjectView: View {
     typealias Stack = VStack
 #endif
 
-    @State var projectName: String = ""
+    @State var folderName: String = ""
     private var onTap: (String) -> Void
 
     init (onTap: @escaping (String) -> Void) {
@@ -26,14 +26,14 @@ struct NewProjectView: View {
     var body: some View {
         VStack(alignment: .center) {
 
-            Text("New project").font(.system(size: 40)).bold().padding(10)
-            Text("In a project you can keep invoices from the same series.")
+            Text("New folder").font(.system(size: 40)).bold().padding(10)
+            Text("In a folder you can keep invoices from the same series.")
                 .multilineTextAlignment(.center)
 
             Spacer().frame(height: 60)
 
             Stack {
-                TextField("Project name", text: $projectName)
+                TextField("Folder name", text: $folderName)
                     .frame(width: 160)
                     .multilineTextAlignment(.center)
                     .modifier(OutlineTextField())
@@ -41,7 +41,7 @@ struct NewProjectView: View {
                 Spacer().frame(height: 20)
 
                 Button("Create") {
-                    onTap(projectName)
+                    onTap(folderName)
                 }
             }
         }

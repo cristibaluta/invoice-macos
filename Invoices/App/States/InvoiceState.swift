@@ -13,24 +13,24 @@ class InvoiceState: ObservableObject {
     private var cancellable: Cancellable?
     private let invoicesInteractor: InvoicesInteractor
 
-    var project: Project
+    var folder: Folder
     var data: InvoiceData
     var html = ""
 
 
-    init (project: Project,
+    init (folder: Folder,
           data: InvoiceData,
           invoicesInteractor: InvoicesInteractor) {
 
         print("init InvoiceState")
-        self.project = project
+        self.folder = folder
         self.data = data
         self.invoicesInteractor = invoicesInteractor
     }
 
     func calculate (completion: @escaping (String) -> Void) {
 
-        cancellable = invoicesInteractor.readInvoiceTemplates(in: project)
+        cancellable = invoicesInteractor.readInvoiceTemplates(in: folder)
         .sink { templates in
             /// 0 = page template
             /// 1 = row template
@@ -68,10 +68,10 @@ class InvoiceState: ObservableObject {
         }
     }
 
-    func save (pdfData: Data?, completion: @escaping (InvoiceFolder?) -> Void) {
+    func save (pdfData: Data?, completion: @escaping (Invoice?) -> Void) {
 
-        invoicesInteractor.saveInvoice(data: data, pdfData: pdfData, in: project) { invoiceFolder in
-            completion(invoiceFolder)
+        invoicesInteractor.saveInvoice(data: data, pdfData: pdfData, in: folder) { invoice in
+            completion(invoice)
         }
     }
 

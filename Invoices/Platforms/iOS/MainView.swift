@@ -11,7 +11,7 @@ import Combine
 
 struct MainView: View {
 
-    @EnvironmentObject var projectsState: ProjectsState
+    @EnvironmentObject var foldersState: FoldersState
     @EnvironmentObject var companiesState: CompaniesState
     
     var body: some View {
@@ -19,8 +19,8 @@ struct MainView: View {
             //
             //
             NavigationView {
-                if $projectsState.projects.count > 0 {
-                    ProjectsListScreen()
+                if $foldersState.folders.count > 0 {
+                    FoldersListScreen()
                 } else {
                     NoProjectsScreen()
                 }
@@ -28,7 +28,7 @@ struct MainView: View {
             .tabItem { Label("Invoices", systemImage: "list.bullet") }
             .tag(0)
             .onAppear {
-                projectsState.refresh()
+                foldersState.refresh()
             }
             //
             //

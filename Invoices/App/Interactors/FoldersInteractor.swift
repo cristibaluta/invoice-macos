@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import SwiftUI
 
-class ProjectsInteractor {
+class FoldersInteractor {
 
     private let repository: Repository
 //    var cancellables = Set<AnyCancellable>()
@@ -19,7 +19,7 @@ class ProjectsInteractor {
         self.repository = repository
     }
 
-    func refreshProjectsList() -> AnyPublisher<[Project], Never> {
+    func refreshFoldersList() -> AnyPublisher<[Folder], Never> {
 
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
@@ -33,22 +33,22 @@ class ProjectsInteractor {
                 if file.hasSuffix(".json") {
                     return nil
                 }
-                return Project(name: file)
+                return Folder(name: file)
             }
             .collect()
             .eraseToAnyPublisher()
     }
 
-    func createProject (_ name: String, completion: (Project?) -> Void) {
+    func createFolder (_ name: String, completion: (Folder?) -> Void) {
 
         repository.execute { baseUrl in
             // Generate folder if none exists
-            let project = Project(name: name)
-            let projectUrl = baseUrl.appendingPathComponent(name)
-            _ = repository.writeFolder(at: projectUrl)
+            let folder = Folder(name: name)
+            let folderUrl = baseUrl.appendingPathComponent(name)
+            _ = repository.writeFolder(at: folderUrl)
 
             // Create templates folder
-            let templateUrl = projectUrl.appendingPathComponent("templates")
+            let templateUrl = folderUrl.appendingPathComponent("templates")
             _ = repository.writeFolder(at: templateUrl)
 
             // Copy templates from bundle
@@ -68,15 +68,15 @@ class ProjectsInteractor {
 
                 _ = repository.writeFile(templateData, at: destUrl)
             }
-            completion(project)
+            completion(folder)
         }
     }
 
-    func deleteProject (_ name: String, completion: (Bool) -> Void) {
+    func deleteFolder (_ name: String, completion: (Bool) -> Void) {
 
         repository.execute { baseUrl in
-            let projectUrl = baseUrl.appendingPathComponent(name)
-            _ = repository.removeItem(at: projectUrl)
+            let folderUrl = baseUrl.appendingPathComponent(name)
+            _ = repository.removeItem(at: folderUrl)
             completion(true)
         }
     }

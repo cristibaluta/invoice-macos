@@ -11,7 +11,7 @@ struct DeleteConfirmationColumn: View {
 
     @EnvironmentObject private var contentColumnState: ContentColumnState
     @EnvironmentObject private var invoicesState: InvoicesState
-    var invoice: InvoiceFolder
+    var invoice: Invoice
     
     var body: some View {
         VStack(alignment: .center) {

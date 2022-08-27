@@ -21,7 +21,7 @@ struct NoInvoicesView: View {
                 .bold()
                 .padding(20)
 
-            Text("Each project has its own templates that can be edited individually.")
+            Text("Each folder has its own templates that can be edited individually.")
                 .multilineTextAlignment(.center)
                 .padding(20)
             #if os(iOS)
