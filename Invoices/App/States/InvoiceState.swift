@@ -14,8 +14,8 @@ class InvoiceState: ObservableObject {
     private let invoicesInteractor: InvoicesInteractor
 
     var project: Project
-    var html = ""
     var data: InvoiceData
+    var html = ""
 
 
     init (project: Project,

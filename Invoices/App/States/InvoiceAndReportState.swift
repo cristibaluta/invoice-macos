@@ -81,7 +81,7 @@ class InvoiceAndReportState: ObservableObject {
                 }
             case .report:
                 invoiceState.data = reportEditorState.data
-                reportState.calculate { val in
+                reportState.calculate(reports: reportEditorState.reports, projects: reportEditorState.allProjects) { val in
                     self.html = val
                 }
         }

@@ -17,13 +17,11 @@ struct ReportEditorPopover: View {
 
     @Environment(\.dismiss) var dismiss
     @ObservedObject private var state: InvoiceAndReportState
-    private let onChange: (InvoiceData) -> Void
-    private let invoiceEditorState: InvoiceEditorState
+    private let reportEditorState: ReportEditorState
 
-    init (state: InvoiceAndReportState, onChange: @escaping (InvoiceData) -> Void) {
+    init (state: InvoiceAndReportState) {
         self.state = state
-        self.onChange = onChange
-        self.invoiceEditorState = state.invoiceEditorState
+        self.reportEditorState = state.reportEditorState
     }
 
     var body: some View {
@@ -39,18 +37,14 @@ struct ReportEditorPopover: View {
                 //panel.allowedContentTypes = ["csv"]
                 if panel.runModal() == .OK {
                     if let url = panel.urls.first {
-                        state.reportState.openCsv(at: url)
+                        state.reportEditorState.openCsv(at: url)
                     }
                 }
             }
 
             Divider()
 
-            ReportEditor(state: state.reportState) { newData in
-                state.data = newData
-                state.calculate()
-                self.onChange(newData)
-            }
+            ReportEditor(state: state.reportEditorState)
             
             Button("Save") {
                 state.save()

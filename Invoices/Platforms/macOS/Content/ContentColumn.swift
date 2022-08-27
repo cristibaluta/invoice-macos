@@ -15,10 +15,10 @@ enum ViewType {
     case noInvoices
     case charts(ChartConfiguration, ChartConfiguration, Decimal)
     case newInvoice(InvoiceAndReportState)
-    case invoice(InvoiceAndReportState)
     case deleteInvoice(InvoiceFolder)
+    case invoice(InvoiceAndReportState)
+    case report(InvoiceAndReportState)
     case company(CompanyData)
-    case report(ReportState)
     case error(String, String)
 }
 
@@ -63,11 +63,14 @@ struct ContentColumn: View {
                 NewInvoiceView(state: invoiceReportState.invoiceEditorState)
                 .padding(40)
 
+            case .deleteInvoice(let invoice):
+                DeleteConfirmationColumn(invoice: invoice)
+
             case .charts(let priceChart, let rateChart, let total):
                 ChartsView(state: ChartsViewState(total: total), priceChartConfig: priceChart, rateChartConfig: rateChart)
                 .padding(40)
 
-            case .invoice(let invoiceReportState):
+            case .invoice(let invoiceReportState), .report(let invoiceReportState):
                 if let state = contentColumnState.invoiceReportState {
                     HtmlViewer(htmlString: state.html) { printingData in
                         state.pdfData = printingData
@@ -82,16 +85,8 @@ struct ContentColumn: View {
                     }
                 }
 
-            case .deleteInvoice(let invoice):
-                DeleteConfirmationColumn(invoice: invoice)
-
             case .company(let companyData):
                 CompanyColumn(data: companyData)
-
-            case .report(let reportState):
-                Text("Report view")
-//                ReportView(state: reportState).frame(width: 920)
-//                .modifier(Toolbar(state: state))
 
             case .error(let title, let message):
                 VStack(alignment: .center) {

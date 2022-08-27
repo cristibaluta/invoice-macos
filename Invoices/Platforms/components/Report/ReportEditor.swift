@@ -7,60 +7,116 @@
 
 import SwiftUI
 import Combine
+import SwiftCSV
 
 class ReportEditorState: ObservableObject {
 
-    var data: InvoiceData
+    var data: InvoiceData {
+        didSet {
+            invoiceDataSubject.send(data)
+        }
+    }
 
-    @Published var invoiceSeries: String
-    @Published var invoiceNr: String
-    @Published var date: Date
-    @Published var rate: String
-    @Published var exchangeRate: String
-    @Published var units: String
-    @Published var unitsName: String
-    @Published var productName: String
-    @Published var vat: String
-    @Published var amountTotalVat: String
-    @Published var isFixedTotal: Bool = false
-    @Published var clientName: String = "Add new"
-    @Published var contractorName: String = "Add new"
+    @Published var allProjects: [ReportProject] = []
+    @Published var reports: [Report] = []
+    private var allReports: [Report] = []
 
+    /// Publisher for data change
+    var invoiceDataPublisher: AnyPublisher<InvoiceData, Never> { invoiceDataSubject.eraseToAnyPublisher() }
+    private let invoiceDataSubject = PassthroughSubject<InvoiceData, Never>()
 
     init (data: InvoiceData) {
         print("init InvoiceEditorState")
         self.data = data
+        self.allReports = data.reports.map({
+            return Report(project_name: $0.project_name,
+                          group: $0.group,
+                          description: $0.description,
+                          duration: $0.duration)
+        })
+        self.allProjects = projects(from: self.allReports, isOn: true)
+    }
 
-        invoiceSeries = data.invoice_series
-        invoiceNr = String(data.invoice_nr)
-        date = Date(yyyyMMdd: data.invoice_date) ?? Date()
-        vat = data.vat.stringValue_2
-        amountTotalVat = data.amount_total_vat.stringValue_2
+    func openCsv (at fileUrl: URL) {
+        do {
+            let csv = try CSV(url: fileUrl, delimiter: ";")
+            allReports = [Report]()
+            try csv.enumerateAsDict { dict in
+                guard let projectName = dict["Project Name"], !projectName.isEmpty else {
+                    return
+                }
+                let report = Report(project_name: projectName,
+                                    group: "",
+                                    description: dict["Work Description"] ?? "",
+                                    duration: Decimal(Double(dict["Hours"]?.replacingOccurrences(of: ",", with: ".") ?? "0") ?? 0))
 
-        rate = data.products[0].rate.stringValue_2
-        exchangeRate = data.products[0].exchange_rate.stringValue_4
-        units = data.products[0].units.stringValue
-        unitsName = data.products[0].units_name
-        productName = data.products[0].product_name
+                // Find duplicate and add times together
+                var foundDuplicate = false
+                for i in 0..<self.allReports.count {
+                    if self.allReports[i].description == report.description {
+                        self.allReports[i].duration += report.duration
+                        foundDuplicate = true
+                        break
+                    }
+                }
+                if !foundDuplicate {
+                    self.allReports.append(report)
+                }
+            }
 
-//        clientState = CompanyViewState(data: data.client)
-//        contractorState = CompanyViewState(data: data.contractor)
-        clientName = data.client.name
-        contractorName = data.contractor.name
+            self.allProjects = projects(from: allReports, isOn: true)
+            updateReports()
+//            self.showingPopover = true
+        } catch {
+            print(error)
+        }
+    }
+
+    private func projects (from reports: [Report], isOn: Bool) -> [ReportProject] {
+        var arr = [ReportProject]()
+        for report in reports {
+            if !arr.contains(where: {$0.name == report.project_name}) {
+                arr.append(ReportProject(name: report.project_name, isOn: isOn))
+            }
+        }
+        return arr
+    }
+
+    func updateReport (_ report: Report) {
+        for i in 0..<reports.count {
+            if reports[i].id == report.id {
+                reports[i] = report
+                break
+            }
+        }
+        for i in 0..<allReports.count {
+            if allReports[i].id == report.id {
+                allReports[i] = report
+                break
+            }
+        }
+//        calculate { _ in }
+    }
+
+    func updateReports() {
+        self.reports = allReports.filter({
+            let pn = $0.project_name
+            return self.allProjects.contains(where: {$0.name == pn && $0.isOn})
+        })
+//        calculate { _ in }
     }
 }
 
 struct ReportEditor: View {
     
-    @ObservedObject var state: ReportState
-    private var onChange: (InvoiceData) -> Void
+    @ObservedObject var state: ReportEditorState
+    
     let columns = [
         GridItem(.adaptive(minimum: 160))
     ]
     
-    init (state: ReportState, onChange: @escaping (InvoiceData) -> Void) {
+    init (state: ReportEditorState) {
         self.state = state
-        self.onChange = onChange
     }
     
     var body: some View {
@@ -71,7 +127,6 @@ struct ReportEditor: View {
                         Toggle(state.allProjects[i].name, isOn: $state.allProjects[i].isOn)
                         .onChange(of: state.allProjects[i].isOn) { val in
                             state.updateReports()
-                            onChange(state.data)
                         }
                     }
                 }
@@ -84,7 +139,6 @@ struct ReportEditor: View {
             List(self.state.reports) { report in
                 ReportRowView(report: report) { newReport in
                     state.updateReport(newReport)
-                    onChange(state.data)
                 }
             }
         }
