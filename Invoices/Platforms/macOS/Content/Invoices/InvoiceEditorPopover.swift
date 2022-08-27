@@ -12,12 +12,10 @@ struct InvoiceEditorPopover: View {
     @EnvironmentObject var companiesState: CompaniesState
     @Environment(\.dismiss) var dismiss
     @ObservedObject private var state: InvoiceAndReportState
-    private let onChange: (InvoiceData) -> Void
     private let invoiceEditorState: InvoiceEditorState
 
-    init (state: InvoiceAndReportState, onChange: @escaping (InvoiceData) -> Void) {
+    init (state: InvoiceAndReportState) {
         self.state = state
-        self.onChange = onChange
         self.invoiceEditorState = state.invoiceEditorState
     }
 
@@ -26,11 +24,7 @@ struct InvoiceEditorPopover: View {
         let _ = Self._printChanges()
 
         VStack {
-            InvoiceEditor(state: invoiceEditorState, onChange: { newData in
-                state.data = newData
-                state.calculate()
-                self.onChange(newData)
-            }, onTapAddCompany: {
+            InvoiceEditor(state: invoiceEditorState, onTapAddCompany: {
                 self.companiesState.isShowingNewCompanySheet = true
             })
             Button("Save") {

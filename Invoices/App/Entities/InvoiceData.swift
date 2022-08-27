@@ -23,7 +23,7 @@ struct InvoiceData: Codable, PropertyLoopable {
     var amount_total: Decimal
     var amount_total_vat: Decimal
     
-    // This will trigger the units to be calculated instead the amount_total_vat
+    /// This will trigger the units to be calculated instead the amount_total_vat
     var isFixedTotal: Bool?
     
     enum CodingKeys: CodingKey {

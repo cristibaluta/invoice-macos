@@ -16,12 +16,30 @@ class SandboxRepository {
         print(documentsDirectory)
         return documentsDirectory
     }
+
+
+    var readFolderContentPublisher: AnyPublisher<[String], Never> {
+        readFolderContentSubject.eraseToAnyPublisher()
+    }
+    private let readFolderContentSubject = PassthroughSubject<[String], Never>()
+
 }
 
 extension SandboxRepository: Repository {
     @objc
     func execute (_ block: (URL) -> Void) {
         block(getDocumentsDirectory())
+    }
+
+    func readFolderContent2 (at url: URL) -> AnyPublisher<[String], Never> {
+        do {
+            let folders = try FileManager.default.contentsOfDirectory(atPath: url.path).sorted(by: {$0 > $1})
+            readFolderContentSubject.send(folders)
+        }
+        catch {
+            print(error)
+        }
+        return readFolderContentPublisher
     }
 
     func readFolderContent (at url: URL) -> Publishers.Sequence<[String], Never> {

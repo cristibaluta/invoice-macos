@@ -76,7 +76,6 @@ struct ContentColumn: View {
                     .padding(10)
                     .modifier(Toolbar(invoiceReportState: invoiceReportState))
                     .onAppear {
-
                         contentColumnState.htmlCancellable = invoiceReportState.htmlPublisher.sink { html in
                             contentColumnState.html = html
                         }

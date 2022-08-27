@@ -10,13 +10,13 @@ import SwiftUI
 import WebKit
 #if os(iOS)
 import UIKit
-typealias RCViewRepresentable = UIViewRepresentable
+typealias ViewRepresentable = UIViewRepresentable
 #else
 import AppKit
-typealias RCViewRepresentable = NSViewRepresentable
+typealias ViewRepresentable = NSViewRepresentable
 #endif
 
-struct HtmlViewer: RCViewRepresentable {
+struct HtmlViewer: ViewRepresentable {
 
     static let size = CGSize(width: 900, height: 1285)
 

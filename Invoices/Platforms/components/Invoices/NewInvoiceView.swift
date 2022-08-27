@@ -32,7 +32,7 @@ struct NewInvoiceView: View {
                 HStack(alignment: .center) {
                     Text("Exchange rate:").font(.system(size: 20))
                     Spacer()
-                    TextField("0.0", text: $state.exchangeRate).font(.system(size: 20))//.frame(width: 100)
+                    TextField("0.0", text: $state.exchangeRate).font(.system(size: 20))
                     .modifier(NumberKeyboard())
                     .modifier(OutlineTextField())
                 }
@@ -40,7 +40,7 @@ struct NewInvoiceView: View {
                 HStack(alignment: .center) {
                     Text("Quantity (\(state.unitsName)):").font(.system(size: 20))
                     Spacer()
-                    TextField("0.0", text: $state.units).font(.system(size: 20))//.frame(width: 100)
+                    TextField("0.0", text: $state.units).font(.system(size: 20))
                     .modifier(NumberKeyboard())
                     .modifier(OutlineTextField())
                 }

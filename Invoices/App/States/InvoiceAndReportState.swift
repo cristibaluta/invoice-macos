@@ -29,14 +29,17 @@ class InvoiceAndReportState: ObservableObject {
     var reportEditorState: ReportEditorState
 
     private var cancellable: Cancellable?
+    private var cancellables = Set<AnyCancellable>()
 
     var project: Project
     var pdfData: Data?
-    var data: InvoiceData
-
-    var htmlPublisher: AnyPublisher<String, Never> {
-        htmlSubject.eraseToAnyPublisher()
+    var data: InvoiceData {
+        didSet {
+            calculate()
+        }
     }
+
+    var htmlPublisher: AnyPublisher<String, Never> { htmlSubject.eraseToAnyPublisher() }
     private let htmlSubject = PassthroughSubject<String, Never>()
 
 
@@ -51,6 +54,18 @@ class InvoiceAndReportState: ObservableObject {
         self.reportState = ReportState(project: project, data: data, reportsInteractor: reportsInteractor)
         self.invoiceEditorState = InvoiceEditorState(data: data)
         self.reportEditorState = ReportEditorState(data: data)
+
+        invoiceEditorState.invoiceDataPublisher
+            .sink { newData in
+                self.data = newData
+            }
+            .store(in: &cancellables)
+
+        invoiceEditorState.addCompanyPublisher
+            .sink { _ in
+                print("Request to add new company")
+            }
+            .store(in: &cancellables)
     }
 
     func dismissEditor() {

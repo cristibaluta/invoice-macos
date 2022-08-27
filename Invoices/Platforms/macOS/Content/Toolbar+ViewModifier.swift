@@ -33,17 +33,14 @@ struct Toolbar: ViewModifier {
                     invoiceReportState.isShowingEditorSheet = true
                 }
                 .popover(isPresented: $invoiceReportState.isShowingEditorSheet) {
-                    if invoiceReportState.contentType == .invoice {
-                        InvoiceEditorPopover(state: invoiceReportState) { newInvoiceData in
-                            // This will trigger the webview to reload. Getting the info directly from invoiceReportState does not
-                            contentColumnState.html = invoiceReportState.html
-                        }
-                    } else {
-                        ReportEditorPopover(state: invoiceReportState) { newInvoiceData in
-                            // This will trigger the webview to reload. Getting the info directly from invoiceReportState does not
-                            contentColumnState.html = invoiceReportState.html
-                        }
-                        .frame(width: 500, height: 600)
+                    switch invoiceReportState.contentType {
+                        case .invoice: InvoiceEditorPopover(state: invoiceReportState)
+                        case .report:
+                            ReportEditorPopover(state: invoiceReportState) { newInvoiceData in
+                                // This will trigger the webview to reload. Getting the info directly from invoiceReportState does not
+                                contentColumnState.html = invoiceReportState.html
+                            }
+                            .frame(width: 500, height: 600)
                     }
                 }
                 

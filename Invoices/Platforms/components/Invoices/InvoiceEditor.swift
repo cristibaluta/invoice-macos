@@ -10,7 +10,11 @@ import Combine
 
 class InvoiceEditorState: ObservableObject {
 
-    var data: InvoiceData
+    var data: InvoiceData {
+        didSet {
+            invoiceDataSubject.send(data)
+        }
+    }
 
     @Published var invoiceSeries: String
     @Published var invoiceNr: String
@@ -28,6 +32,13 @@ class InvoiceEditorState: ObservableObject {
 
     private var clientState: CompanyViewState
     private var contractorState: CompanyViewState
+
+    /// Publisher for data change
+    var invoiceDataPublisher: AnyPublisher<InvoiceData, Never> { invoiceDataSubject.eraseToAnyPublisher() }
+    private let invoiceDataSubject = PassthroughSubject<InvoiceData, Never>()
+    /// Publisher to add new company
+    var addCompanyPublisher: AnyPublisher<Void, Never> { addCompanySubject.eraseToAnyPublisher() }
+    let addCompanySubject = PassthroughSubject<Void, Never>()
 
 
     init (data: InvoiceData) {
@@ -57,7 +68,7 @@ struct InvoiceEditor: View {
 
     @EnvironmentObject var companiesState: CompaniesState
     @ObservedObject private var state: InvoiceEditorState
-    private var onChange: (InvoiceData) -> Void
+
     private var onTapAddCompany: () -> Void
 
     private var formatter: NumberFormatter {
@@ -66,9 +77,8 @@ struct InvoiceEditor: View {
         return formatter
     }
 
-    init (state: InvoiceEditorState, onChange: @escaping (InvoiceData) -> Void, onTapAddCompany: @escaping () -> Void) {
+    init (state: InvoiceEditorState, onTapAddCompany: @escaping () -> Void) {
         print("init InvoiceEditor")
-        self.onChange = onChange
         self.onTapAddCompany = onTapAddCompany
         self.state = state
     }
@@ -87,7 +97,6 @@ struct InvoiceEditor: View {
                         TextField("", text: $state.invoiceSeries).onChange(of: state.invoiceSeries) { newValue in
                             // Data is update through onChange because didSet on the property does not work properly
                             state.data.invoice_series = newValue
-                            onChange(state.data)
                         }
                         .font(appFont)
                         .modifier(OutlineTextField())
@@ -97,7 +106,6 @@ struct InvoiceEditor: View {
                         .font(appFont)
                         TextField("", text: $state.invoiceNr).onChange(of: state.invoiceNr) { newValue in
                             state.data.invoice_nr = Int(newValue) ?? 0
-                            onChange(state.data)
                         }
                         .font(appFont)
                         .modifier(OutlineTextField())
@@ -108,7 +116,6 @@ struct InvoiceEditor: View {
                         .font(appFont)
                         DatePicker("", selection: $state.date, displayedComponents: .date).onChange(of: state.date) { newValue in
                             state.data.invoice_date = newValue.yyyyMMdd
-                            onChange(state.data)
                         }
                         .font(appFont)
                     }
@@ -121,7 +128,6 @@ struct InvoiceEditor: View {
                         Text("Product #1:").font(appFont)
                         TextField("", text: $state.productName).onChange(of: state.productName) { newValue in
                             state.data.products[0].product_name = newValue
-                            onChange(state.data)
                         }
                         .font(appFont)
                         .modifier(OutlineTextField())
@@ -130,8 +136,9 @@ struct InvoiceEditor: View {
                         Text("Rate #2:").font(appFont)
                         TextField("", text: $state.rate).onChange(of: state.rate) { newValue in
                             state.data.products[0].rate = Decimal(string: newValue) ?? 0
+                            // When rate changes recalculate the total amount
                             state.data.calculate()
-                            onChange(state.data)
+                            state.amountTotalVat = state.data.amount_total_vat.stringValue_2
                         }
                         .font(appFont)
                         .modifier(OutlineTextField())
@@ -141,9 +148,9 @@ struct InvoiceEditor: View {
                         Text("Exchange Rate #3:").font(appFont)
                         TextField("", text: $state.exchangeRate).onChange(of: state.exchangeRate) { newValue in
                             state.data.products[0].exchange_rate = Decimal(string: newValue) ?? 0
+                            // When exchange rate changes recalculate the total amount
                             state.data.calculate()
                             state.amountTotalVat = state.data.amount_total_vat.stringValue_2
-                            onChange(state.data)
                         }
                         .font(appFont)
                         .modifier(OutlineTextField())
@@ -153,7 +160,6 @@ struct InvoiceEditor: View {
                         Text("Units #4:").font(appFont)
                         TextField("", text: $state.unitsName).onChange(of: state.unitsName) { newValue in
                             state.data.products[0].units_name = newValue
-                            onChange(state.data)
                         }
                         .font(appFont)
                         .modifier(OutlineTextField())
@@ -164,9 +170,9 @@ struct InvoiceEditor: View {
                             TextField("", text: $state.units)
                             .onChange(of: state.units) { newValue in
                                 state.data.products[0].units = Decimal(string: newValue) ?? 0
+                                // When quantity changes recalculate the total amount
                                 state.data.calculate()
                                 state.amountTotalVat = state.data.amount_total_vat.stringValue_2
-                                onChange(state.data)
                             }
                             .font(appFont)
                             .modifier(OutlineTextField())
@@ -179,8 +185,9 @@ struct InvoiceEditor: View {
                         Text("VAT:").font(appFont)
                         TextField("VAT", text: $state.vat).onChange(of: state.vat) { newValue in
                             state.data.vat = Decimal(string: state.vat) ?? 0
+                            // When VAT changes recalculate the total amount
                             state.data.calculate()
-                            onChange(state.data)
+                            state.amountTotalVat = state.data.amount_total_vat.stringValue_2
                         }
                         .font(appFont)
                         .modifier(OutlineTextField())
@@ -196,9 +203,9 @@ struct InvoiceEditor: View {
                             Text("Total amount (#7 + VAT):").font(appFont)
                             TextField("Total", text: $state.amountTotalVat).onChange(of: state.amountTotalVat) { newValue in
                                 state.data.amount_total_vat = Decimal(string: newValue) ?? 0
+                                // When total amount changes recalculate the quantity
                                 state.data.calculate()
                                 state.units = state.data.products[0].units.stringValue
-                                onChange(state.data)
                             }
                             .font(appFont)
                             .modifier(OutlineTextField())
@@ -222,11 +229,11 @@ struct InvoiceEditor: View {
                                 Button(company.name, action: {
                                     state.data.contractor = company.data
                                     state.contractorName = company.data.name
-                                    onChange(state.data)
                                 })
                             }
                             Divider().frame(height: 1)
                             Button("Add new", action: {
+                                state.addCompanySubject.send()
                                 self.onTapAddCompany()
                             })
                         } label: {
@@ -241,11 +248,11 @@ struct InvoiceEditor: View {
                                 Button(company.name, action: {
                                     state.data.client = company.data
                                     state.clientName = company.data.name
-                                    onChange(state.data)
                                 })
                             }
                             Divider().frame(height: 1)
                             Button("Add new", action: {
+                                state.addCompanySubject.send()
                                 self.onTapAddCompany()
                             })
                         } label: {
