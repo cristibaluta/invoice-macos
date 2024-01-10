@@ -10,10 +10,10 @@ import SwiftUI
 struct InvoicesListScreen: View {
 
     @EnvironmentObject private var invoicesState: InvoicesState
-    private var folder: Folder
+    private var project: Project
 
-    init (folder: Folder) {
-        self.folder = folder
+    init (folder: Project) {
+        self.project = folder
     }
     
     var body: some View {
@@ -36,11 +36,11 @@ struct InvoicesListScreen: View {
             .onDelete(perform: delete)
         }
         .refreshable {
-            invoicesState.refresh(folder)
+            invoicesState.refresh(project)
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text(folder.name).font(.headline)
+                Text(project.name).font(.headline)
             }
             ToolbarItem(placement: .primaryAction) {
                 Button("Add") {
@@ -52,7 +52,7 @@ struct InvoicesListScreen: View {
             NewInvoiceScreen()
         }
         .onAppear {
-            invoicesState.refresh(folder)
+            invoicesState.refresh(project)
         }
     }
 
@@ -61,11 +61,11 @@ struct InvoicesListScreen: View {
         NoInvoicesScreen()
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text(folder.name).font(.headline)
+                Text(project.name).font(.headline)
             }
         }
         .onAppear {
-            invoicesState.refresh(folder)
+            invoicesState.refresh(project)
         }
     }
 

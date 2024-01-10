@@ -7,22 +7,22 @@
 
 import SwiftUI
 
-struct NewFolderSheet: View {
+struct NewProjectSheet: View {
 
-    @EnvironmentObject private var foldersState: FoldersState
+    @EnvironmentObject private var projectsState: ProjectsState
 
     
     var body: some View {
         NavigationView {
-            NewFolderView { name in
-                foldersState.createFolder(named: name) { f in
+            NewProjectView { name in
+                projectsState.createProject(named: name) { f in
 
                 }
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
-                        self.foldersState.dismissNewFolder()
+                        self.projectsState.dismissNewProject()
                     }
                 }
             }

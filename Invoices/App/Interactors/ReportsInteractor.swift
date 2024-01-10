@@ -16,23 +16,20 @@ class ReportsInteractor {
         self.repository = repository
     }
 
-    func readReportTemplates (in folder: Folder) -> AnyPublisher<(String, String, String), Never> {
+    func readReportTemplates (in project: Project) -> AnyPublisher<(String, String, String), Never> {
 
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentsDirectory = paths[0]
-        let folderUrl = documentsDirectory.appendingPathComponent(folder.name)
-        let templatesUrl = folderUrl.appendingPathComponent("templates")
+        let templates = "\(project.name)/templates"
 
         let t1 = repository
-            .readFile(at: templatesUrl.appendingPathComponent("template_report.html"))
+            .readFile(at: "\(templates)/template_report.html")
             .map { String(decoding: $0, as: UTF8.self) }
 
         let t2 = repository
-            .readFile(at: templatesUrl.appendingPathComponent("template_report_project.html"))
+            .readFile(at: "\(templates)/template_report_project.html")
             .map { String(decoding: $0, as: UTF8.self) }
 
         let t3 = repository
-            .readFile(at: templatesUrl.appendingPathComponent("template_report_row.html"))
+            .readFile(at: "\(templates)/template_report_row.html")
             .map { String(decoding: $0, as: UTF8.self) }
 
         let publisher = Publishers.Zip3(t1, t2, t3).eraseToAnyPublisher()
@@ -96,42 +93,34 @@ class ReportsInteractor {
         return projects
     }
 
-    func saveReport (data: InvoiceData, pdfData: Data?, in folder: Folder, completion: @escaping (Invoice) -> Void) {
+    func saveReport (data: InvoiceData, pdfData: Data?, in project: Project) -> AnyPublisher<Invoice, Never> {
 
-        repository.execute { baseUrl in
-            // Generate folder if none exists
-            let invoiceNr = "\(data.invoice_series)\(data.invoice_nr.prefixedWith0)"
-            let invoiceName = "\(data.date.yyyyMMdd)-\(invoiceNr)"
+        // Generate folder if none exists
+        let invoiceNr = "\(data.invoice_series)\(data.invoice_nr.prefixedWith0)"
+        let invoiceName = "\(data.date.yyyyMMdd)-\(invoiceNr)"
 
-            let folderUrl = baseUrl.appendingPathComponent(folder.name)
-            let invoiceUrl = folderUrl.appendingPathComponent(invoiceName)
+        let invoicePath = "\(project.name)/\(invoiceName)"
 
-            do {
-                // Create folder if does not exist
-                let write_folder = repository.writeFolder(at: invoiceUrl)
+        // Create folder if does not exist
+        let writeFolderPublisher = repository.writeFolder(at: invoicePath)
 
-                // Save json
-                let encoder = JSONEncoder()
-                encoder.outputFormatting = .prettyPrinted
-                let invoiceJsonUrl = invoiceUrl.appendingPathComponent("data.json")
-                let jsonData = try encoder.encode(data)
+        // Save json
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        let jsonData = try! encoder.encode(data)
+        let invoiceJsonPath = "\(invoicePath)/data.json"
+        let writeJsonPublisher = repository.writeFile(jsonData, at: invoiceJsonPath)
 
-                let write_json = repository.writeFile(jsonData, at: invoiceJsonUrl)
+        // Save pdf
+        let pdfName = "Report-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).pdf"
+        let pdfPath = "\(invoicePath)/\(pdfName)"
+        let writePdfPublisher = repository.writeFile(pdfData!, at: pdfPath)
 
-                let _ = Publishers.Zip(write_folder, write_json)
-                .sink { x in
-                    completion(Invoice(date: data.date, invoiceNr: invoiceNr, name: invoiceName))
-                }
-
-                // Save pdf
-                let pdfName = "Report-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).pdf"
-                let pdfUrl = invoiceUrl.appendingPathComponent(pdfName)
-                try pdfData?.write(to: pdfUrl)
-            }
-            catch {
-                print(error)
-            }
+        let publisher = Publishers.Zip3(writeFolderPublisher, writeJsonPublisher, writePdfPublisher)
+        .map { x in
+            return Invoice(date: data.date, invoiceNr: invoiceNr, name: invoiceName)
         }
+        return publisher.eraseToAnyPublisher()
     }
 
 }

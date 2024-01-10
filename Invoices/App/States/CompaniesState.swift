@@ -21,14 +21,13 @@ class CompaniesState: ObservableObject {
 
     let interactor: CompaniesInteractor
 
-
     init (interactor: CompaniesInteractor) {
         self.interactor = interactor
         print("init CompaniesState")
     }
 
     func refresh() {
-        _ = interactor.refreshCompaniesList()
+        _ = interactor.loadCompaniesList()
         .print("CompaniesState")
         .sink { [weak self] in
             self?.companiesData = $0
@@ -40,10 +39,11 @@ class CompaniesState: ObservableObject {
         guard let comp = selectedCompany else {
             fatalError("No company is selected")
         }
-        interactor.save(comp) { company in
-            self.refresh()
-            self.dismissNewCompany()
-        }
+        _ = interactor.save(comp)
+            .sink { success in
+                self.refresh()
+                self.dismissNewCompany()
+            }
     }
 
     func dismissNewCompany() {

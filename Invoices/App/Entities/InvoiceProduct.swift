@@ -7,6 +7,7 @@
 
 import Foundation
 
+// A product is one line in the invoice
 struct InvoiceProduct: Codable {
     
     var product_name: String

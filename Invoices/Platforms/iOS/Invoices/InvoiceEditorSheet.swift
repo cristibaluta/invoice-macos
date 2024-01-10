@@ -26,9 +26,7 @@ struct InvoiceEditorSheet: View {
         
         NavigationView {
             ScrollView {
-                InvoiceEditor(state: state, onChange: { newData in
-                    self.state.data = newData
-                }, onTapAddCompany: {
+                InvoiceEditor(state: state, onTapAddCompany: {
                     self.companiesState.isShowingNewCompanySheet = true
                 })
             }

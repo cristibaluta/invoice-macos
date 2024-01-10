@@ -10,7 +10,7 @@ import Combine
 
 struct SidebarColumn: View {
 
-    @EnvironmentObject var foldersState: FoldersState
+    @EnvironmentObject var projectsState: ProjectsState
     @EnvironmentObject var invoicesState: InvoicesState
     @EnvironmentObject var companiesState: CompaniesState
     @EnvironmentObject var contentColumnState: ContentColumnState
@@ -34,18 +34,23 @@ struct SidebarColumn: View {
         let _ = Self._printChanges()
         
         VStack(alignment: .leading) {
-            Text("Folders").bold().padding(.leading, 16)
+
+            // Folders section
+
+            Text("Projects").bold().padding(.leading, 16)
             Menu {
-                ForEach(foldersState.folders) { folder in
-                    Button(folder.name, action: {
-                        foldersState.selectedFolder = folder
-                        invoicesState.refresh(folder)
+                ForEach(projectsState.projects) { project in
+                    Button(project.name, action: {
+                        projectsState.selectedProject = project
+                        invoicesState.refresh(project)
                     })
                 }
             } label: {
-                Text(foldersState.selectedFolder?.name ?? "Select folder")
+                Text(projectsState.selectedProject?.name ?? "Select project")
             }
             .padding(16)
+
+            // Invoices section
 
             Divider().padding(16)
 
@@ -74,6 +79,8 @@ struct SidebarColumn: View {
             }
             .listStyle(SidebarListStyle())
 
+            // Companies section
+
             Divider().padding(16)
 
             Text("Companies").bold().padding(.leading, 16)
@@ -96,6 +103,8 @@ struct SidebarColumn: View {
                 .frame(width: 400)
             }
 
+            // Add new section
+
             Divider()
 
             Button(action: { isShowingAddPopover = true }) {
@@ -115,7 +124,7 @@ struct SidebarColumn: View {
                     }
                     Button("New Invoice") {
                         isShowingAddPopover = false
-                        invoicesState.createNextInvoiceInFolder()
+                        invoicesState.createNextInvoiceInProject()
                     }
                     Button("New company") {
                         isShowingAddPopover = false

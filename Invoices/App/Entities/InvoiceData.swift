@@ -12,7 +12,8 @@ struct InvoiceData: Codable, PropertyLoopable {
     var invoice_series: String
     var invoice_nr: Int
     var invoice_date: String
-    
+    var invoiced_period: String
+
     var client: CompanyData
     var contractor: CompanyData
     
@@ -27,7 +28,7 @@ struct InvoiceData: Codable, PropertyLoopable {
     var isFixedTotal: Bool?
     
     enum CodingKeys: CodingKey {
-        case invoice_series, invoice_nr, invoice_date, client, contractor, products, reports, currency, vat, amount_total, amount_total_vat
+        case invoice_series, invoice_nr, invoice_date, invoiced_period, client, contractor, products, reports, currency, vat, amount_total, amount_total_vat
     }
     
     func encode (to encoder: Encoder) throws {
@@ -35,6 +36,7 @@ struct InvoiceData: Codable, PropertyLoopable {
         try container.encode(invoice_series, forKey: .invoice_series)
         try container.encode(invoice_nr, forKey: .invoice_nr)
         try container.encode(invoice_date, forKey: .invoice_date)
+        try container.encode(invoiced_period, forKey: .invoiced_period)
         try container.encode(client, forKey: .client)
         try container.encode(contractor, forKey: .contractor)
         try container.encode(products, forKey: .products)
@@ -50,6 +52,7 @@ struct InvoiceData: Codable, PropertyLoopable {
         invoice_series = try container.decode(String.self, forKey: .invoice_series)
         invoice_nr = try container.decode(Int.self, forKey: .invoice_nr)
         invoice_date = try container.decode(String.self, forKey: .invoice_date)
+        invoiced_period = try container.decode(String.self, forKey: .invoiced_period)
         client = try container.decode(CompanyData.self, forKey: .client)
         contractor = try container.decode(CompanyData.self, forKey: .contractor)
         products = try container.decode([InvoiceProduct].self, forKey: .products)
@@ -63,6 +66,7 @@ struct InvoiceData: Codable, PropertyLoopable {
     init (invoice_series: String,
           invoice_nr: Int,
           invoice_date: String,
+          invoiced_period: String,
           client: CompanyData,
           contractor: CompanyData,
           products: [InvoiceProduct],
@@ -75,6 +79,7 @@ struct InvoiceData: Codable, PropertyLoopable {
         self.invoice_series = invoice_series
         self.invoice_nr = invoice_nr
         self.invoice_date = invoice_date
+        self.invoiced_period = invoiced_period
         self.client = client
         self.contractor = contractor
         self.products = products
@@ -94,7 +99,9 @@ extension InvoiceData {
     
     func toHtmlUsingTemplate (_ template: String) -> String {
         /// Convert enum to dict
-        guard let data = try? JSONEncoder().encode(self) else { return "" }
+        guard let data = try? JSONEncoder().encode(self) else {
+            return ""
+        }
         let dict: [String: Any]? = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments))
                 .flatMap { $0 as? [String: Any] }
         var template = template
@@ -102,7 +109,7 @@ extension InvoiceData {
             if key == "amount_total" || key == "amount_total_vat", let amount = Decimal(string: value as? String ?? "") {
                 template = template.replacingOccurrences(of: "::\(key)::", with: "\(amount.stringValue_grouped2)")
             }
-            else if key == "invoice_date", let date = Date(yyyyMMdd: value as? String ?? "") {
+            else if key == "invoice_date" || key == "invoiced_period", let date = Date(yyyyMMdd: value as? String ?? "") {
                 template = template.replacingOccurrences(of: "::\(key)::", with: "\(date.mediumDate)")
             }
             else if key == "invoice_nr" {

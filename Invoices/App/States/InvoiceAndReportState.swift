@@ -31,7 +31,7 @@ class InvoiceAndReportState: ObservableObject {
     private var cancellable: Cancellable?
     private var cancellables = Set<AnyCancellable>()
 
-    var folder: Folder
+    var project: Project
     var pdfData: Data?
     var data: InvoiceData {
         didSet {
@@ -43,15 +43,15 @@ class InvoiceAndReportState: ObservableObject {
     private let htmlSubject = PassthroughSubject<String, Never>()
 
 
-    init (folder: Folder,
+    init (project: Project,
           data: InvoiceData,
           invoicesInteractor: InvoicesInteractor,
           reportsInteractor: ReportsInteractor) {
 
-        self.folder = folder
+        self.project = project
         self.data = data
-        self.invoiceState = InvoiceState(folder: folder, data: data, invoicesInteractor: invoicesInteractor)
-        self.reportState = ReportState(folder: folder, data: data, reportsInteractor: reportsInteractor)
+        self.invoiceState = InvoiceState(project: project, data: data, invoicesInteractor: invoicesInteractor)
+        self.reportState = ReportState(project: project, data: data, reportsInteractor: reportsInteractor)
         self.invoiceEditorState = InvoiceEditorState(data: data)
         self.reportEditorState = ReportEditorState(data: data)
 
@@ -109,7 +109,11 @@ class InvoiceAndReportState: ObservableObject {
                 fileName = "Report-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).\(isPdf ? "pdf" : "html")"
         }
         let exporter = Exporter()
-        exporter.export(fileName: fileName, data: data, printData: pdfData, html: html, isPdf: isPdf)
+        exporter.export(fileName: fileName,
+                        data: data,
+                        printData: pdfData,
+                        html: html,
+                        isPdf: isPdf)
     }
 
 }

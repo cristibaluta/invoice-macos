@@ -25,7 +25,7 @@ class InvoicesState: ObservableObject {
     private let invoicesInteractor: InvoicesInteractor
     private let reportsInteractor: ReportsInteractor
 
-    var folder: Folder?
+    var project: Project?
     var selectedInvoiceState: InvoiceAndReportState
 
     var priceChartConfig = ChartConfiguration()
@@ -48,7 +48,7 @@ class InvoicesState: ObservableObject {
     init (invoicesInteractor: InvoicesInteractor, reportsInteractor: ReportsInteractor) {
         self.invoicesInteractor = invoicesInteractor
         self.reportsInteractor = reportsInteractor
-        self.selectedInvoiceState = InvoiceAndReportState(folder: Folder(name: ""),
+        self.selectedInvoiceState = InvoiceAndReportState(project: Project(name: ""),
                                                           data: InvoicesInteractor.emptyInvoiceData,
                                                           invoicesInteractor: invoicesInteractor,
                                                           reportsInteractor: reportsInteractor)
@@ -82,9 +82,9 @@ class InvoicesState: ObservableObject {
         }
     }
 
-    func refresh(_ folder: Folder) {
-        self.folder = folder
-        _ = invoicesInteractor.refreshInvoicesList(for: folder)
+    func refresh(_ project: Project) {
+        self.project = project
+        _ = invoicesInteractor.refreshInvoicesList(for: project)
         .print("InvoicesState")
         .sink { [weak self] in
             self?.invoices = $0
@@ -108,12 +108,12 @@ class InvoicesState: ObservableObject {
 //    }
 
     func loadInvoice(_ invoice: Invoice) -> AnyPublisher<InvoiceAndReportState, Never> {
-        guard let proj = folder else {
+        guard let proj = project else {
             fatalError("folder not set")
         }
         return invoicesInteractor.readInvoice(for: invoice, in: proj)
             .map {
-                self.selectedInvoiceState = InvoiceAndReportState(folder: proj,
+                self.selectedInvoiceState = InvoiceAndReportState(project: proj,
                                                                   data: $0,
                                                                   invoicesInteractor: self.invoicesInteractor,
                                                                   reportsInteractor: self.reportsInteractor)
@@ -122,9 +122,9 @@ class InvoicesState: ObservableObject {
             .eraseToAnyPublisher()
     }
 
-    func createNextInvoiceInFolder() {
+    func createNextInvoiceInProject() {
 
-        guard let proj = folder else {
+        guard let proj = project else {
             fatalError("folder not set")
         }
         guard let lastInvoice = invoices.first else {
@@ -133,7 +133,7 @@ class InvoicesState: ObservableObject {
                                               invoiceNr: "\(data.invoice_series)\(data.invoice_nr)",
                                               name: "\(data.date.yyyyMMdd)-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)")
             self.invoices = [invoiceFolder]
-            self.selectedInvoiceState = InvoiceAndReportState(folder: proj,
+            self.selectedInvoiceState = InvoiceAndReportState(project: proj,
                                                               data: data,
                                                               invoicesInteractor: self.invoicesInteractor,
                                                               reportsInteractor: self.reportsInteractor)
@@ -154,11 +154,11 @@ class InvoicesState: ObservableObject {
             data.reports = []
             /// Create new invoice folder
             let invoiceFolder = Invoice(date: nextDate,
-                                              invoiceNr: "\(data.invoice_series)\(data.invoice_nr)",
-                                              name: "\(nextDate.yyyyMMdd)-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)")
+                                        invoiceNr: "\(data.invoice_series)\(data.invoice_nr)",
+                                        name: "\(nextDate.yyyyMMdd)-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)")
             self.invoices.insert(invoiceFolder, at: 0)
             /// Update the state
-            self.selectedInvoiceState = InvoiceAndReportState(folder: proj,
+            self.selectedInvoiceState = InvoiceAndReportState(project: proj,
                                                               data: data,
                                                               invoicesInteractor: self.invoicesInteractor,
                                                               reportsInteractor: self.reportsInteractor)
@@ -168,29 +168,31 @@ class InvoicesState: ObservableObject {
     }
 
     func deleteInvoice (at index: Int) {
-        guard let proj = folder else {
+        guard let proj = project else {
             fatalError("folder not set")
         }
         guard index < invoices.count else {
             return
         }
         let invoice = invoices[index]
-        invoicesInteractor.deleteInvoice(invoice, in: proj) { success in
-            self.invoices.remove(at: index)
-        }
+        _ = invoicesInteractor.deleteInvoice(invoice, in: proj)
+            .sink { success in
+                self.invoices.remove(at: index)
+            }
     }
 
     func deleteInvoice (_ invoice: Invoice) {
-        guard let proj = folder else {
+        guard let proj = project else {
             fatalError("folder not set")
         }
         guard let index = invoices.firstIndex(of: invoice) else {
             fatalError("Index not found")
         }
-        invoicesInteractor.deleteInvoice(invoice, in: proj) { success in
-            self.invoices.remove(at: index)
-            self.loadChart()
-        }
+        _ = invoicesInteractor.deleteInvoice(invoice, in: proj)
+            .sink { success in
+                self.invoices.remove(at: index)
+                self.loadChart()
+            }
     }
 
     func dismissNewInvoice() {
@@ -206,20 +208,18 @@ class InvoicesState: ObservableObject {
     }
 
     func showInFinder (_ invoice: Invoice) {
-        guard let proj = folder else {
+        guard let proj = project else {
             fatalError("folder not set")
         }
-        invoicesInteractor.execute { baseUrl in
-            let invoiceUrl = baseUrl.appendingPathComponent(proj.name).appendingPathComponent(invoice.name)
-            #if os(macOS)
-            NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: invoiceUrl.path)
-            #endif
-        }
+        #if os(macOS)
+//        let invoiceUrl = baseUrl.appendingPathComponent(proj.name).appendingPathComponent(invoice.name)
+//        NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: invoiceUrl.path)
+        #endif
     }
 
 
     func loadChart() {
-        guard let proj = folder else {
+        guard let proj = project else {
             fatalError("folder not set")
         }
         guard !invoices.isEmpty else {
@@ -228,41 +228,39 @@ class InvoicesState: ObservableObject {
             subject.send((priceChartConfig, rateChartConfig, 0))
             return
         }
-        invoicesInteractor.execute { baseUrl in
 
-            let folderUrl = baseUrl.appendingPathComponent(proj.name)
-            var prices = [ChartDataEntry]()
-            var rates = [ChartDataEntry]()
-            var total: Decimal = 0
-            for invoice in invoices {
-                // Load all invoices data and display a chart
-                let invoiceUrl = folderUrl.appendingPathComponent(invoice.name).appendingPathComponent("data.json")
-                if FileManager.default.fileExists(atPath: invoiceUrl.path) {
-                    print("File exists \(invoiceUrl.path)")
-                } else {
-                    print("Start downloading \(invoiceUrl.path)")
-                    do {
-                        try FileManager.default.startDownloadingUbiquitousItem(at: invoiceUrl)
-                    } catch {
-                        print("Error while loading Backup File \(error)")
-                    }
-                }
-                do {
-                    let jsonData = try Data(contentsOf: invoiceUrl)
-                    let invoice = try JSONDecoder().decode(InvoiceData.self, from: jsonData)
-                    let price = invoice.amount_total_vat.doubleValue// + Double.random(in: 0..<10000)
-                    total += invoice.amount_total_vat
-                    let priceEntry = ChartDataEntry(x: "\(invoice.invoice_nr)", y: price)
-                    prices.append(priceEntry)
-                    let rate = invoice.products[0].rate.doubleValue// + Double.random(in: 0..<100)
-                    let rateEntry = ChartDataEntry(x: "\(invoice.invoice_nr)", y: rate)
-                    rates.append(rateEntry)
-                } catch {
-                    print("\(error)")
-                }
-            }
-            showChart(prices, rates, total)
-        }
+        let folderPath = proj.name
+        var prices = [ChartDataEntry]()
+        var rates = [ChartDataEntry]()
+        var total: Decimal = 0
+//        for invoice in invoices {
+//            // Load all invoices data and display a chart
+//            let invoiceDataPath = "\(folderPath)/\(invoice.name)/data.json"
+//            if FileManager.default.fileExists(atPath: invoiceDataPath) {
+//                print("File exists \(invoiceDataPath)")
+//            } else {
+//                print("Start downloading \(invoiceDataPath)")
+//                do {
+//                    try FileManager.default.startDownloadingUbiquitousItem(at: invoiceDataPath)
+//                } catch {
+//                    print("Error while loading Backup File \(error)")
+//                }
+//            }
+//            do {
+//                let jsonData = try Data(contentsOf: invoiceDataPath)
+//                let invoice = try JSONDecoder().decode(InvoiceData.self, from: jsonData)
+//                let price = invoice.amount_total_vat.doubleValue// + Double.random(in: 0..<10000)
+//                total += invoice.amount_total_vat
+//                let priceEntry = ChartDataEntry(x: "\(invoice.invoice_nr)", y: price)
+//                prices.append(priceEntry)
+//                let rate = invoice.products[0].rate.doubleValue// + Double.random(in: 0..<100)
+//                let rateEntry = ChartDataEntry(x: "\(invoice.invoice_nr)", y: rate)
+//                rates.append(rateEntry)
+//            } catch {
+//                print("\(error)")
+//            }
+//        }
+        showChart(prices, rates, total)
     }
     
     func showChart (_ prices: [ChartDataEntry]?, _ rates: [ChartDataEntry]?, _ total: Decimal) {

@@ -17,7 +17,7 @@ class ReportEditorState: ObservableObject {
         }
     }
 
-    @Published var allProjects: [Project] = []
+    @Published var allProjects: [ReportProject] = []
     @Published var reports: [Report] = []
     private var allReports: [Report] = []
 
@@ -72,11 +72,11 @@ class ReportEditorState: ObservableObject {
         }
     }
 
-    private func projects (from reports: [Report], isOn: Bool) -> [Project] {
-        var arr = [Project]()
+    private func projects (from reports: [Report], isOn: Bool) -> [ReportProject] {
+        var arr = [ReportProject]()
         for report in reports {
             if !arr.contains(where: {$0.name == report.project_name}) {
-                arr.append(Project(name: report.project_name, isOn: isOn))
+                arr.append(ReportProject(name: report.project_name, isOn: isOn))
             }
         }
         return arr

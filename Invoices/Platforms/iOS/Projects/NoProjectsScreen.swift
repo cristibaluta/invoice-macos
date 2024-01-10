@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct NoFolderScreen: View {
+struct NoProjectsScreen: View {
 
-    @EnvironmentObject private var foldersState: FoldersState
+    @EnvironmentObject private var projectsState: ProjectsState
 
 
     var body: some View {
-        NewFolderView { name in
-            foldersState.createFolder(named: name) { f in
+        NewProjectView { name in
+            projectsState.createProject(named: name) { _ in
                 
             }
         }

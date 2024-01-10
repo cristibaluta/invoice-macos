@@ -17,7 +17,7 @@ struct InvoicesApp: App {
 
         WindowGroup {
             MainView()
-            .environmentObject(states.foldersState)
+            .environmentObject(states.projectsState)
             .environmentObject(states.invoicesState)
             .environmentObject(states.companiesState)
         }

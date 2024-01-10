@@ -25,10 +25,16 @@ struct NewInvoiceView: View {
 
                 HStack(alignment: .center) {
                     Text("Invoice date:").font(.system(size: 20))
-                    DatePicker("", selection: $state.date, displayedComponents: .date)
+                    DatePicker("", selection: $state.invoiceDate, displayedComponents: .date)
                     .font(.system(size: 20))
                 }
                 
+                HStack(alignment: .center) {
+                    Text("Invoiced date:").font(.system(size: 20))
+                    DatePicker("", selection: $state.invoicedDate, displayedComponents: .date)
+                    .font(.system(size: 20))
+                }
+
                 HStack(alignment: .center) {
                     Text("Exchange rate:").font(.system(size: 20))
                     Spacer()

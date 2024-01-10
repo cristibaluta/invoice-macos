@@ -39,7 +39,7 @@ class ContentColumnState: ObservableObject {
 struct ContentColumn: View {
 
     @EnvironmentObject private var contentColumnState: ContentColumnState
-    @EnvironmentObject private var foldersState: FoldersState
+    @EnvironmentObject private var foldersState: ProjectsState
     @EnvironmentObject private var companiesState: CompaniesState
 
     var body: some View {
@@ -48,9 +48,9 @@ struct ContentColumn: View {
 
         switch contentColumnState.type {
             case .noProjects:
-                NewFolderView { newProjectName in
-                    foldersState.createFolder(named: newProjectName) { proj in
-                        self.foldersState.selectedFolder = proj
+                NewProjectView { newProjectName in
+                    foldersState.createProject(named: newProjectName) { proj in
+                        self.foldersState.selectedProject = proj
                     }
                 }
 

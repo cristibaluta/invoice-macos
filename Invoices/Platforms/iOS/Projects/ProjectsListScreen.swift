@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct FoldersListScreen: View {
+struct ProjectsListScreen: View {
 
-    @EnvironmentObject var foldersState: FoldersState
+    @EnvironmentObject var projectsState: ProjectsState
 
     
     var body: some View {
@@ -17,7 +17,7 @@ struct FoldersListScreen: View {
         let _ = Self._printChanges()
 
         List {
-            ForEach(foldersState.folders, id: \.self) { f in
+            ForEach(projectsState.projects, id: \.self) { f in
                 NavigationLink(destination: InvoicesListScreen(folder: f)) {
                     Label(f.name, systemImage: "list.bullet")
                 }
@@ -25,10 +25,10 @@ struct FoldersListScreen: View {
             .onDelete(perform: delete)
         }
         .refreshable {
-            foldersState.refresh()
+            projectsState.refresh()
         }
         .onAppear {
-            foldersState.refresh()
+            projectsState.refresh()
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -36,9 +36,9 @@ struct FoldersListScreen: View {
             }
             ToolbarItem(placement: .primaryAction) {
                 Button("New") {
-                    foldersState.isShowingNewFolderSheet = true
+                    projectsState.isShowingNewProjectSheet = true
                 }
-                .sheet(isPresented: $foldersState.isShowingNewFolderSheet) {
+                .sheet(isPresented: $projectsState.isShowingNewProjectSheet) {
                     NewProjectSheet()
                 }
             }
@@ -50,6 +50,6 @@ struct FoldersListScreen: View {
         guard let index = offsets.first else {
             return
         }
-        foldersState.deleteFolder(at: index)
+        projectsState.deleteProject(at: index)
     }
 }

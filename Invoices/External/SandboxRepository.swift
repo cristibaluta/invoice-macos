@@ -10,40 +10,19 @@ import Combine
 
 class SandboxRepository {
 
-    private func getDocumentsDirectory() -> URL {
+    private var documentDirectory: URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
-        print(documentsDirectory)
+//        print(documentsDirectory)
         return documentsDirectory
     }
-
-
-    var readFolderContentPublisher: AnyPublisher<[String], Never> {
-        readFolderContentSubject.eraseToAnyPublisher()
-    }
-    private let readFolderContentSubject = PassthroughSubject<[String], Never>()
-
 }
 
 extension SandboxRepository: Repository {
-    @objc
-    func execute (_ block: (URL) -> Void) {
-        block(getDocumentsDirectory())
-    }
 
-    func readFolderContent2 (at url: URL) -> AnyPublisher<[String], Never> {
+    func readFolderContent (at path: String) -> Publishers.Sequence<[String], Never> {
         do {
-            let folders = try FileManager.default.contentsOfDirectory(atPath: url.path).sorted(by: {$0 > $1})
-            readFolderContentSubject.send(folders)
-        }
-        catch {
-            print(error)
-        }
-        return readFolderContentPublisher
-    }
-
-    func readFolderContent (at url: URL) -> Publishers.Sequence<[String], Never> {
-        do {
+            let url = documentDirectory.appendingPathComponent(path)
             let folders = try FileManager.default.contentsOfDirectory(atPath: url.path).sorted(by: {$0 > $1})
             return folders.publisher
         }
@@ -53,8 +32,9 @@ extension SandboxRepository: Repository {
         }
     }
 
-    func readFile (at url: URL) -> AnyPublisher<Data, Never> {
+    func readFile (at path: String) -> AnyPublisher<Data, Never> {
         do {
+            let url = documentDirectory.appendingPathComponent(path)
             let data = try Data(contentsOf: url)
             return CurrentValueSubject<Data, Never>(data).eraseToAnyPublisher()
         } catch {
@@ -63,8 +43,9 @@ extension SandboxRepository: Repository {
         }
     }
 
-    func writeFolder (at url: URL) -> AnyPublisher<Bool, Never> {
+    func writeFolder (at path: String) -> AnyPublisher<Bool, Never> {
         do {
+            let url = documentDirectory.appendingPathComponent(path)
             try FileManager.default.createDirectory(at: url,
                                                     withIntermediateDirectories: true,
                                                     attributes: nil)
@@ -75,8 +56,9 @@ extension SandboxRepository: Repository {
         }
     }
 
-    func writeFile (_ contents: Data, at url: URL) -> AnyPublisher<Bool, Never> {
+    func writeFile (_ contents: Data, at path: String) -> AnyPublisher<Bool, Never> {
         do {
+            let url = documentDirectory.appendingPathComponent(path)
             try contents.write(to: url)
             return CurrentValueSubject<Bool, Never>(true).eraseToAnyPublisher()
         } catch {
@@ -85,8 +67,9 @@ extension SandboxRepository: Repository {
         }
     }
 
-    func removeItem (at url: URL) -> AnyPublisher<Bool, Never> {
+    func removeItem (at path: String) -> AnyPublisher<Bool, Never> {
         do {
+            let url = documentDirectory.appendingPathComponent(path)
             try FileManager.default.removeItem(at: url)
             return CurrentValueSubject<Bool, Never>(true).eraseToAnyPublisher()
         } catch {

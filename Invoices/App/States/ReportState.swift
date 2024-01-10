@@ -15,18 +15,18 @@ class ReportState: ObservableObject {
     private var cancellable: Cancellable?
     private let reportsInteractor: ReportsInteractor
 
-    var folder: Folder
+    var project: Project
     var data: InvoiceData
     var printData: Data?
     var html = ""
 
 
-    init (folder: Folder,
+    init (project: Project,
           data: InvoiceData,
           reportsInteractor: ReportsInteractor) {
 
         print("init ReportState")
-        self.folder = folder
+        self.project = project
         self.data = data
         self.reportsInteractor = reportsInteractor
     }
@@ -35,9 +35,9 @@ class ReportState: ObservableObject {
 //        self.isShowingEditorSheet = false
 //    }
 
-    func calculate (reports: [Report], projects allProjects: [Project], completion: @escaping (String) -> Void) {
+    func calculate (reports: [Report], projects allProjects: [ReportProject], completion: @escaping (String) -> Void) {
 
-        cancellable = reportsInteractor.readReportTemplates(in: folder)
+        cancellable = reportsInteractor.readReportTemplates(in: project)
         .sink { templates in
 
             self.data.calculate()
@@ -105,9 +105,10 @@ class ReportState: ObservableObject {
     }
 
     func save (pdfData: Data?, completion: @escaping (Invoice?) -> Void) {
-        reportsInteractor.saveReport(data: data, pdfData: pdfData, in: folder) { invoice in
-            completion(invoice)
-        }
+        _ = reportsInteractor.saveReport(data: data, pdfData: pdfData, in: project)
+            .sink { invoice in
+                completion(invoice)
+            }
     }
 
 }

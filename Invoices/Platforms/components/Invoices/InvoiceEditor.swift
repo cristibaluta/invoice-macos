@@ -18,7 +18,8 @@ class InvoiceEditorState: ObservableObject {
 
     @Published var invoiceSeries: String
     @Published var invoiceNr: String
-    @Published var date: Date
+    @Published var invoiceDate: Date
+    @Published var invoicedDate: Date
     @Published var rate: String
     @Published var exchangeRate: String
     @Published var units: String
@@ -47,7 +48,8 @@ class InvoiceEditorState: ObservableObject {
 
         invoiceSeries = data.invoice_series
         invoiceNr = String(data.invoice_nr)
-        date = Date(yyyyMMdd: data.invoice_date) ?? Date()
+        invoiceDate = Date(yyyyMMdd: data.invoice_date) ?? Date()
+        invoicedDate = Date(yyyyMMdd: data.invoiced_period) ?? Date()
         vat = data.vat.stringValue_2
         amountTotalVat = data.amount_total_vat.stringValue_2
 
@@ -114,8 +116,18 @@ struct InvoiceEditor: View {
                     HStack(alignment: .center) {
                         Text("Invoice date:")
                         .font(appFont)
-                        DatePicker("", selection: $state.date, displayedComponents: .date).onChange(of: state.date) { newValue in
+                        DatePicker("", selection: $state.invoiceDate, displayedComponents: .date)
+                        .onChange(of: state.invoiceDate) { newValue in
                             state.data.invoice_date = newValue.yyyyMMdd
+                        }
+                        .font(appFont)
+                    }
+                    HStack(alignment: .center) {
+                        Text("Invoiced month:")
+                        .font(appFont)
+                        DatePicker("", selection: $state.invoicedDate, displayedComponents: .date)
+                        .onChange(of: state.invoicedDate) { newValue in
+                            state.data.invoiced_period = newValue.yyyyMMdd
                         }
                         .font(appFont)
                     }

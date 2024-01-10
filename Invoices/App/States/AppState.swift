@@ -30,14 +30,14 @@ class AppState: ObservableObject {
 
     private let repository: Repository
 
-    var foldersState: FoldersState
+    var projectsState: ProjectsState
     var invoicesState: InvoicesState
     var companiesState: CompaniesState
 
 
     init (repository: Repository) {
         self.repository = repository
-        self.foldersState = FoldersState(interactor: FoldersInteractor(repository: repository))
+        self.projectsState = ProjectsState(interactor: ProjectsInteractor(repository: repository))
         self.invoicesState = InvoicesState(invoicesInteractor: InvoicesInteractor(repository: repository),
                                            reportsInteractor: ReportsInteractor(repository: repository))
         self.companiesState = CompaniesState(interactor: CompaniesInteractor(repository: repository))
