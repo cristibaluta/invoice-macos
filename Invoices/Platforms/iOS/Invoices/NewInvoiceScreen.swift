@@ -9,29 +9,29 @@ import SwiftUI
 
 struct NewInvoiceScreen: View {
 
-    @EnvironmentObject private var invoicesState: InvoicesState
+    @EnvironmentObject private var invoicesData: InvoicesData
 
 
     var body: some View {
         NavigationView {
-            NewInvoiceView(state: invoicesState.selectedInvoiceState.invoiceEditorState)
+            NewInvoiceView(state: invoicesData.selectedInvoiceState.invoiceEditorState)
             .padding(20)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
-                        self.invoicesState.dismissNewInvoice()
+                        self.invoicesData.dismissNewInvoice()
                     }
                 }
                 ToolbarItem(placement: .primaryAction) {
                     Button("Save") {
-                        self.invoicesState.selectedInvoiceState.calculate()
-                        self.invoicesState.selectedInvoiceState.save()
-                        self.invoicesState.dismissNewInvoice()
+                        self.invoicesData.selectedInvoiceState.calculate()
+                        self.invoicesData.selectedInvoiceState.save()
+                        self.invoicesData.dismissNewInvoice()
                     }
                 }
             }
             .onAppear {
-                invoicesState.createNextInvoiceInProject()
+                invoicesData.createNextInvoiceInProject()
             }
         }
         

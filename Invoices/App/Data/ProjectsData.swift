@@ -8,7 +8,7 @@
 import Combine
 import RCPreferences
 
-class ProjectsState: ObservableObject {
+class ProjectsData: ObservableObject {
 
     @Published var projects: [Project] = []
     @Published var selectedProject: Project? {
@@ -66,6 +66,13 @@ class ProjectsState: ObservableObject {
             return
         }
         selectedProject = project
+    }
+
+    func selectLastProject() {
+        guard let lastProj: String = pref.get(.lastProject) else {
+            return
+        }
+        selectProject(named: lastProj)
     }
 
     func dismissNewProject() {

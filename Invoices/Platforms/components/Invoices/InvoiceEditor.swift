@@ -68,7 +68,7 @@ class InvoiceEditorState: ObservableObject {
 
 struct InvoiceEditor: View {
 
-    @EnvironmentObject var companiesState: CompaniesState
+    @EnvironmentObject var companiesData: CompaniesData
     @ObservedObject private var state: InvoiceEditorState
 
     private var onTapAddCompany: () -> Void
@@ -237,7 +237,7 @@ struct InvoiceEditor: View {
                     HStack(alignment: .center) {
                         Text("Contractor:").font(appFont)
                         Menu {
-                            ForEach(companiesState.companies) { company in
+                            ForEach(companiesData.companies) { company in
                                 Button(company.name, action: {
                                     state.data.contractor = company.data
                                     state.contractorName = company.data.name
@@ -256,7 +256,7 @@ struct InvoiceEditor: View {
                     HStack(alignment: .center) {
                         Text("Client:").font(appFont)
                         Menu {
-                            ForEach(companiesState.companies) { company in
+                            ForEach(companiesData.companies) { company in
                                 Button(company.name, action: {
                                     state.data.client = company.data
                                     state.clientName = company.data.name
@@ -277,7 +277,7 @@ struct InvoiceEditor: View {
             .padding()
         }
         .onAppear {
-            companiesState.refresh()
+            companiesData.refresh()
         }
         
     }

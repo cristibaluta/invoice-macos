@@ -10,7 +10,7 @@ import SwiftUI
 
 struct InvoiceEditorSheet: View {
 
-    @EnvironmentObject var companiesState: CompaniesState
+    @EnvironmentObject var companiesData: CompaniesData
     @Environment(\.dismiss) var dismiss
     private var state: InvoiceEditorState
     private let onSave: (InvoiceData) -> Void
@@ -27,7 +27,7 @@ struct InvoiceEditorSheet: View {
         NavigationView {
             ScrollView {
                 InvoiceEditor(state: state, onTapAddCompany: {
-                    self.companiesState.isShowingNewCompanySheet = true
+                    self.companiesData.isShowingNewCompanySheet = true
                 })
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -47,7 +47,7 @@ struct InvoiceEditorSheet: View {
                     }
                 }
             }
-            .sheet(isPresented: $companiesState.isShowingNewCompanySheet) {
+            .sheet(isPresented: $companiesData.isShowingNewCompanySheet) {
                 NewCompanySheet()
             }
             .onTapGesture {

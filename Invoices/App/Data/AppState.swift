@@ -30,16 +30,16 @@ class AppState: ObservableObject {
 
     private let repository: Repository
 
-    var projectsState: ProjectsState
-    var invoicesState: InvoicesState
-    var companiesState: CompaniesState
+    var projectsData: ProjectsData
+    var invoicesData: InvoicesData
+    var companiesData: CompaniesData
 
 
     init (repository: Repository) {
         self.repository = repository
-        self.projectsState = ProjectsState(interactor: ProjectsInteractor(repository: repository))
-        self.invoicesState = InvoicesState(invoicesInteractor: InvoicesInteractor(repository: repository),
-                                           reportsInteractor: ReportsInteractor(repository: repository))
-        self.companiesState = CompaniesState(interactor: CompaniesInteractor(repository: repository))
+        self.projectsData = ProjectsData(interactor: ProjectsInteractor(repository: repository))
+        self.invoicesData = InvoicesData(invoicesInteractor: InvoicesInteractor(repository: repository),
+                                         reportsInteractor: ReportsInteractor(repository: repository))
+        self.companiesData = CompaniesData(interactor: CompaniesInteractor(repository: repository))
     }
 }

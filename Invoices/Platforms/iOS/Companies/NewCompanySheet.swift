@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NewCompanySheet: View {
 
-    @EnvironmentObject var companiesState: CompaniesState
+    @EnvironmentObject var companiesData: CompaniesData
 
     init() {
         print("init NewCompanySheet")
@@ -21,7 +21,7 @@ struct NewCompanySheet: View {
             ScrollView {
                 CompanyView(data: CompaniesInteractor.emptyCompanyDetails) { data in
                     print("onChange \(data.name)")
-                    companiesState.selectedCompany = data
+                    companiesData.selectedCompany = data
                 }
                 .padding()
                 Spacer()
@@ -29,7 +29,7 @@ struct NewCompanySheet: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
-                        self.companiesState.dismissNewCompany()
+                        self.companiesData.dismissNewCompany()
                     }
                 }
                 ToolbarItem(placement: .principal) {
@@ -37,7 +37,7 @@ struct NewCompanySheet: View {
                 }
                 ToolbarItem(placement: .primaryAction) {
                     Button("Save") {
-                        companiesState.saveSelectedCompany()
+                        companiesData.saveSelectedCompany()
                     }
                 }
             }

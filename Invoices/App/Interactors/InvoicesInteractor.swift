@@ -74,7 +74,7 @@ class InvoicesInteractor {
         let invoicePath = "\(project.name)/\(invoiceFolderName)"
         let writeFolderPublisher = repository.writeFolder(at: invoicePath)
 
-        // Save json
+        // Save json data
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         let jsonData = try! encoder.encode(data)
@@ -87,10 +87,10 @@ class InvoicesInteractor {
         let writePdfPublisher = repository.writeFile(pdfData!, at: pdfPath)
 
         let publisher = Publishers.Zip3(writeFolderPublisher, writeJsonPublisher, writePdfPublisher)
-        .map { x in
-            return Invoice(date: data.date, invoiceNr: invoiceNr, name: invoiceFolderName)
-        }
-        .eraseToAnyPublisher()
+            .map { x in
+                return Invoice(date: data.date, invoiceNr: invoiceNr, name: invoiceFolderName)
+            }
+            .eraseToAnyPublisher()
 
         return publisher
     }

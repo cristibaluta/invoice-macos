@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class CompaniesState: ObservableObject {
+class CompaniesData: ObservableObject {
 
     @Published var companiesData: [CompanyData] = []
     @Published var companies: [Company] = []
@@ -19,7 +19,7 @@ class CompaniesState: ObservableObject {
     }
     @Published var isShowingNewCompanySheet = false
 
-    let interactor: CompaniesInteractor
+    private let interactor: CompaniesInteractor
 
     init (interactor: CompaniesInteractor) {
         self.interactor = interactor

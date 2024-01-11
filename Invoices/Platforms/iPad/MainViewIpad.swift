@@ -11,12 +11,12 @@ import Combine
 
 struct MainViewIpad: View {
 
-    @EnvironmentObject var projectsState: ProjectsState
-    @EnvironmentObject var companiesState: CompaniesState
+    @EnvironmentObject var projectsData: ProjectsData
+    @EnvironmentObject var companiesData: CompaniesData
 
     var body: some View {
         NavigationView {
-            if $projectsState.projects.count > 0 {
+            if $projectsData.projects.count > 0 {
                 ProjectsListScreen()
             } else {
                 NoProjectsScreen()
@@ -25,8 +25,8 @@ struct MainViewIpad: View {
         .navigationViewStyle(DoubleColumnNavigationViewStyle())
         .tag(0)
         .onAppear {
-            projectsState.refresh()
-            companiesState.refresh()
+            projectsData.refresh()
+            companiesData.refresh()
         }
 //        TabView {
 //            //
@@ -35,7 +35,7 @@ struct MainViewIpad: View {
 //            //
 //            //
 //            NavigationView {
-//                if $companiesState.companies.count > 0 {
+//                if $companiesData.companies.count > 0 {
 //                    CompaniesListScreen()
 //                } else {
 //                    NoCompaniesScreen()
@@ -44,7 +44,7 @@ struct MainViewIpad: View {
 //            .tabItem { Label("Companies", systemImage: "heart.fill") }
 //            .tag(1)
 //            .onAppear() {
-//                companiesState.refresh()
+//                companiesData.refresh()
 //            }
 //            //
 //            //

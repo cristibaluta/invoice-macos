@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SavePopover: View {
 
-    @ObservedObject var state: InvoiceAndReportState
+    @ObservedObject var state: ContentData
 
     var body: some View {
         VStack {

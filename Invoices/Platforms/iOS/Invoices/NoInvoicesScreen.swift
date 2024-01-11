@@ -9,13 +9,13 @@ import SwiftUI
 
 struct NoInvoicesScreen: View {
 
-    @EnvironmentObject private var invoicesState: InvoicesState
+    @EnvironmentObject private var invoicesData: InvoicesData
     
     var body: some View {
         NoInvoicesView() {
-            invoicesState.isShowingNewInvoiceSheet = true
+            invoicesData.isShowingNewInvoiceSheet = true
         }
-        .sheet(isPresented: $invoicesState.isShowingNewInvoiceSheet) {
+        .sheet(isPresented: $invoicesData.isShowingNewInvoiceSheet) {
             NewInvoiceScreen()
         }
     }

@@ -9,12 +9,12 @@ import SwiftUI
 
 struct NoProjectsScreen: View {
 
-    @EnvironmentObject private var projectsState: ProjectsState
+    @EnvironmentObject private var projectsData: ProjectsData
 
 
     var body: some View {
         NewProjectView { name in
-            projectsState.createProject(named: name) { _ in
+            projectsData.createProject(named: name) { _ in
                 
             }
         }

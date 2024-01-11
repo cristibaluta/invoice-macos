@@ -13,7 +13,7 @@ import SwiftUI
 import AppKit
 #endif
 
-class InvoicesState: ObservableObject {
+class InvoicesData: ObservableObject {
 
     @Published var invoices: [Invoice] = []
     @Published var selectedInvoice: Invoice?
@@ -26,7 +26,7 @@ class InvoicesState: ObservableObject {
     private let reportsInteractor: ReportsInteractor
 
     var project: Project?
-    var selectedInvoiceState: InvoiceAndReportState
+    var selectedInvoiceState: ContentData
 
     var priceChartConfig = ChartConfiguration()
     var rateChartConfig = ChartConfiguration()
@@ -39,19 +39,19 @@ class InvoicesState: ObservableObject {
     }
     private let subject = PassthroughSubject<(ChartConfiguration, ChartConfiguration, Decimal), Never>()
 
-    var newInvoicePublisher: AnyPublisher<(InvoiceAndReportState), Never> {
+    var newInvoicePublisher: AnyPublisher<(ContentData), Never> {
         newInvoiceSubject.eraseToAnyPublisher()
     }
-    private let newInvoiceSubject = PassthroughSubject<(InvoiceAndReportState), Never>()
+    private let newInvoiceSubject = PassthroughSubject<(ContentData), Never>()
 
 
     init (invoicesInteractor: InvoicesInteractor, reportsInteractor: ReportsInteractor) {
         self.invoicesInteractor = invoicesInteractor
         self.reportsInteractor = reportsInteractor
-        self.selectedInvoiceState = InvoiceAndReportState(project: Project(name: ""),
-                                                          data: InvoicesInteractor.emptyInvoiceData,
-                                                          invoicesInteractor: invoicesInteractor,
-                                                          reportsInteractor: reportsInteractor)
+        self.selectedInvoiceState = ContentData(project: Project(name: ""),
+                                                data: InvoicesInteractor.emptyInvoiceData,
+                                                invoicesInteractor: invoicesInteractor,
+                                                reportsInteractor: reportsInteractor)
         // Configure charts
         priceChartConfig.data.color = .red
         priceChartConfig.xAxis.labelsColor = .gray
@@ -85,38 +85,24 @@ class InvoicesState: ObservableObject {
     func refresh(_ project: Project) {
         self.project = project
         _ = invoicesInteractor.refreshInvoicesList(for: project)
-        .print("InvoicesState")
-        .sink { [weak self] in
-            self?.invoices = $0
-            self?.loadChart()
-        }
+            .print("InvoicesState")
+            .sink { [weak self] in
+                self?.invoices = $0
+                self?.loadChart()
+            }
     }
 
-//    func loadInvoice(_ invoice: InvoiceFolder) {
-//        guard let proj = folder else {
-//            fatalError("folder not set")
-//        }
-//        _ = invoicesInteractor.readInvoice(for: invoice, in: proj)
-//        .sink {
-//            print($0)
-//            self.selectedInvoiceState = InvoiceAndReportState(folder: proj,
-//                                                              data: $0,
-//                                                              invoicesInteractor: self.invoicesInteractor,
-//                                                              reportsInteractor: self.reportsInteractor)
-//            self.selectedInvoiceState.calculate()
-//        }
-//    }
-
-    func loadInvoice(_ invoice: Invoice) -> AnyPublisher<InvoiceAndReportState, Never> {
+    func loadInvoice(_ invoice: Invoice) -> AnyPublisher<ContentData, Never> {
         guard let proj = project else {
             fatalError("folder not set")
         }
         return invoicesInteractor.readInvoice(for: invoice, in: proj)
-            .map {
-                self.selectedInvoiceState = InvoiceAndReportState(project: proj,
-                                                                  data: $0,
-                                                                  invoicesInteractor: self.invoicesInteractor,
-                                                                  reportsInteractor: self.reportsInteractor)
+            .map { invoiceData in
+                // TODO map should not save to instance vars
+                self.selectedInvoiceState = ContentData(project: proj,
+                                                         data: invoiceData,
+                                                         invoicesInteractor: self.invoicesInteractor,
+                                                         reportsInteractor: self.reportsInteractor)
                 return self.selectedInvoiceState
             }
             .eraseToAnyPublisher()
@@ -128,15 +114,16 @@ class InvoicesState: ObservableObject {
             fatalError("folder not set")
         }
         guard let lastInvoice = invoices.first else {
+            // If this is the first invoice create an empty invoice
             let data = InvoicesInteractor.emptyInvoiceData
-            let invoiceFolder = Invoice(date: data.date,
-                                              invoiceNr: "\(data.invoice_series)\(data.invoice_nr)",
-                                              name: "\(data.date.yyyyMMdd)-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)")
-            self.invoices = [invoiceFolder]
-            self.selectedInvoiceState = InvoiceAndReportState(project: proj,
-                                                              data: data,
-                                                              invoicesInteractor: self.invoicesInteractor,
-                                                              reportsInteractor: self.reportsInteractor)
+            let invoice = Invoice(date: data.date,
+                                  invoiceNr: "\(data.invoice_series)\(data.invoice_nr)",
+                                  name: "\(data.date.yyyyMMdd)-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)")
+            self.invoices = [invoice]
+            self.selectedInvoiceState = ContentData(project: proj,
+                                                     data: data,
+                                                     invoicesInteractor: self.invoicesInteractor,
+                                                     reportsInteractor: self.reportsInteractor)
             self.selectedInvoiceState.calculate()
             self.newInvoiceSubject.send(self.selectedInvoiceState)
             return
@@ -152,16 +139,16 @@ class InvoicesState: ObservableObject {
             data.invoice_date = nextDate.yyyyMMdd
             /// Remove the old reports
             data.reports = []
-            /// Create new invoice folder
-            let invoiceFolder = Invoice(date: nextDate,
-                                        invoiceNr: "\(data.invoice_series)\(data.invoice_nr)",
-                                        name: "\(nextDate.yyyyMMdd)-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)")
-            self.invoices.insert(invoiceFolder, at: 0)
+            /// Create new invoice and insert it in the list
+            let invoice = Invoice(date: nextDate,
+                                  invoiceNr: "\(data.invoice_series)\(data.invoice_nr)",
+                                  name: "\(nextDate.yyyyMMdd)-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)")
+            self.invoices.insert(invoice, at: 0)
             /// Update the state
-            self.selectedInvoiceState = InvoiceAndReportState(project: proj,
-                                                              data: data,
-                                                              invoicesInteractor: self.invoicesInteractor,
-                                                              reportsInteractor: self.reportsInteractor)
+            self.selectedInvoiceState = ContentData(project: proj,
+                                                     data: data,
+                                                     invoicesInteractor: self.invoicesInteractor,
+                                                     reportsInteractor: self.reportsInteractor)
             self.selectedInvoiceState.calculate()
             self.newInvoiceSubject.send(self.selectedInvoiceState)
         }

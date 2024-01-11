@@ -10,9 +10,9 @@ import Combine
 
 struct SidebarColumn: View {
 
-    @EnvironmentObject var projectsState: ProjectsState
-    @EnvironmentObject var invoicesState: InvoicesState
-    @EnvironmentObject var companiesState: CompaniesState
+    @EnvironmentObject var projectsData: ProjectsData
+    @EnvironmentObject var invoicesData: InvoicesData
+    @EnvironmentObject var companiesData: CompaniesData
     @EnvironmentObject var contentColumnState: ContentColumnState
 
     @State private var isShowingAddPopover = false
@@ -20,11 +20,12 @@ struct SidebarColumn: View {
     @State private var isShowingAddCompanyPopover = false
     @State private var selectedInvoice: Invoice? {
         didSet {
-            let _ = invoicesState.loadInvoice(selectedInvoice!).sink { state in
-                contentColumnState.invoiceReportState = state
-                contentColumnState.type = .invoice(state)
-                state.calculate()
-            }
+            _ = invoicesData.loadInvoice(selectedInvoice!)
+                .sink { state in
+                    contentColumnState.contentData = state
+                    contentColumnState.type = .invoice(state)
+                    state.calculate()
+                }
         }
     }
 
@@ -39,14 +40,14 @@ struct SidebarColumn: View {
 
             Text("Projects").bold().padding(.leading, 16)
             Menu {
-                ForEach(projectsState.projects) { project in
+                ForEach(projectsData.projects) { project in
                     Button(project.name, action: {
-                        projectsState.selectedProject = project
-                        invoicesState.refresh(project)
+                        projectsData.selectedProject = project
+                        invoicesData.refresh(project)
                     })
                 }
             } label: {
-                Text(projectsState.selectedProject?.name ?? "Select project")
+                Text(projectsData.selectedProject?.name ?? "Select project")
             }
             .padding(16)
 
@@ -55,7 +56,7 @@ struct SidebarColumn: View {
             Divider().padding(16)
 
             Text("Invoices").bold().padding(.leading, 16)
-            List(invoicesState.invoices, id: \.self, selection: $selectedInvoice) { invoice in
+            List(invoicesData.invoices, id: \.self, selection: $selectedInvoice) { invoice in
                 HStack {
                     Text(invoice.name)
                     Spacer()
@@ -66,7 +67,7 @@ struct SidebarColumn: View {
                 }
                 .contextMenu {
                     Button(action: {
-                        invoicesState.showInFinder(invoice)
+                        invoicesData.showInFinder(invoice)
                     }) {
                         Text("Show in Finder")
                     }
@@ -84,9 +85,9 @@ struct SidebarColumn: View {
             Divider().padding(16)
 
             Text("Companies").bold().padding(.leading, 16)
-            List(companiesState.companies, id: \.self, selection: $invoicesState.selectedInvoice) { comp in
+            List(companiesData.companies, id: \.self, selection: $invoicesData.selectedInvoice) { comp in
                 Button(comp.name, action: {
-                    companiesState.selectedCompany = comp.data
+                    companiesData.selectedCompany = comp.data
                     isShowingCompanyDetailsPopover = true
                 })
                 .contextMenu {
@@ -99,7 +100,7 @@ struct SidebarColumn: View {
             }
             .listStyle(SidebarListStyle())
             .popover(isPresented: $isShowingCompanyDetailsPopover) {
-                CompanyPopover(data: companiesState.selectedCompany!)
+                CompanyPopover(data: companiesData.selectedCompany!)
                 .frame(width: 400)
             }
 
@@ -124,7 +125,7 @@ struct SidebarColumn: View {
                     }
                     Button("New Invoice") {
                         isShowingAddPopover = false
-                        invoicesState.createNextInvoiceInProject()
+                        invoicesData.createNextInvoiceInProject()
                     }
                     Button("New company") {
                         isShowingAddPopover = false
@@ -135,16 +136,16 @@ struct SidebarColumn: View {
             }
         }
         .onAppear {
-            contentColumnState.chartCancellable = invoicesState.chartPublisher.sink { values in
-                if invoicesState.invoices.isEmpty {
+            contentColumnState.chartCancellable = invoicesData.chartPublisher.sink { values in
+                if invoicesData.invoices.isEmpty {
                     contentColumnState.type = .noInvoices
                 } else {
                     contentColumnState.type = .charts(values.0, values.1, values.2)
                 }
             }
-            contentColumnState.newInvoiceCancellable = invoicesState.newInvoicePublisher.sink { invoiceReportState in
-                contentColumnState.invoiceReportState = invoiceReportState
-                contentColumnState.type = .invoice(invoiceReportState)
+            contentColumnState.newInvoiceCancellable = invoicesData.newInvoicePublisher.sink { contentData in
+                contentColumnState.contentData = contentData
+                contentColumnState.type = .invoice(contentData)
             }
         }
 

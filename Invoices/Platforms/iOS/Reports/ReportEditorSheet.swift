@@ -48,7 +48,7 @@ struct ReportEditorSheet: View {
                     }
                 }
             }
-//            .sheet(isPresented: $companiesState.isShowingNewCompanySheet) {
+//            .sheet(isPresented: $companiesData.isShowingNewCompanySheet) {
 //                NewCompanySheet()
 //            }
         }

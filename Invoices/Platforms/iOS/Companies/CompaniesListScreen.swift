@@ -9,18 +9,18 @@ import SwiftUI
 
 struct CompaniesListScreen: View {
 
-    @EnvironmentObject var companiesState: CompaniesState
+    @EnvironmentObject var companiesData: CompaniesData
 
 
     var body: some View {
 
-        List(companiesState.companies, id: \.self, selection: $companiesState.selectedCompany) { comp in
+        List(companiesData.companies, id: \.self, selection: $companiesData.selectedCompany) { comp in
             NavigationLink(destination: CompanyScreen(data: comp.data)) {
                 Label(comp.name, systemImage: "list.bullet")
             }
         }
         .refreshable {
-            companiesState.refresh()
+            companiesData.refresh()
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -28,16 +28,16 @@ struct CompaniesListScreen: View {
             }
             ToolbarItem(placement: .primaryAction) {
                 Button("Add") {
-                    companiesState.selectedCompany = CompaniesInteractor.emptyCompanyDetails
-                    companiesState.isShowingNewCompanySheet = true
+                    companiesData.selectedCompany = CompaniesInteractor.emptyCompanyDetails
+                    companiesData.isShowingNewCompanySheet = true
                 }
-                .sheet(isPresented: $companiesState.isShowingNewCompanySheet) {
+                .sheet(isPresented: $companiesData.isShowingNewCompanySheet) {
                     NewCompanySheet()
                 }
             }
         }
         .onAppear {
-            companiesState.refresh()
+            companiesData.refresh()
         }
     }
     

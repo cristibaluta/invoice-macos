@@ -10,7 +10,7 @@ import SwiftUI
 struct DeleteConfirmationColumn: View {
 
     @EnvironmentObject private var contentColumnState: ContentColumnState
-    @EnvironmentObject private var invoicesState: InvoicesState
+    @EnvironmentObject private var invoicesData: InvoicesData
     var invoice: Invoice
     
     var body: some View {
@@ -27,7 +27,7 @@ struct DeleteConfirmationColumn: View {
                     contentColumnState.type = .noProjects
                 }
                 Button("Delete") {
-                    invoicesState.deleteInvoice(invoice)
+                    invoicesData.deleteInvoice(invoice)
                 }
             }
             Spacer()

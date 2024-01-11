@@ -11,15 +11,15 @@ import Combine
 
 struct MainView: View {
 
-    @EnvironmentObject var projectsState: ProjectsState
-    @EnvironmentObject var companiesState: CompaniesState
+    @EnvironmentObject var projectsData: ProjectsData
+    @EnvironmentObject var companiesData: CompaniesData
     
     var body: some View {
         TabView {
             //
             //
             NavigationView {
-                if $projectsState.projects.count > 0 {
+                if $projectsData.projects.count > 0 {
                     ProjectsListScreen()
                 } else {
                     NoProjectsScreen()
@@ -28,12 +28,12 @@ struct MainView: View {
             .tabItem { Label("Invoices", systemImage: "list.bullet") }
             .tag(0)
             .onAppear {
-                projectsState.refresh()
+                projectsData.refresh()
             }
             //
             //
             NavigationView {
-                if $companiesState.companies.count > 0 {
+                if $companiesData.companies.count > 0 {
                     CompaniesListScreen()
                 } else {
                     NoCompaniesScreen()
@@ -42,7 +42,7 @@ struct MainView: View {
             .tabItem { Label("Companies", systemImage: "heart.fill") }
             .tag(1)
             .onAppear() {
-                companiesState.refresh()
+                companiesData.refresh()
             }
             //
             //

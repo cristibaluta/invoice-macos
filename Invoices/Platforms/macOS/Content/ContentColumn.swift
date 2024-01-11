@@ -14,10 +14,10 @@ enum ViewType {
     case noProjects
     case noInvoices
     case charts(ChartConfiguration, ChartConfiguration, Decimal)
-    case newInvoice(InvoiceAndReportState)
+    case newInvoice(ContentData)
     case deleteInvoice(Invoice)
-    case invoice(InvoiceAndReportState)
-    case report(InvoiceAndReportState)
+    case invoice(ContentData)
+    case report(ContentData)
     case company(CompanyData)
     case error(String, String)
 }
@@ -26,7 +26,8 @@ class ContentColumnState: ObservableObject {
 
     @Published var type: ViewType = .noProjects
     @Published var html = ""
-    var invoiceReportState: InvoiceAndReportState?
+
+    var contentData: ContentData?
     var chartCancellable: Cancellable?
     var newInvoiceCancellable: Cancellable?
     var htmlCancellable: Cancellable?
@@ -39,8 +40,8 @@ class ContentColumnState: ObservableObject {
 struct ContentColumn: View {
 
     @EnvironmentObject private var contentColumnState: ContentColumnState
-    @EnvironmentObject private var foldersState: ProjectsState
-    @EnvironmentObject private var companiesState: CompaniesState
+    @EnvironmentObject private var projectsData: ProjectsData
+    @EnvironmentObject private var companiesData: CompaniesData
 
     var body: some View {
 
@@ -49,8 +50,8 @@ struct ContentColumn: View {
         switch contentColumnState.type {
             case .noProjects:
                 NewProjectView { newProjectName in
-                    foldersState.createProject(named: newProjectName) { proj in
-                        self.foldersState.selectedProject = proj
+                    projectsData.createProject(named: newProjectName) { proj in
+                        self.projectsData.selectedProject = proj
                     }
                 }
 
@@ -59,8 +60,8 @@ struct ContentColumn: View {
 
                 }
 
-            case .newInvoice(let invoiceReportState):
-                NewInvoiceView(state: invoiceReportState.invoiceEditorState)
+            case .newInvoice(let contentData):
+                NewInvoiceView(state: contentData.invoiceEditorState)
                 .padding(40)
 
             case .deleteInvoice(let invoice):
@@ -70,16 +71,16 @@ struct ContentColumn: View {
                 ChartsView(state: ChartsViewState(total: total), priceChartConfig: priceChart, rateChartConfig: rateChart)
                 .padding(40)
 
-            case .invoice(let invoiceReportState), .report(let invoiceReportState):
-                if let state = contentColumnState.invoiceReportState {
+            case .invoice(let contentData), .report(let contentData):
+                if let state = contentColumnState.contentData {
                     HtmlViewer(htmlString: state.html) { printingData in
                         state.pdfData = printingData
                     }
                     .frame(width: 920)
                     .padding(10)
-                    .modifier(Toolbar(invoiceReportState: invoiceReportState))
+                    .modifier(Toolbar(contentData: contentData))
                     .onAppear {
-                        contentColumnState.htmlCancellable = invoiceReportState.htmlPublisher.sink { html in
+                        contentColumnState.htmlCancellable = contentData.htmlPublisher.sink { html in
                             contentColumnState.html = html
                         }
                     }

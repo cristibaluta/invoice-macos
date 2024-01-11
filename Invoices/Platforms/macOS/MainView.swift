@@ -10,9 +10,10 @@ import SwiftUI
 
 struct MainView: View {
 
-    @EnvironmentObject var projectsState: ProjectsState
-    @EnvironmentObject var invoicesState: InvoicesState
-    @EnvironmentObject var companiesState: CompaniesState
+    @EnvironmentObject var projectsData: ProjectsData
+    @EnvironmentObject var invoicesData: InvoicesData
+    @EnvironmentObject var companiesData: CompaniesData
+    
     private let contentColumnState = ContentColumnState()
     
     var body: some View {
@@ -22,14 +23,16 @@ struct MainView: View {
         content
         .frame(minWidth: 1000, idealWidth: 1200, minHeight: 600, idealHeight: 900, alignment: .topLeading)
         .onAppear {
-            projectsState.refresh()
-            companiesState.refresh()
+            projectsData.refresh()
+            projectsData.selectLastProject()
+            invoicesData.refresh(projectsData.selectedProject!)
+            companiesData.refresh()
         }
     }
 
     var content: some View {
         NavigationView {
-            if !projectsState.projects.isEmpty {
+            if !projectsData.projects.isEmpty {
                 SidebarColumn()
                 .environmentObject(contentColumnState)
                 .frame(minWidth: 180)

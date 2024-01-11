@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CompanyPopover: View {
 
-    @EnvironmentObject var companiesState: CompaniesState
+    @EnvironmentObject var companiesData: CompaniesData
     var data: CompanyData
 //    init() {
 //        print("init CompanyPopover")
@@ -20,12 +20,12 @@ struct CompanyPopover: View {
         VStack {
             CompanyView(data: data) { data in
                 print("onChange \(data.name)")
-                companiesState.selectedCompany = data
+                companiesData.selectedCompany = data
             }
             .padding()
             Spacer()
             Button("Save") {
-                companiesState.saveSelectedCompany()
+                companiesData.saveSelectedCompany()
             }
             .padding()
         }

@@ -13,7 +13,8 @@ enum ContentType: Int {
     case report
 }
 
-class InvoiceAndReportState: ObservableObject {
+// The content state is the source of truth for the invoice and the report
+class ContentData: ObservableObject {
 
     @Published var contentType: ContentType = .invoice
     @Published var isShowingEditorSheet = false
@@ -22,10 +23,12 @@ class InvoiceAndReportState: ObservableObject {
             self.htmlSubject.send(html)
         }
     }
+    var htmlPublisher: AnyPublisher<String, Never> { htmlSubject.eraseToAnyPublisher() }
+    private let htmlSubject = PassthroughSubject<String, Never>()
 
-    var invoiceState: InvoiceState
+    private var invoiceInteractor: InvoiceInteractor
+    private var reportInteractor: ReportInteractor
     var invoiceEditorState: InvoiceEditorState
-    var reportState: ReportState
     var reportEditorState: ReportEditorState
 
     private var cancellable: Cancellable?
@@ -39,10 +42,6 @@ class InvoiceAndReportState: ObservableObject {
         }
     }
 
-    var htmlPublisher: AnyPublisher<String, Never> { htmlSubject.eraseToAnyPublisher() }
-    private let htmlSubject = PassthroughSubject<String, Never>()
-
-
     init (project: Project,
           data: InvoiceData,
           invoicesInteractor: InvoicesInteractor,
@@ -50,10 +49,11 @@ class InvoiceAndReportState: ObservableObject {
 
         self.project = project
         self.data = data
-        self.invoiceState = InvoiceState(project: project, data: data, invoicesInteractor: invoicesInteractor)
-        self.reportState = ReportState(project: project, data: data, reportsInteractor: reportsInteractor)
-        self.invoiceEditorState = InvoiceEditorState(data: data)
-        self.reportEditorState = ReportEditorState(data: data)
+
+        invoiceInteractor = InvoiceInteractor(project: project, invoicesInteractor: invoicesInteractor)
+        reportInteractor = ReportInteractor(project: project, data: data, reportsInteractor: reportsInteractor)
+        invoiceEditorState = InvoiceEditorState(data: data)
+        reportEditorState = ReportEditorState(data: data)
 
         invoiceEditorState.invoiceDataPublisher
             .sink { newData in
@@ -75,13 +75,12 @@ class InvoiceAndReportState: ObservableObject {
     func calculate() {
         switch contentType {
             case .invoice:
-                invoiceState.data = invoiceEditorState.data
-                invoiceState.calculate { val in
-                    self.html = val
-                }
+                _ = invoiceInteractor.calculate(data: data)
+                    .sink { html in
+                        self.html = html
+                    }
             case .report:
-                invoiceState.data = reportEditorState.data
-                reportState.calculate(reports: reportEditorState.reports, projects: reportEditorState.allProjects) { val in
+                reportInteractor.calculate(reports: reportEditorState.reports, projects: reportEditorState.allProjects) { val in
                     self.html = val
                 }
         }
@@ -90,11 +89,12 @@ class InvoiceAndReportState: ObservableObject {
     func save() {
         switch contentType {
             case .invoice:
-                invoiceState.save(pdfData: pdfData) { invoiceFolder in
+                invoiceInteractor.save(data: data, pdfData: pdfData)
+                    .sink { invoiceFolder in
 
-                }
+                    }
             case .report:
-                reportState.save(pdfData: pdfData) { invoiceFolder in
+                reportInteractor.save(pdfData: pdfData) { invoiceFolder in
 
                 }
         }

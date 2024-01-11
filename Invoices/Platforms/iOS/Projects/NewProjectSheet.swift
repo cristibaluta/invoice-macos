@@ -9,20 +9,20 @@ import SwiftUI
 
 struct NewProjectSheet: View {
 
-    @EnvironmentObject private var projectsState: ProjectsState
+    @EnvironmentObject private var projectsData: ProjectsData
 
     
     var body: some View {
         NavigationView {
             NewProjectView { name in
-                projectsState.createProject(named: name) { f in
+                projectsData.createProject(named: name) { f in
 
                 }
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
-                        self.projectsState.dismissNewProject()
+                        self.projectsData.dismissNewProject()
                     }
                 }
             }

@@ -17,9 +17,9 @@ struct InvoicesApp: App {
 
         WindowGroup {
             MainView()
-            .environmentObject(states.projectsState)
-            .environmentObject(states.invoicesState)
-            .environmentObject(states.companiesState)
+            .environmentObject(states.projectsData)
+            .environmentObject(states.invoicesData)
+            .environmentObject(states.companiesData)
         }
         .commands {
             SidebarCommands()

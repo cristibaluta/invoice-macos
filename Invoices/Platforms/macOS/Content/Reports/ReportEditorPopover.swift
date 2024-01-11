@@ -16,10 +16,10 @@ struct ReportEditorPopover: View {
     ]
 
     @Environment(\.dismiss) var dismiss
-    @ObservedObject private var state: InvoiceAndReportState
+    @ObservedObject private var state: ContentData
     private let reportEditorState: ReportEditorState
 
-    init (state: InvoiceAndReportState) {
+    init (state: ContentData) {
         self.state = state
         self.reportEditorState = state.reportEditorState
     }

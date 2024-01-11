@@ -10,23 +10,23 @@ import SwiftUI
 class InvoiceAndReportScreenState: ObservableObject {
 
     @Published var html = ""
-    var invoiceReportState: InvoiceAndReportState {
+    var contentData: ContentData {
         didSet {
-            self.html = invoiceReportState.html
+            self.html = contentData.html
         }
     }
     var invoice: Invoice
 
-    init(invoice: Invoice, invoiceReportState: InvoiceAndReportState) {
+    init(invoice: Invoice, contentData: ContentData) {
         print(">>>>>> init InvoiceAndReportScreenState")
         self.invoice = invoice
-        self.invoiceReportState = invoiceReportState
+        self.contentData = contentData
     }
 }
 
 struct InvoiceAndReportScreen: View {
 
-    @EnvironmentObject var invoicesState: InvoicesState
+    @EnvironmentObject var invoicesData: InvoicesData
     @ObservedObject var state: InvoiceAndReportScreenState
     @State private var isShowingEditInvoiceSheet = false
 
@@ -38,7 +38,7 @@ struct InvoiceAndReportScreen: View {
         GeometryReader { context in
             ScrollView {
                 HtmlViewer(htmlString: state.html) { printingData in
-                    state.invoiceReportState.pdfData = printingData
+                    state.contentData.pdfData = printingData
                 }
                 .frame(width: context.size.width,
                        height: context.size.width * HtmlViewer.size.height / HtmlViewer.size.width)
@@ -46,14 +46,14 @@ struct InvoiceAndReportScreen: View {
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Picker("Type", selection: $state.invoiceReportState.contentType) {
+                Picker("Type", selection: $state.contentData.contentType) {
                     Text("Invoice").tag(ContentType.invoice)
                     Text("Reports").tag(ContentType.report)
                 }
                 .frame(width: 150)
                 .pickerStyle(SegmentedPickerStyle())
-                .onChange(of: state.invoiceReportState.contentType) { newValue in
-                    state.invoiceReportState.contentType = newValue
+                .onChange(of: state.contentData.contentType) { newValue in
+                    state.contentData.contentType = newValue
                 }
             }
             ToolbarItem(placement: .primaryAction) {
@@ -61,15 +61,15 @@ struct InvoiceAndReportScreen: View {
                     isShowingEditInvoiceSheet = true
                 }
                 .sheet(isPresented: $isShowingEditInvoiceSheet) {
-                    if state.invoiceReportState.contentType == .invoice {
-                        InvoiceEditorSheet(data: state.invoiceReportState.data) { updatedData in
+                    if state.contentData.contentType == .invoice {
+                        InvoiceEditorSheet(data: state.contentData.data) { updatedData in
                             print("invoice is udated")
-                            state.invoiceReportState.data = updatedData
-                            state.invoiceReportState.calculate()
-                            state.html = state.invoiceReportState.html
+                            state.contentData.data = updatedData
+                            state.contentData.calculate()
+                            state.html = state.contentData.html
                         }
                     } else {
-                        ReportEditorSheet(data: state.invoiceReportState.data) { updatedData in
+                        ReportEditorSheet(data: state.contentData.data) { updatedData in
                             print("report is udated")
                         }
                     }
@@ -77,10 +77,10 @@ struct InvoiceAndReportScreen: View {
             }
         }
         .onAppear() {
-            _ = invoicesState.loadInvoice(state.invoice)
+            _ = invoicesData.loadInvoice(state.invoice)
             .sink {
                 $0.calculate()
-                self.state.invoiceReportState = $0
+                self.state.contentData = $0
             }
         }
 

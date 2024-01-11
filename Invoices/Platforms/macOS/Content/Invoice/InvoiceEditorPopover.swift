@@ -9,12 +9,13 @@ import SwiftUI
 
 struct InvoiceEditorPopover: View {
 
-    @EnvironmentObject var companiesState: CompaniesState
     @Environment(\.dismiss) var dismiss
-    @ObservedObject private var state: InvoiceAndReportState
+    @EnvironmentObject var companiesData: CompaniesData
+    @ObservedObject private var state: ContentData
+
     private let invoiceEditorState: InvoiceEditorState
 
-    init (state: InvoiceAndReportState) {
+    init (state: ContentData) {
         self.state = state
         self.invoiceEditorState = state.invoiceEditorState
     }
@@ -25,7 +26,7 @@ struct InvoiceEditorPopover: View {
 
         VStack {
             InvoiceEditor(state: invoiceEditorState, onTapAddCompany: {
-                self.companiesState.isShowingNewCompanySheet = true
+                self.companiesData.isShowingNewCompanySheet = true
             })
             Button("Save") {
                 state.save()

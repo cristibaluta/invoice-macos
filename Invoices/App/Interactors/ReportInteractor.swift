@@ -8,9 +8,7 @@
 import Foundation
 import Combine
 
-class ReportState: ObservableObject {
-
-//    @Published var isShowingEditorSheet = false
+class ReportInteractor {
 
     private var cancellable: Cancellable?
     private let reportsInteractor: ReportsInteractor
@@ -30,10 +28,6 @@ class ReportState: ObservableObject {
         self.data = data
         self.reportsInteractor = reportsInteractor
     }
-
-//    func dismissEditor() {
-//        self.isShowingEditorSheet = false
-//    }
 
     func calculate (reports: [Report], projects allProjects: [ReportProject], completion: @escaping (String) -> Void) {
 

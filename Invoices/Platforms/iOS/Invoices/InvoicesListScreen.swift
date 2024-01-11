@@ -9,7 +9,7 @@ import SwiftUI
 
 struct InvoicesListScreen: View {
 
-    @EnvironmentObject private var invoicesState: InvoicesState
+    @EnvironmentObject private var invoicesData: InvoicesData
     private var project: Project
 
     init (folder: Project) {
@@ -18,7 +18,7 @@ struct InvoicesListScreen: View {
     
     var body: some View {
 
-        if $invoicesState.invoices.count > 0 {
+        if $invoicesData.invoices.count > 0 {
             invoicesListBody
         } else {
             noInvoicesBody
@@ -28,15 +28,15 @@ struct InvoicesListScreen: View {
     private var invoicesListBody: some View {
 
         List {
-            ForEach(invoicesState.invoices, id: \.self) { invoice in
-                NavigationLink(destination: InvoiceAndReportScreen(state: InvoiceAndReportScreenState(invoice: invoice, invoiceReportState: invoicesState.selectedInvoiceState))) {
+            ForEach(invoicesData.invoices, id: \.self) { invoice in
+                NavigationLink(destination: InvoiceAndReportScreen(state: InvoiceAndReportScreenState(invoice: invoice, contentData: invoicesData.selectedInvoiceState))) {
                     Label(invoice.name, systemImage: "doc.text")
                 }
             }
             .onDelete(perform: delete)
         }
         .refreshable {
-            invoicesState.refresh(project)
+            invoicesData.refresh(project)
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -44,15 +44,15 @@ struct InvoicesListScreen: View {
             }
             ToolbarItem(placement: .primaryAction) {
                 Button("Add") {
-                    invoicesState.isShowingNewInvoiceSheet = true
+                    invoicesData.isShowingNewInvoiceSheet = true
                 }
             }
         }
-        .sheet(isPresented: $invoicesState.isShowingNewInvoiceSheet) {
+        .sheet(isPresented: $invoicesData.isShowingNewInvoiceSheet) {
             NewInvoiceScreen()
         }
         .onAppear {
-            invoicesState.refresh(project)
+            invoicesData.refresh(project)
         }
     }
 
@@ -65,7 +65,7 @@ struct InvoicesListScreen: View {
             }
         }
         .onAppear {
-            invoicesState.refresh(project)
+            invoicesData.refresh(project)
         }
     }
 
@@ -73,7 +73,7 @@ struct InvoicesListScreen: View {
         guard let index = offsets.first else {
             return
         }
-        invoicesState.deleteInvoice(at: index)
+        invoicesData.deleteInvoice(at: index)
     }
 
 }
