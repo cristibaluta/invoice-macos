@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 import SwiftCSV
 
-class ReportEditorState: ObservableObject {
+class ReportEditorViewModel: ObservableObject {
 
     var data: InvoiceData {
         didSet {
@@ -109,13 +109,13 @@ class ReportEditorState: ObservableObject {
 
 struct ReportEditor: View {
     
-    @ObservedObject var state: ReportEditorState
+    @ObservedObject var state: ReportEditorViewModel
     
     let columns = [
         GridItem(.adaptive(minimum: 160))
     ]
     
-    init (state: ReportEditorState) {
+    init (state: ReportEditorViewModel) {
         self.state = state
     }
     

@@ -11,8 +11,8 @@ import Combine
 
 struct MainViewIpad: View {
 
-    @EnvironmentObject var projectsData: ProjectsData
-    @EnvironmentObject var companiesData: CompaniesData
+    @EnvironmentObject var projectsData: ProjectsStore
+    @EnvironmentObject var companiesData: CompaniesStore
 
     var body: some View {
         NavigationView {

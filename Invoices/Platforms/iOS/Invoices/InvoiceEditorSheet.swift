@@ -10,14 +10,14 @@ import SwiftUI
 
 struct InvoiceEditorSheet: View {
 
-    @EnvironmentObject var companiesData: CompaniesData
+    @EnvironmentObject var companiesData: CompaniesStore
     @Environment(\.dismiss) var dismiss
-    private var state: InvoiceEditorState
+    private var state: InvoiceEditorViewModel
     private let onSave: (InvoiceData) -> Void
 
     init (data: InvoiceData, onSave: @escaping (InvoiceData) -> Void) {
         self.onSave = onSave
-        self.state = InvoiceEditorState(data: data)
+        self.state = InvoiceEditorViewModel(data: data)
     }
 
     var body: some View {

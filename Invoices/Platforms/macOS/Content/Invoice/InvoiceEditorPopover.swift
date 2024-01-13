@@ -10,12 +10,12 @@ import SwiftUI
 struct InvoiceEditorPopover: View {
 
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var companiesData: CompaniesData
-    @ObservedObject private var state: ContentData
+    @EnvironmentObject var companiesData: CompaniesStore
+    @ObservedObject private var state: InvoiceStore
 
-    private let invoiceEditorState: InvoiceEditorState
+    private let invoiceEditorState: InvoiceEditorViewModel
 
-    init (state: ContentData) {
+    init (state: InvoiceStore) {
         self.state = state
         self.invoiceEditorState = state.invoiceEditorState
     }

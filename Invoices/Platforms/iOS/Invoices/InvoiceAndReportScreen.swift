@@ -10,14 +10,14 @@ import SwiftUI
 class InvoiceAndReportScreenState: ObservableObject {
 
     @Published var html = ""
-    var contentData: ContentData {
+    var contentData: InvoiceStore {
         didSet {
             self.html = contentData.html
         }
     }
     var invoice: Invoice
 
-    init(invoice: Invoice, contentData: ContentData) {
+    init(invoice: Invoice, contentData: InvoiceStore) {
         print(">>>>>> init InvoiceAndReportScreenState")
         self.invoice = invoice
         self.contentData = contentData
@@ -26,7 +26,7 @@ class InvoiceAndReportScreenState: ObservableObject {
 
 struct InvoiceAndReportScreen: View {
 
-    @EnvironmentObject var invoicesData: InvoicesData
+    @EnvironmentObject var invoicesData: InvoicesStore
     @ObservedObject var state: InvoiceAndReportScreenState
     @State private var isShowingEditInvoiceSheet = false
 

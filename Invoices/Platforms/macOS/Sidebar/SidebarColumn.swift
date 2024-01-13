@@ -10,24 +10,13 @@ import Combine
 
 struct SidebarColumn: View {
 
-    @EnvironmentObject var projectsData: ProjectsData
-    @EnvironmentObject var invoicesData: InvoicesData
-    @EnvironmentObject var companiesData: CompaniesData
-    @EnvironmentObject var contentColumnState: ContentColumnState
+    @EnvironmentObject var store: Store
+    @EnvironmentObject var companiesStore: CompaniesStore
+    @EnvironmentObject var mainViewState: MainViewState
 
     @State private var isShowingAddPopover = false
     @State private var isShowingCompanyDetailsPopover = false
     @State private var isShowingAddCompanyPopover = false
-    @State private var selectedInvoice: Invoice? {
-        didSet {
-            _ = invoicesData.loadInvoice(selectedInvoice!)
-                .sink { state in
-                    contentColumnState.contentData = state
-                    contentColumnState.type = .invoice(state)
-                    state.calculate()
-                }
-        }
-    }
 
 
     var body: some View {
@@ -36,58 +25,23 @@ struct SidebarColumn: View {
         
         VStack(alignment: .leading) {
 
-            // Folders section
-
-            Text("Projects").bold().padding(.leading, 16)
-            Menu {
-                ForEach(projectsData.projects) { project in
-                    Button(project.name, action: {
-                        projectsData.selectedProject = project
-                        invoicesData.refresh(project)
-                    })
-                }
-            } label: {
-                Text(projectsData.selectedProject?.name ?? "Select project")
-            }
-            .padding(16)
+            // Projects section
+            ProjectsMenu(projectsStore: store.projectsStore)
 
             // Invoices section
-
             Divider().padding(16)
-
-            Text("Invoices").bold().padding(.leading, 16)
-            List(invoicesData.invoices, id: \.self, selection: $selectedInvoice) { invoice in
-                HStack {
-                    Text(invoice.name)
-                    Spacer()
-                }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    selectedInvoice = invoice
-                }
-                .contextMenu {
-                    Button(action: {
-                        invoicesData.showInFinder(invoice)
-                    }) {
-                        Text("Show in Finder")
-                    }
-                    Button(action: {
-                        contentColumnState.type = .deleteInvoice(invoice)
-                    }) {
-                        Text("Delete")
-                    }
-                }
+            if let invoicesStore = store.projectsStore.invoicesStore {
+                InvoicesList(invoicesStore: invoicesStore)
             }
-            .listStyle(SidebarListStyle())
 
             // Companies section
 
             Divider().padding(16)
 
             Text("Companies").bold().padding(.leading, 16)
-            List(companiesData.companies, id: \.self, selection: $invoicesData.selectedInvoice) { comp in
+            List(companiesStore.companies, id: \.self) { comp in
                 Button(comp.name, action: {
-                    companiesData.selectedCompany = comp.data
+                    companiesStore.selectedCompany = comp.data
                     isShowingCompanyDetailsPopover = true
                 })
                 .contextMenu {
@@ -100,7 +54,7 @@ struct SidebarColumn: View {
             }
             .listStyle(SidebarListStyle())
             .popover(isPresented: $isShowingCompanyDetailsPopover) {
-                CompanyPopover(data: companiesData.selectedCompany!)
+                CompanyPopover(data: companiesStore.selectedCompany!)
                 .frame(width: 400)
             }
 
@@ -121,31 +75,31 @@ struct SidebarColumn: View {
                 VStack {
                     Button("New Project") {
                         isShowingAddPopover = false
-                        contentColumnState.type = .noProjects
+                        mainViewState.type = .noProjects
                     }
                     Button("New Invoice") {
                         isShowingAddPopover = false
-                        invoicesData.createNextInvoiceInProject()
+                        store.projectsStore.invoicesStore?.createNextInvoiceInProject()
                     }
                     Button("New company") {
                         isShowingAddPopover = false
-                        contentColumnState.type = .company(CompaniesInteractor.emptyCompanyDetails)
+                        mainViewState.type = .company(CompaniesInteractor.emptyCompanyDetails)
                     }
                 }
                 .padding(20)
             }
         }
         .onAppear {
-            contentColumnState.chartCancellable = invoicesData.chartPublisher.sink { values in
-                if invoicesData.invoices.isEmpty {
-                    contentColumnState.type = .noInvoices
+            mainViewState.chartCancellable = store.projectsStore.invoicesStore!.chartPublisher.sink { values in
+                if store.projectsStore.invoicesStore?.invoices.isEmpty ?? false {
+                    mainViewState.type = .noInvoices
                 } else {
-                    contentColumnState.type = .charts(values.0, values.1, values.2)
+                    mainViewState.type = .charts(values.0, values.1, values.2)
                 }
             }
-            contentColumnState.newInvoiceCancellable = invoicesData.newInvoicePublisher.sink { contentData in
-                contentColumnState.contentData = contentData
-                contentColumnState.type = .invoice(contentData)
+            mainViewState.newInvoiceCancellable = store.projectsStore.invoicesStore!.newInvoicePublisher.sink { contentData in
+//                mainViewState.contentData = contentData
+//                mainViewState.type = .invoice(contentData)
             }
         }
 

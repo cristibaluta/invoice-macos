@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class CompanyViewState {
+class CompanyViewViewModel {
 
     var data: CompanyData
 
@@ -40,14 +40,14 @@ struct CompanyView: View {
     @State var web: String
 
     private var onChange: (CompanyData) -> Void
-    private var state: CompanyViewState
+    private var state: CompanyViewViewModel
     
 
     init (data: CompanyData, onChange: @escaping (CompanyData) -> Void) {
-        self.init(state: CompanyViewState(data: data), onChange: onChange)
+        self.init(state: CompanyViewViewModel(data: data), onChange: onChange)
     }
 
-    private init (state: CompanyViewState, onChange: @escaping (CompanyData) -> Void) {
+    private init (state: CompanyViewViewModel, onChange: @escaping (CompanyData) -> Void) {
         print("init CompanyView")
         self.state = state
         self.onChange = onChange

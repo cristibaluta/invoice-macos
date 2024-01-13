@@ -8,33 +8,43 @@
 import Combine
 import RCPreferences
 
-class ProjectsData: ObservableObject {
+class ProjectsStore: ObservableObject {
 
     @Published var projects: [Project] = []
     @Published var selectedProject: Project? {
         didSet {
             print("Selected new projects \(String(describing: selectedProject))")
             pref.set(selectedProject?.name ?? "", forKey: .lastProject)
+            if let project = selectedProject {
+                self.invoicesStore = InvoicesStore(repository: repository, project: project)
+            } else {
+                self.invoicesStore = nil
+            }
         }
     }
     @Published var isShowingNewProjectSheet = false
     @Published var isShowingDeleteProjectAlert = false
 
-    let interactor: ProjectsInteractor
+    private let interactor: ProjectsInteractor
+    private let repository: Repository
     private var pref = RCPreferences<UserPreferences>()
 //    var cancellables = Set<AnyCancellable>()
 //    var cancellable: AnyCancellable?
 
-    init (interactor: ProjectsInteractor) {
-        self.interactor = interactor
+    @Published var invoicesStore: InvoicesStore?
+
+
+    init (repository: Repository) {
+        self.repository = repository
+        self.interactor = ProjectsInteractor(repository: repository)
     }
 
     func refresh() {
         _ = interactor.loadProjectsList()
-        .print("FoldersState")
-        .sink { [weak self] in
-            self?.projects = $0
-        }
+            .print("FoldersState")
+            .sink { [weak self] in
+                self?.projects = $0
+            }
     }
 
     func createProject (named name: String, completion: @escaping (Project?) -> Void) {

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NoInvoicesScreen: View {
 
-    @EnvironmentObject private var invoicesData: InvoicesData
+    @EnvironmentObject private var invoicesData: InvoicesStore
     
     var body: some View {
         NoInvoicesView() {

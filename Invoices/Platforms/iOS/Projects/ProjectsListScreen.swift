@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProjectsListScreen: View {
 
-    @EnvironmentObject var projectsData: ProjectsData
+    @EnvironmentObject var projectsData: ProjectsStore
 
     
     var body: some View {

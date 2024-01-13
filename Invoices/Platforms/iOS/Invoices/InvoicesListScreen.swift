@@ -9,7 +9,7 @@ import SwiftUI
 
 struct InvoicesListScreen: View {
 
-    @EnvironmentObject private var invoicesData: InvoicesData
+    @EnvironmentObject private var invoicesData: InvoicesStore
     private var project: Project
 
     init (folder: Project) {
@@ -29,7 +29,7 @@ struct InvoicesListScreen: View {
 
         List {
             ForEach(invoicesData.invoices, id: \.self) { invoice in
-                NavigationLink(destination: InvoiceAndReportScreen(state: InvoiceAndReportScreenState(invoice: invoice, contentData: invoicesData.selectedInvoiceState))) {
+                NavigationLink(destination: InvoiceAndReportScreen(state: InvoiceAndReportScreenState(invoice: invoice, contentData: invoicesData.selectedInvoiceContentData))) {
                     Label(invoice.name, systemImage: "doc.text")
                 }
             }

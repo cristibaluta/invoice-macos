@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CompanyScreen: View {
 
-    @EnvironmentObject var companiesData: CompaniesData
+    @EnvironmentObject var companiesData: CompaniesStore
     @State var isEditing = false
     private var data: CompanyData
 

@@ -11,12 +11,12 @@ import SwiftUI
 struct ReportEditorSheet: View {
 
     @Environment(\.dismiss) var dismiss
-    private var state: ReportEditorState
+    private var state: ReportEditorViewModel
     private let onChange: (InvoiceData) -> Void
 
     init (data: InvoiceData, onChange: @escaping (InvoiceData) -> Void) {
         self.onChange = onChange
-        self.state = ReportEditorState(data: data)
+        self.state = ReportEditorViewModel(data: data)
     }
 
     var body: some View {

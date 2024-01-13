@@ -9,12 +9,12 @@ import SwiftUI
 
 struct NewInvoiceScreen: View {
 
-    @EnvironmentObject private var invoicesData: InvoicesData
+    @EnvironmentObject private var invoicesData: InvoicesStore
 
 
     var body: some View {
         NavigationView {
-            NewInvoiceView(state: invoicesData.selectedInvoiceState.invoiceEditorState)
+            NewInvoiceView(state: invoicesData.selectedInvoiceContentData.invoiceEditorState)
             .padding(20)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -24,8 +24,8 @@ struct NewInvoiceScreen: View {
                 }
                 ToolbarItem(placement: .primaryAction) {
                     Button("Save") {
-                        self.invoicesData.selectedInvoiceState.calculate()
-                        self.invoicesData.selectedInvoiceState.save()
+                        self.invoicesData.selectedInvoiceContentData.calculate()
+                        self.invoicesData.selectedInvoiceContentData.save()
                         self.invoicesData.dismissNewInvoice()
                     }
                 }

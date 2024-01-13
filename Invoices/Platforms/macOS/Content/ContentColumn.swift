@@ -10,48 +10,21 @@ import Combine
 import BarChart
 import RCPreferences
 
-enum ViewType {
-    case noProjects
-    case noInvoices
-    case charts(ChartConfiguration, ChartConfiguration, Decimal)
-    case newInvoice(ContentData)
-    case deleteInvoice(Invoice)
-    case invoice(ContentData)
-    case report(ContentData)
-    case company(CompanyData)
-    case error(String, String)
-}
-
-class ContentColumnState: ObservableObject {
-
-    @Published var type: ViewType = .noProjects
-    @Published var html = ""
-
-    var contentData: ContentData?
-    var chartCancellable: Cancellable?
-    var newInvoiceCancellable: Cancellable?
-    var htmlCancellable: Cancellable?
-
-    init() {
-        print(">>>>>> init ContentColumnState")
-    }
-}
-
 struct ContentColumn: View {
 
-    @EnvironmentObject private var contentColumnState: ContentColumnState
-    @EnvironmentObject private var projectsData: ProjectsData
-    @EnvironmentObject private var companiesData: CompaniesData
+    @EnvironmentObject private var mainViewState: MainViewState
+    @EnvironmentObject private var projectsStore: ProjectsStore
+    @EnvironmentObject private var companiesStore: CompaniesStore
 
     var body: some View {
 
         let _ = Self._printChanges()
 
-        switch contentColumnState.type {
+        switch mainViewState.type {
             case .noProjects:
                 NewProjectView { newProjectName in
-                    projectsData.createProject(named: newProjectName) { proj in
-                        self.projectsData.selectedProject = proj
+                    projectsStore.createProject(named: newProjectName) { proj in
+                        self.projectsStore.selectedProject = proj
                     }
                 }
 
@@ -71,18 +44,16 @@ struct ContentColumn: View {
                 ChartsView(state: ChartsViewState(total: total), priceChartConfig: priceChart, rateChartConfig: rateChart)
                 .padding(40)
 
-            case .invoice(let contentData), .report(let contentData):
-                if let state = contentColumnState.contentData {
-                    HtmlViewer(htmlString: state.html) { printingData in
-                        state.pdfData = printingData
-                    }
-                    .frame(width: 920)
-                    .padding(10)
-                    .modifier(Toolbar(contentData: contentData))
-                    .onAppear {
-                        contentColumnState.htmlCancellable = contentData.htmlPublisher.sink { html in
-                            contentColumnState.html = html
-                        }
+            case .invoice(let store), .report(let store):
+                HtmlViewer(htmlString: mainViewState.html) { printingData in
+//                    mainViewState.pdfData = printingData
+                }
+                .frame(width: 920)
+                .padding(10)
+//                .modifier(Toolbar(invoiceStore: invoiceStore))
+                .onAppear {
+                    mainViewState.htmlCancellable = store.htmlPublisher.sink { html in
+                        mainViewState.html = html
                     }
                 }
 

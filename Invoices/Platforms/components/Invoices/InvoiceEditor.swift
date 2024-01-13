@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-class InvoiceEditorState: ObservableObject {
+class InvoiceEditorViewModel: ObservableObject {
 
     var data: InvoiceData {
         didSet {
@@ -31,8 +31,8 @@ class InvoiceEditorState: ObservableObject {
     @Published var clientName: String = "Add new"
     @Published var contractorName: String = "Add new"
 
-    private var clientState: CompanyViewState
-    private var contractorState: CompanyViewState
+    private var clientState: CompanyViewViewModel
+    private var contractorState: CompanyViewViewModel
 
     /// Publisher for data change
     var invoiceDataPublisher: AnyPublisher<InvoiceData, Never> { invoiceDataSubject.eraseToAnyPublisher() }
@@ -59,8 +59,8 @@ class InvoiceEditorState: ObservableObject {
         unitsName = data.products[0].units_name
         productName = data.products[0].product_name
 
-        clientState = CompanyViewState(data: data.client)
-        contractorState = CompanyViewState(data: data.contractor)
+        clientState = CompanyViewViewModel(data: data.client)
+        contractorState = CompanyViewViewModel(data: data.contractor)
         clientName = data.client.name
         contractorName = data.contractor.name
     }
@@ -68,8 +68,8 @@ class InvoiceEditorState: ObservableObject {
 
 struct InvoiceEditor: View {
 
-    @EnvironmentObject var companiesData: CompaniesData
-    @ObservedObject private var state: InvoiceEditorState
+    @EnvironmentObject var companiesData: CompaniesStore
+    @ObservedObject private var state: InvoiceEditorViewModel
 
     private var onTapAddCompany: () -> Void
 
@@ -79,7 +79,7 @@ struct InvoiceEditor: View {
         return formatter
     }
 
-    init (state: InvoiceEditorState, onTapAddCompany: @escaping () -> Void) {
+    init (state: InvoiceEditorViewModel, onTapAddCompany: @escaping () -> Void) {
         print("init InvoiceEditor")
         self.onTapAddCompany = onTapAddCompany
         self.state = state

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NewCompanySheet: View {
 
-    @EnvironmentObject var companiesData: CompaniesData
+    @EnvironmentObject var companiesData: CompaniesStore
 
     init() {
         print("init NewCompanySheet")

@@ -8,14 +8,13 @@
 import Foundation
 import SwiftUI
 
-struct MainView: View {
+struct MainWindow: View {
 
-    @EnvironmentObject var projectsData: ProjectsData
-    @EnvironmentObject var invoicesData: InvoicesData
-    @EnvironmentObject var companiesData: CompaniesData
-    
-    private let contentColumnState = ContentColumnState()
-    
+    @EnvironmentObject var store: Store
+    @EnvironmentObject var companiesStore: CompaniesStore
+
+    private let mainViewState = MainViewState()
+
     var body: some View {
 
         let _ = Self._printChanges()
@@ -23,23 +22,22 @@ struct MainView: View {
         content
         .frame(minWidth: 1000, idealWidth: 1200, minHeight: 600, idealHeight: 900, alignment: .topLeading)
         .onAppear {
-            projectsData.refresh()
-            projectsData.selectLastProject()
-            invoicesData.refresh(projectsData.selectedProject!)
-            companiesData.refresh()
+            // Refresh the projects and the companies
+            store.projectsStore.refresh()
+            store.projectsStore.selectLastProject()
+            companiesStore.refresh()
         }
     }
 
     var content: some View {
         NavigationView {
-            if !projectsData.projects.isEmpty {
+            if !store.projectsStore.projects.isEmpty {
                 SidebarColumn()
-                .environmentObject(contentColumnState)
                 .frame(minWidth: 180)
             }
 
             ContentColumn()
-            .environmentObject(contentColumnState)
+            .frame(minWidth: 900)
         }
         .toolbar {
             ToolbarItem(placement: .navigation) {
@@ -49,6 +47,7 @@ struct MainView: View {
             }
         }
         .navigationViewStyle(.columns)
+        .environmentObject(mainViewState)
 //        .navigationTitle(state.invoiceName)
         
     }

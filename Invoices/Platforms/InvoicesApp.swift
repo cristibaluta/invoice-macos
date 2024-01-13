@@ -10,16 +10,16 @@ import SwiftUI
 @main
 struct InvoicesApp: App {
 
-    private let states = AppState(repository: SandboxRepository())
+    private let store = Store(repository: SandboxRepository())
 
 
     var body: some Scene {
 
         WindowGroup {
-            MainView()
-            .environmentObject(states.projectsData)
-            .environmentObject(states.invoicesData)
-            .environmentObject(states.companiesData)
+            MainWindow()
+            .environmentObject(store)
+            .environmentObject(store.companiesStore)
+            .environmentObject(store.settingsStore)
         }
         .commands {
             SidebarCommands()
@@ -27,10 +27,8 @@ struct InvoicesApp: App {
 
         #if os(macOS)
         Settings {
-            VStack{
-                Text("Settings view")
-            }
-            .frame(width: 500, height: 500)
+            SettingsWindow()
+            .environmentObject(store.settingsStore)
         }
         #endif
     }

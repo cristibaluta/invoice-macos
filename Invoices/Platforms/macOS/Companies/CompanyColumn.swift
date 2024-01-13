@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CompanyColumn: View {
 
-    @EnvironmentObject var companiesData: CompaniesData
+    @EnvironmentObject var companiesData: CompaniesStore
     var data: CompanyData
 
     var body: some View {

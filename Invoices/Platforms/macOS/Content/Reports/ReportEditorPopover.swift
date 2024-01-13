@@ -16,12 +16,12 @@ struct ReportEditorPopover: View {
     ]
 
     @Environment(\.dismiss) var dismiss
-    @ObservedObject private var state: ContentData
-    private let reportEditorState: ReportEditorState
+    @ObservedObject private var store: ReportStore
+    private let reportEditorState: ReportEditorViewModel
 
-    init (state: ContentData) {
-        self.state = state
-        self.reportEditorState = state.reportEditorState
+    init (store: ReportStore) {
+        self.store = store
+        self.reportEditorState = store.reportEditorState
     }
 
     var body: some View {
@@ -37,17 +37,17 @@ struct ReportEditorPopover: View {
                 //panel.allowedContentTypes = ["csv"]
                 if panel.runModal() == .OK {
                     if let url = panel.urls.first {
-                        state.reportEditorState.openCsv(at: url)
+                        store.reportEditorState.openCsv(at: url)
                     }
                 }
             }
 
             Divider()
 
-            ReportEditor(state: state.reportEditorState)
-            
+            ReportEditor(state: store.reportEditorState)
+
             Button("Save") {
-                state.save()
+                store.save()
                 self.dismiss.callAsFunction()
             }
         }

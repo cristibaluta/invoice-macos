@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CompanyPopover: View {
 
-    @EnvironmentObject var companiesData: CompaniesData
+    @EnvironmentObject var companiesData: CompaniesStore
     var data: CompanyData
 //    init() {
 //        print("init CompanyPopover")
@@ -17,6 +17,7 @@ struct CompanyPopover: View {
 
     var body: some View {
         let _ = Self._printChanges()
+        
         VStack {
             CompanyView(data: data) { data in
                 print("onChange \(data.name)")

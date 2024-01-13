@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NewInvoiceView: View {
     
-    @ObservedObject var state: InvoiceEditorState
+    @ObservedObject var state: InvoiceEditorViewModel
     
     var body: some View {
         VStack(alignment: .center) {

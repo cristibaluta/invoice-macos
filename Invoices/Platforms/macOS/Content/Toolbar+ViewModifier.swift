@@ -9,35 +9,36 @@ import SwiftUI
 
 struct Toolbar: ViewModifier {
 
-    @EnvironmentObject var contentColumnState: ContentColumnState
-    @ObservedObject var contentData: ContentData
+    @EnvironmentObject var mainViewState: MainViewState
+    @ObservedObject var invoiceStore: InvoiceStore
+    @ObservedObject var reportStore: ReportStore
     @State private var isShowingExportPopover = false
     
     func body (content: Content) -> some View {
         
         content.toolbar {
             ToolbarItem(placement: .principal) {
-                Picker("Section", selection: $contentData.contentType) {
-                    Text("Invoice").tag(ContentType.invoice)
-                    Text("Report").tag(ContentType.report)
+                Picker("Section", selection: $mainViewState.segmentedControl) {
+                    Text("Invoice").tag(SegmentedControlType.invoice)
+                    Text("Report").tag(SegmentedControlType.report)
                 }
                 .pickerStyle(SegmentedPickerStyle())
-                .onChange(of: contentData.contentType) { tag in
-                    contentData.contentType = tag
-                    contentData.calculate()
+                .onChange(of: mainViewState.segmentedControl) { tag in
+//                    contentData.contentType = tag
+//                    contentData.calculate()
                 }
             }
             ToolbarItemGroup(placement: .primaryAction) {
                 Spacer()
-                Button("Edit \(contentData.contentType == .invoice ? "invoice" : "report")") {
-                    contentData.isShowingEditorSheet = true
+                Button("Edit \(mainViewState.segmentedControl == .invoice ? "invoice" : "report")") {
+                    invoiceStore.isShowingEditorSheet = true
                 }
-                .popover(isPresented: $contentData.isShowingEditorSheet) {
-                    switch contentData.contentType {
+                .popover(isPresented: $invoiceStore.isShowingEditorSheet) {
+                    switch mainViewState.segmentedControl {
                         case .invoice:
-                            InvoiceEditorPopover(state: contentData)
+                            InvoiceEditorPopover(state: invoiceStore)
                         case .report:
-                            ReportEditorPopover(state: contentData)
+                            ReportEditorPopover(store: reportStore)
                             .frame(width: 500, height: 600)
                     }
                 }
@@ -48,7 +49,7 @@ struct Toolbar: ViewModifier {
                     Image(systemName: "square.and.arrow.up")
                 }
                 .popover(isPresented: $isShowingExportPopover) {
-                    SavePopover(state: contentData)
+                    ExportPopover(state: invoiceStore)
                     .padding(20)
                 }
             }

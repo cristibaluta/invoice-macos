@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class CompaniesData: ObservableObject {
+class CompaniesStore: ObservableObject {
 
     @Published var companiesData: [CompanyData] = []
     @Published var companies: [Company] = []
@@ -21,8 +21,8 @@ class CompaniesData: ObservableObject {
 
     private let interactor: CompaniesInteractor
 
-    init (interactor: CompaniesInteractor) {
-        self.interactor = interactor
+    init (repository: Repository) {
+        self.interactor = CompaniesInteractor(repository: repository)
         print("init CompaniesState")
     }
 
