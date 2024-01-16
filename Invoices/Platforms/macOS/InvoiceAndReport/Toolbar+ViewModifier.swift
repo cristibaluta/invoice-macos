@@ -11,34 +11,36 @@ struct Toolbar: ViewModifier {
 
     @EnvironmentObject var mainViewState: MainViewState
     @ObservedObject var invoiceStore: InvoiceStore
-    @ObservedObject var reportStore: ReportStore
+    var editorStore: any InvoiceEditorProtocol
     @State private var isShowingExportPopover = false
     
     func body (content: Content) -> some View {
         
         content.toolbar {
             ToolbarItem(placement: .principal) {
-                Picker("Section", selection: $mainViewState.segmentedControl) {
-                    Text("Invoice").tag(SegmentedControlType.invoice)
-                    Text("Report").tag(SegmentedControlType.report)
+                Picker("Section", selection: $mainViewState.editorType) {
+                    Text("Invoice").tag(EditorType.invoice)
+                    Text("Report").tag(EditorType.report)
                 }
                 .pickerStyle(SegmentedPickerStyle())
-                .onChange(of: mainViewState.segmentedControl) { tag in
+                .onChange(of: mainViewState.editorType) { tag in
 //                    contentData.contentType = tag
 //                    contentData.calculate()
                 }
             }
             ToolbarItemGroup(placement: .primaryAction) {
                 Spacer()
-                Button("Edit \(mainViewState.segmentedControl == .invoice ? "invoice" : "report")") {
+                Button("Edit \(mainViewState.editorType == .invoice ? "invoice" : "report")") {
                     invoiceStore.isShowingEditorSheet = true
                 }
-                .popover(isPresented: $invoiceStore.isShowingEditorSheet) {
-                    switch mainViewState.segmentedControl {
+                .popover(isPresented: $invoiceStore.isShowingEditorSheet,
+                         attachmentAnchor: .point(.leading),
+                         arrowEdge: .leading) {
+                    switch mainViewState.editorType {
                         case .invoice:
-                            InvoiceEditorPopover(state: invoiceStore)
+                            InvoiceEditorPopover(invoiceStore: invoiceStore, editorStore: invoiceStore.invoiceEditorViewModel)
                         case .report:
-                            ReportEditorPopover(store: reportStore)
+                            ReportEditorPopover(invoiceStore: invoiceStore, editorStore: invoiceStore.reportEditorViewModel)
                             .frame(width: 500, height: 600)
                     }
                 }

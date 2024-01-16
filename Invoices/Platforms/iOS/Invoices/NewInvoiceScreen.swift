@@ -14,7 +14,7 @@ struct NewInvoiceScreen: View {
 
     var body: some View {
         NavigationView {
-            NewInvoiceView(state: invoicesData.selectedInvoiceContentData.invoiceEditorState)
+            NewInvoiceView(viewModel: invoicesData.selectedInvoiceContentData.invoiceEditorState)
             .padding(20)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

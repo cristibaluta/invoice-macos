@@ -20,12 +20,8 @@ struct CompanyView: View {
 
 #if os(iOS)
     typealias Stack = HStack
-    let alignment: VerticalAlignment = .center
-    let font = Font.system(size: 20)
 #else
     typealias Stack = HStack
-    let alignment: HorizontalAlignment = .center
-    let font = Font.system(size: 12)
 #endif
 
     @State var name: String
@@ -40,28 +36,28 @@ struct CompanyView: View {
     @State var web: String
 
     private var onChange: (CompanyData) -> Void
-    private var state: CompanyViewViewModel
+    private var vm: CompanyViewViewModel
     
 
     init (data: CompanyData, onChange: @escaping (CompanyData) -> Void) {
-        self.init(state: CompanyViewViewModel(data: data), onChange: onChange)
+        self.init(vm: CompanyViewViewModel(data: data), onChange: onChange)
     }
 
-    private init (state: CompanyViewViewModel, onChange: @escaping (CompanyData) -> Void) {
+    private init (vm: CompanyViewViewModel, onChange: @escaping (CompanyData) -> Void) {
         print("init CompanyView")
-        self.state = state
+        self.vm = vm
         self.onChange = onChange
 
-        name = state.data.name
-        orc = state.data.orc
-        cui = state.data.cui
-        address = state.data.address
-        county = state.data.county
-        bankAccount = state.data.bank_account
-        bankName = state.data.bank_name
-        email = state.data.email ?? ""
-        phone = state.data.phone ?? ""
-        web = state.data.web ?? ""
+        name = vm.data.name
+        orc = vm.data.orc
+        cui = vm.data.cui
+        address = vm.data.address
+        county = vm.data.county
+        bankAccount = vm.data.bank_account
+        bankName = vm.data.bank_name
+        email = vm.data.email ?? ""
+        phone = vm.data.phone ?? ""
+        web = vm.data.web ?? ""
     }
     
     var body: some View {
@@ -76,56 +72,56 @@ struct CompanyView: View {
                         /// Proper way to do this?
                         /// Published didSet is called twice in a row
                         /// State is not called at all
-                        state.data.name = newValue
-                        onChange(state.data)
+                        vm.data.name = newValue
+                        onChange(vm.data)
                     }
                     .modifier(OutlineTextField())
                 }
                 Stack {
                     Text("Nr.ORC/an*:").foregroundColor(.gray)
                     TextField("", text: $orc).onChange(of: orc) { newValue in
-                        state.data.orc = newValue
-                        onChange(state.data)
+                        vm.data.orc = newValue
+                        onChange(vm.data)
                     }
                     .modifier(OutlineTextField())
                 }
                 Stack {
                     Text("C.U.I.*:").foregroundColor(.gray)
                     TextField("", text: $cui).onChange(of: cui) { newValue in
-                        state.data.cui = newValue
-                        onChange(state.data)
+                        vm.data.cui = newValue
+                        onChange(vm.data)
                     }
                     .modifier(OutlineTextField())
                 }
                 Stack {
                     Text("Sediul*:").foregroundColor(.gray)
                     TextField("", text: $address).onChange(of: address) { newValue in
-                        state.data.address = newValue
-                        onChange(state.data)
+                        vm.data.address = newValue
+                        onChange(vm.data)
                     }
                     .modifier(OutlineTextField())
                 }
                 Stack {
                     Text("Județul*:").foregroundColor(.gray)
                     TextField("", text: $county).onChange(of: county) { newValue in
-                        state.data.county = newValue
-                        onChange(state.data)
+                        vm.data.county = newValue
+                        onChange(vm.data)
                     }
                     .modifier(OutlineTextField())
                 }
                 Stack {
                     Text("Contul*:").foregroundColor(.gray)
                     TextField("", text: $bankAccount).onChange(of: bankAccount) { newValue in
-                        state.data.bank_account = newValue
-                        onChange(state.data)
+                        vm.data.bank_account = newValue
+                        onChange(vm.data)
                     }
                     .modifier(OutlineTextField())
                 }
                 Stack {
                     Text("Banca*:").foregroundColor(.gray)
                     TextField("", text: $bankName).onChange(of: bankName) { newValue in
-                        state.data.bank_name = newValue
-                        onChange(state.data)
+                        vm.data.bank_name = newValue
+                        onChange(vm.data)
                     }
                     .modifier(OutlineTextField())
                 }
@@ -137,8 +133,8 @@ struct CompanyView: View {
                 Stack {
                     Text("Email:").foregroundColor(.gray)
                     TextField("", text: $email).onChange(of: email) { newValue in
-                        state.data.email = newValue != "" ? newValue : nil
-                        onChange(state.data)
+                        vm.data.email = newValue != "" ? newValue : nil
+                        onChange(vm.data)
                     }
                     .modifier(OutlineTextField())
 //                    .modifier(NumberKeyboard())
@@ -146,8 +142,8 @@ struct CompanyView: View {
                 Stack {
                     Text("Phone:").foregroundColor(.gray)
                     TextField("", text: $phone).onChange(of: phone) { newValue in
-                        state.data.phone = newValue != "" ? newValue : nil
-                        onChange(state.data)
+                        vm.data.phone = newValue != "" ? newValue : nil
+                        onChange(vm.data)
                     }
                     .modifier(OutlineTextField())
                     .modifier(NumberKeyboard())
@@ -155,8 +151,8 @@ struct CompanyView: View {
                 Stack {
                     Text("Website:").foregroundColor(.gray)
                     TextField("", text: $web).onChange(of: web) { newValue in
-                        state.data.web = newValue != "" ? newValue : nil
-                        onChange(state.data)
+                        vm.data.web = newValue != "" ? newValue : nil
+                        onChange(vm.data)
                     }
                     .modifier(OutlineTextField())
                 }

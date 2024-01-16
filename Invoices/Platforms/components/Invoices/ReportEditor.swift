@@ -9,8 +9,9 @@ import SwiftUI
 import Combine
 import SwiftCSV
 
-class ReportEditorViewModel: ObservableObject {
+class ReportEditorViewModel: ObservableObject, InvoiceEditorProtocol {
 
+    var type: EditorType = .report
     var data: InvoiceData {
         didSet {
             invoiceDataSubject.send(data)
@@ -22,8 +23,11 @@ class ReportEditorViewModel: ObservableObject {
     private var allReports: [Report] = []
 
     /// Publisher for data change
-    var invoiceDataPublisher: AnyPublisher<InvoiceData, Never> { invoiceDataSubject.eraseToAnyPublisher() }
+    var invoiceDataChangePublisher: AnyPublisher<InvoiceData, Never> { invoiceDataSubject.eraseToAnyPublisher() }
     private let invoiceDataSubject = PassthroughSubject<InvoiceData, Never>()
+    ///
+    var addCompanyPublisher: AnyPublisher<Void, Never> { addCompanySubject.eraseToAnyPublisher() }
+    let addCompanySubject = PassthroughSubject<Void, Never>()
 
     init (data: InvoiceData) {
         print("init InvoiceEditorState")
@@ -75,7 +79,7 @@ class ReportEditorViewModel: ObservableObject {
     private func projects (from reports: [Report], isOn: Bool) -> [ReportProject] {
         var arr = [ReportProject]()
         for report in reports {
-            if !arr.contains(where: {$0.name == report.project_name}) {
+            if !arr.contains(where: { $0.name == report.project_name }) {
                 arr.append(ReportProject(name: report.project_name, isOn: isOn))
             }
         }
@@ -109,24 +113,24 @@ class ReportEditorViewModel: ObservableObject {
 
 struct ReportEditor: View {
     
-    @ObservedObject var state: ReportEditorViewModel
+    @ObservedObject var viewModel: ReportEditorViewModel
     
     let columns = [
         GridItem(.adaptive(minimum: 160))
     ]
     
-    init (state: ReportEditorViewModel) {
-        self.state = state
+    init (viewModel: ReportEditorViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
         VStack {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 20) {
-                    ForEach(0..<state.allProjects.count) { i in
-                        Toggle(state.allProjects[i].name, isOn: $state.allProjects[i].isOn)
-                        .onChange(of: state.allProjects[i].isOn) { val in
-                            state.updateReports()
+                    ForEach(0..<viewModel.allProjects.count, id: \.self) { i in
+                        Toggle(viewModel.allProjects[i].name, isOn: $viewModel.allProjects[i].isOn)
+                        .onChange(of: viewModel.allProjects[i].isOn) { val in
+                            viewModel.updateReports()
                         }
                     }
                 }
@@ -136,9 +140,9 @@ struct ReportEditor: View {
             .padding(10)
 
             Divider()
-            List(self.state.reports) { report in
+            List(viewModel.reports) { report in
                 ReportRowView(report: report) { newReport in
-                    state.updateReport(newReport)
+                    viewModel.updateReport(newReport)
                 }
             }
         }

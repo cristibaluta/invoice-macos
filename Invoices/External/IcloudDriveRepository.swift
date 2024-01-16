@@ -10,6 +10,12 @@ import Combine
 
 class IcloudDriveRepository {
 
+    var baseUrl: URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
+    }
+
     var publisher: AnyPublisher<String, Never> {
         subject.eraseToAnyPublisher()
     }

@@ -9,14 +9,14 @@ import SwiftUI
 
 struct NewInvoiceView: View {
     
-    @ObservedObject var state: InvoiceEditorViewModel
+    @ObservedObject var viewModel: InvoiceEditorViewModel
     
     var body: some View {
         VStack(alignment: .center) {
             Spacer()
             Text("New invoice").font(.system(size: 40)).bold()
-            Text("\(state.invoiceSeries)-\(state.invoiceNr)")
-                .font(.system(size: 20)).bold()
+            Text("\(viewModel.invoiceSeries)-\(viewModel.invoiceNr)")
+            .font(.system(size: 20)).bold()
 
             Divider()//.frame(height: 200)
 
@@ -25,28 +25,28 @@ struct NewInvoiceView: View {
 
                 HStack(alignment: .center) {
                     Text("Invoice date:").font(.system(size: 20))
-                    DatePicker("", selection: $state.invoiceDate, displayedComponents: .date)
+                    DatePicker("", selection: $viewModel.invoiceDate, displayedComponents: .date)
                     .font(.system(size: 20))
                 }
                 
                 HStack(alignment: .center) {
                     Text("Invoiced date:").font(.system(size: 20))
-                    DatePicker("", selection: $state.invoicedDate, displayedComponents: .date)
+                    DatePicker("", selection: $viewModel.invoicedDate, displayedComponents: .date)
                     .font(.system(size: 20))
                 }
 
                 HStack(alignment: .center) {
                     Text("Exchange rate:").font(.system(size: 20))
                     Spacer()
-                    TextField("0.0", text: $state.exchangeRate).font(.system(size: 20))
+                    TextField("0.0", text: $viewModel.exchangeRate).font(.system(size: 20))
                     .modifier(NumberKeyboard())
                     .modifier(OutlineTextField())
                 }
                 
                 HStack(alignment: .center) {
-                    Text("Quantity (\(state.unitsName)):").font(.system(size: 20))
+                    Text("Quantity (\(viewModel.unitsName)):").font(.system(size: 20))
                     Spacer()
-                    TextField("0.0", text: $state.units).font(.system(size: 20))
+                    TextField("0.0", text: $viewModel.units).font(.system(size: 20))
                     .modifier(NumberKeyboard())
                     .modifier(OutlineTextField())
                 }

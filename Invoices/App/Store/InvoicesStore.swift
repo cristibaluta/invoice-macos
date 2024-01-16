@@ -13,18 +13,19 @@ import SwiftUI
 class InvoicesStore: ObservableObject {
 
     @Published var invoices: [Invoice] = []
-//    @Published var selectedInvoice: Invoice?
+    @Published var selectedInvoice: Invoice?
+
     @Published var isShowingNewInvoiceSheet = false
     @Published var isShowingEditInvoiceSheet = false
     @Published var isShowingDeleteInvoiceAlert = false
 
-//    private var cancellable: Cancellable?
+    private var cancellables = Set<AnyCancellable>()
     private let invoicesInteractor: InvoicesInteractor
     private let reportsInteractor: ReportsInteractor
 
-    var project: Project
+    private var repository: Repository
+    private var project: Project
     var selectedInvoiceStore: InvoiceStore?
-    var selectedReportStore: ReportStore?
 
     var priceChartConfig = ChartConfiguration()
     var rateChartConfig = ChartConfiguration()
@@ -32,26 +33,25 @@ class InvoicesStore: ObservableObject {
     var rateChartEntries: [ChartDataEntry] = []
 
 
+    private let subject = PassthroughSubject<(ChartConfiguration, ChartConfiguration, Decimal), Never>()
     var chartPublisher: AnyPublisher<(ChartConfiguration, ChartConfiguration, Decimal), Never> {
         subject.eraseToAnyPublisher()
     }
-    private let subject = PassthroughSubject<(ChartConfiguration, ChartConfiguration, Decimal), Never>()
 
+    private let newInvoiceSubject = PassthroughSubject<(InvoiceStore), Never>()
     var newInvoicePublisher: AnyPublisher<(InvoiceStore), Never> {
         newInvoiceSubject.eraseToAnyPublisher()
     }
-    private let newInvoiceSubject = PassthroughSubject<(InvoiceStore), Never>()
 
 
     init (repository: Repository, project: Project) {
         
+        self.repository = repository
         self.project = project
 
         invoicesInteractor = InvoicesInteractor(repository: repository)
         reportsInteractor = ReportsInteractor(repository: repository)
-        self.selectedInvoiceStore = InvoiceStore(project: Project(name: ""),
-                                                       data: InvoicesInteractor.emptyInvoiceData,
-                                                       invoicesInteractor: invoicesInteractor)
+
         // Configure charts
         priceChartConfig.data.color = .red
         priceChartConfig.xAxis.labelsColor = .gray
@@ -84,8 +84,8 @@ class InvoicesStore: ObservableObject {
 
     func loadInvoices() {
         _ = invoicesInteractor.refreshInvoicesList(for: project)
-            .print("InvoicesState")
             .sink { [weak self] in
+                print("Invoices loaded \($0.count)")
                 self?.invoices = $0
                 self?.loadChart()
             }
@@ -93,13 +93,17 @@ class InvoicesStore: ObservableObject {
 
     func loadInvoice (_ invoice: Invoice) -> AnyPublisher<InvoiceStore, Never> {
 
+        selectedInvoice = invoice
+
         return invoicesInteractor.readInvoice(for: invoice, in: project)
             .map { invoiceData in
-                // TODO map should not save to instance vars
                 let invoiceStore = InvoiceStore(project: self.project,
                                                 data: invoiceData,
                                                 invoicesInteractor: self.invoicesInteractor)
+
                 self.selectedInvoiceStore = invoiceStore
+//                self.selectedInvoiceStore?.calculate()
+
                 return invoiceStore
             }
             .eraseToAnyPublisher()
@@ -115,8 +119,8 @@ class InvoicesStore: ObservableObject {
                                   name: "\(data.date.yyyyMMdd)-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)")
             self.invoices = [invoice]
             self.selectedInvoiceStore = InvoiceStore(project: project,
-                                                          data: data,
-                                                          invoicesInteractor: self.invoicesInteractor)
+                                                     data: data,
+                                                     invoicesInteractor: invoicesInteractor)
             self.selectedInvoiceStore?.calculate()
 //            self.newInvoiceSubject.send(self.selectedInvoiceStore)
             return
@@ -139,8 +143,8 @@ class InvoicesStore: ObservableObject {
             self.invoices.insert(invoice, at: 0)
             /// Update the state
             self.selectedInvoiceStore = InvoiceStore(project: self.project,
-                                                          data: data,
-                                                          invoicesInteractor: self.invoicesInteractor)
+                                                     data: data,
+                                                     invoicesInteractor: self.invoicesInteractor)
             self.selectedInvoiceStore?.calculate()
 //            self.newInvoiceSubject.send(self.selectedInvoiceStore)
         }
@@ -181,9 +185,10 @@ class InvoicesStore: ObservableObject {
     }
 
     func path (for invoice: Invoice) -> String {
-//        let invoiceUrl = baseUrl.appendingPathComponent(project.name).appendingPathComponent(invoice.name)
-//        return invoiceUrl.path
-        return ""
+        let invoiceUrl = repository.baseUrl
+            .appendingPathComponent(project.name)
+            .appendingPathComponent(invoice.name)
+        return invoiceUrl.path
     }
 
 

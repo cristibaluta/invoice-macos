@@ -22,9 +22,10 @@ struct MainWindow: View {
         content
         .frame(minWidth: 1000, idealWidth: 1200, minHeight: 600, idealHeight: 900, alignment: .topLeading)
         .onAppear {
-            // Refresh the projects and the companies
+            // Refresh the projects
             store.projectsStore.refresh()
             store.projectsStore.selectLastProject()
+            // Refresh the companies
             companiesStore.refresh()
         }
     }
@@ -49,7 +50,6 @@ struct MainWindow: View {
         .navigationViewStyle(.columns)
         .environmentObject(mainViewState)
 //        .navigationTitle(state.invoiceName)
-        
     }
 
     private func toggleSidebar() {

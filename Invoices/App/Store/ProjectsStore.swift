@@ -17,11 +17,14 @@ class ProjectsStore: ObservableObject {
             pref.set(selectedProject?.name ?? "", forKey: .lastProject)
             if let project = selectedProject {
                 self.invoicesStore = InvoicesStore(repository: repository, project: project)
+                self.invoicesStore?.loadInvoices()
             } else {
                 self.invoicesStore = nil
             }
+            subject.send()
         }
     }
+    @Published var invoicesStore: InvoicesStore?
     @Published var isShowingNewProjectSheet = false
     @Published var isShowingDeleteProjectAlert = false
 
@@ -31,7 +34,11 @@ class ProjectsStore: ObservableObject {
 //    var cancellables = Set<AnyCancellable>()
 //    var cancellable: AnyCancellable?
 
-    @Published var invoicesStore: InvoicesStore?
+
+    private let subject = PassthroughSubject<Void, Never>()
+    var projectDidChangePublisher: AnyPublisher<Void, Never> {
+        subject.eraseToAnyPublisher()
+    }
 
 
     init (repository: Repository) {
@@ -41,7 +48,6 @@ class ProjectsStore: ObservableObject {
 
     func refresh() {
         _ = interactor.loadProjectsList()
-            .print("FoldersState")
             .sink { [weak self] in
                 self?.projects = $0
             }
@@ -71,7 +77,7 @@ class ProjectsStore: ObservableObject {
             }
     }
 
-    func selectProject (named name: String) {
+    private func selectProject (named name: String) {
         guard let project = projects.first(where: { $0.name == name }) else {
             return
         }

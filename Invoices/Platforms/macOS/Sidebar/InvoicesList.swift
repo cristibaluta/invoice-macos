@@ -12,27 +12,24 @@ struct InvoicesList: View {
 
     @EnvironmentObject var mainViewState: MainViewState
     @ObservedObject var invoicesStore: InvoicesStore
-    @State private var selectedInvoice: Invoice? {
-        didSet {
-            _ = invoicesStore.loadInvoice(selectedInvoice!)
-                .sink { contentData in
-                    mainViewState.type = .invoice(contentData)
-                    contentData.calculate()
-                }
-        }
-    }
 
     var body: some View {
 
+        let _ = Self._printChanges()
+
         Text("Invoices").bold().padding(.leading, 16)
-        List(invoicesStore.invoices, id: \.self, selection: $selectedInvoice) { invoice in
+
+        List(invoicesStore.invoices, id: \.self, selection: $invoicesStore.selectedInvoice) { invoice in
             HStack {
                 Text(invoice.name)
                 Spacer()
             }
             .contentShape(Rectangle())
             .onTapGesture {
-                selectedInvoice = invoice
+                _ = invoicesStore.loadInvoice(invoice)
+                    .sink { invoiceStore in
+                        mainViewState.type = .invoice(invoiceStore, invoiceStore.invoiceEditorViewModel)
+                    }
             }
             .contextMenu {
                 Button(action: {

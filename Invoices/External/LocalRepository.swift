@@ -9,6 +9,9 @@ import Foundation
 import Combine
 
 class LocalRepository {
+    var baseUrl: URL {
+        return BookmarkUrl().getBaseUrlBookmark()!
+    }
     private func execute (_ block: (URL) -> Void) {
         if let baseUrl = BookmarkUrl().getBaseUrlBookmark() {
             let _ = baseUrl.startAccessingSecurityScopedResource()

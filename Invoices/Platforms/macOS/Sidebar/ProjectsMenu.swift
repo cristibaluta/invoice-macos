@@ -19,6 +19,7 @@ struct ProjectsMenu: View {
             ForEach(projectsStore.projects) { project in
                 Button(project.name, action: {
                     projectsStore.selectedProject = project
+                    projectsStore.objectWillChange.send()
                 })
             }
         } label: {

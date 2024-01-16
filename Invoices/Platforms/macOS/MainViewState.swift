@@ -16,8 +16,8 @@ enum ContentViewType {
     case charts(ChartConfiguration, ChartConfiguration, Decimal)
     case newInvoice(InvoiceStore)
     case deleteInvoice(Invoice)
-    case invoice(InvoiceStore)
-    case report(InvoiceStore)
+    case invoice(InvoiceStore, any InvoiceEditorProtocol)
+    case report(InvoiceStore, any InvoiceEditorProtocol)
     case company(CompanyData)
     case error(String, String)
 }
@@ -25,25 +25,19 @@ enum ContentViewType {
 class MainViewState: ObservableObject {
 
     @Published var type: ContentViewType = .noProjects
-    @Published var segmentedControl: SegmentedControlType = .invoice
+    @Published var editorType: EditorType = .invoice
     @Published var html = ""
-
-    var invoiceStore: InvoiceStore?
-    var reportStore: InvoiceStore?
-    var chartCancellable: Cancellable?
-    var newInvoiceCancellable: Cancellable?
-    var htmlCancellable: Cancellable?
-
-    @State private var selectedInvoice: Invoice? {
-        didSet {
-//            _ = invoicesData.loadInvoice(selectedInvoice!)
-//                .sink { contentData in
-//                    mainViewState.contentData = contentData
-//                    mainViewState.type = .invoice(contentData)
-//                    contentData.calculate()
-//                }
+    @Published var pdfdata: Data? {
+        didSet{
+            print(">>>>>>>> pdfdata did set")
         }
     }
+
+//    var invoiceStore: InvoiceStore?
+//    var reportStore: InvoiceStore?
+//    var chartCancellable: Cancellable?
+//    var newInvoiceCancellable: Cancellable?
+    var htmlCancellable: Cancellable?
     
     init() {
         print(">>>>>> init ContentColumnState")

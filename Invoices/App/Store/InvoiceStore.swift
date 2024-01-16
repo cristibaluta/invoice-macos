@@ -8,22 +8,24 @@
 import Foundation
 import Combine
 
-// The content state is the source of truth for the invoice and the report
+// Source of truth for the invoice
 class InvoiceStore: ObservableObject {
 
     @Published var isShowingEditorSheet = false
-    @Published var html: String = "" {
+    @Published var html: String = "Loading invoice..."
+    {
         didSet {
+//            self.objectWillChange.send()
             self.htmlSubject.send(html)
         }
     }
-    var htmlPublisher: AnyPublisher<String, Never> { htmlSubject.eraseToAnyPublisher() }
+    var htmlDidChangePublisher: AnyPublisher<String, Never> { htmlSubject.eraseToAnyPublisher() }
     private let htmlSubject = PassthroughSubject<String, Never>()
 
     private var invoiceInteractor: InvoiceInteractor
-    var invoiceEditorState: InvoiceEditorViewModel
+    var invoiceEditorViewModel: InvoiceEditorViewModel
+    var reportEditorViewModel: ReportEditorViewModel
 
-    private var cancellable: Cancellable?
     private var cancellables = Set<AnyCancellable>()
 
     var project: Project
@@ -42,15 +44,22 @@ class InvoiceStore: ObservableObject {
         self.data = data
 
         invoiceInteractor = InvoiceInteractor(project: project, invoicesInteractor: invoicesInteractor)
-        invoiceEditorState = InvoiceEditorViewModel(data: data)
 
-        invoiceEditorState.invoiceDataPublisher
+        invoiceEditorViewModel = InvoiceEditorViewModel(data: data)
+        reportEditorViewModel = ReportEditorViewModel(data: data)
+
+        invoiceEditorViewModel.invoiceDataChangePublisher
+            .sink { newData in
+                self.data = newData
+            }
+            .store(in: &cancellables)
+        reportEditorViewModel.invoiceDataChangePublisher
             .sink { newData in
                 self.data = newData
             }
             .store(in: &cancellables)
 
-        invoiceEditorState.addCompanyPublisher
+        invoiceEditorViewModel.addCompanyPublisher
             .sink { _ in
                 print("Request to add new company")
             }
@@ -66,6 +75,9 @@ class InvoiceStore: ObservableObject {
             .sink { html in
                 self.html = html
             }
+//        reportInteractor.calculate(reports: reportEditorState.reports, projects: reportEditorState.allProjects) { val in
+//            self.html = val
+//        }
     }
 
     func save() {
@@ -76,6 +88,7 @@ class InvoiceStore: ObservableObject {
     }
 
     func export (isPdf: Bool) {
+//        let fileName = "Report-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).\(isPdf ? "pdf" : "html")"
         let fileName = "Invoice-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).\(isPdf ? "pdf" : "html")"
         let exporter = Exporter()
         exporter.export(fileName: fileName,

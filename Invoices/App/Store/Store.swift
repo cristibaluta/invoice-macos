@@ -26,20 +26,22 @@ enum UserPreferences: String, RCPreferencesProtocol {
     }
 }
 
-enum SegmentedControlType: Int {
-    case invoice
-    case report
-}
-
 class Store: ObservableObject {
 
     var projectsStore: ProjectsStore
     var companiesStore: CompaniesStore
     var settingsStore: SetingsStore
 
+    private var cancellable: AnyCancellable?
+
     init (repository: Repository) {
-        self.projectsStore = ProjectsStore(repository: repository)
-        self.companiesStore = CompaniesStore(repository: repository)
-        self.settingsStore = SetingsStore()
+        projectsStore = ProjectsStore(repository: repository)
+        companiesStore = CompaniesStore(repository: repository)
+        settingsStore = SetingsStore()
+
+        cancellable = projectsStore.projectDidChangePublisher
+            .sink {
+                self.objectWillChange.send()
+            }
     }
 }

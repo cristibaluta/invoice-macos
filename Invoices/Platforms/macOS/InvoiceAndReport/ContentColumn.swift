@@ -33,8 +33,8 @@ struct ContentColumn: View {
 
                 }
 
-            case .newInvoice(let contentData):
-                NewInvoiceView(state: contentData.invoiceEditorState)
+            case .newInvoice(let invoiceStore):
+                NewInvoiceView(viewModel: invoiceStore.invoiceEditorViewModel)
                 .padding(40)
 
             case .deleteInvoice(let invoice):
@@ -44,17 +44,18 @@ struct ContentColumn: View {
                 ChartsView(state: ChartsViewState(total: total), priceChartConfig: priceChart, rateChartConfig: rateChart)
                 .padding(40)
 
-            case .invoice(let store), .report(let store):
-                HtmlViewer(htmlString: mainViewState.html) { printingData in
-//                    mainViewState.pdfData = printingData
+            case .invoice(let store, let editor), .report(let store, let editor):
+                HtmlViewer(htmlString: mainViewState.html, pdfData: mainViewState.pdfdata) { printingData in
+                    store.pdfData = printingData
                 }
                 .frame(width: 920)
                 .padding(10)
-//                .modifier(Toolbar(invoiceStore: invoiceStore))
+                .modifier(Toolbar(invoiceStore: store, editorStore: store.invoiceEditorViewModel))
                 .onAppear {
-                    mainViewState.htmlCancellable = store.htmlPublisher.sink { html in
+                    mainViewState.htmlCancellable = store.htmlDidChangePublisher.sink { html in
                         mainViewState.html = html
                     }
+                    store.calculate()
                 }
 
             case .company(let companyData):

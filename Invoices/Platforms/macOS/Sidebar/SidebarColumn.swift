@@ -11,12 +11,8 @@ import Combine
 struct SidebarColumn: View {
 
     @EnvironmentObject var store: Store
-    @EnvironmentObject var companiesStore: CompaniesStore
     @EnvironmentObject var mainViewState: MainViewState
-
     @State private var isShowingAddPopover = false
-    @State private var isShowingCompanyDetailsPopover = false
-    @State private var isShowingAddCompanyPopover = false
 
 
     var body: some View {
@@ -35,31 +31,10 @@ struct SidebarColumn: View {
             }
 
             // Companies section
-
             Divider().padding(16)
-
-            Text("Companies").bold().padding(.leading, 16)
-            List(companiesStore.companies, id: \.self) { comp in
-                Button(comp.name, action: {
-                    companiesStore.selectedCompany = comp.data
-                    isShowingCompanyDetailsPopover = true
-                })
-                .contextMenu {
-                    Button(action: {
-//                        contentColumnState.type = .deleteInvoice(invoice)
-                    }) {
-                        Text("Delete")
-                    }
-                }
-            }
-            .listStyle(SidebarListStyle())
-            .popover(isPresented: $isShowingCompanyDetailsPopover) {
-                CompanyPopover(data: companiesStore.selectedCompany!)
-                .frame(width: 400)
-            }
+            CompaniesList()
 
             // Add new section
-
             Divider()
 
             Button(action: { isShowingAddPopover = true }) {
@@ -90,17 +65,17 @@ struct SidebarColumn: View {
             }
         }
         .onAppear {
-            mainViewState.chartCancellable = store.projectsStore.invoicesStore!.chartPublisher.sink { values in
-                if store.projectsStore.invoicesStore?.invoices.isEmpty ?? false {
-                    mainViewState.type = .noInvoices
-                } else {
-                    mainViewState.type = .charts(values.0, values.1, values.2)
-                }
-            }
-            mainViewState.newInvoiceCancellable = store.projectsStore.invoicesStore!.newInvoicePublisher.sink { contentData in
-//                mainViewState.contentData = contentData
-//                mainViewState.type = .invoice(contentData)
-            }
+//            mainViewState.chartCancellable = store.projectsStore.invoicesStore!.chartPublisher.sink { values in
+//                if store.projectsStore.invoicesStore?.invoices.isEmpty ?? false {
+//                    mainViewState.type = .noInvoices
+//                } else {
+//                    mainViewState.type = .charts(values.0, values.1, values.2)
+//                }
+//            }
+//            mainViewState.newInvoiceCancellable = store.projectsStore.invoicesStore!.newInvoicePublisher.sink { contentData in
+////                mainViewState.contentData = contentData
+////                mainViewState.type = .invoice(contentData)
+//            }
         }
 
     }

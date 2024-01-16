@@ -18,9 +18,14 @@ typealias ViewRepresentable = NSViewRepresentable
 
 struct HtmlViewer: ViewRepresentable {
 
+    class Coordinator: NSObject {
+        var webView: WKWebView?
+    }
+
     static let size = CGSize(width: 900, height: 1285)
 
     let htmlString: String?
+    var pdfData: Data?
     let onPdfGenerate: (Data) -> ()
 
     private var config: WKPDFConfiguration {
@@ -29,31 +34,24 @@ struct HtmlViewer: ViewRepresentable {
         return config
     }
     
-    init (htmlString: String?, onPdfGenerate: @escaping (Data) -> ()) {
+    init (htmlString: String?, pdfData: Data?, onPdfGenerate: @escaping (Data) -> ()) {
         self.htmlString = htmlString
+        self.pdfData = pdfData
         self.onPdfGenerate = onPdfGenerate
     }
     
+    func makeCoordinator() -> Coordinator {
+        return Coordinator()
+    }
+
 #if os(iOS)
     func makeUIView(context: UIViewRepresentableContext<HtmlViewer>) -> WKWebView {
         return WKWebView()
     }
 
     func updateUIView(_ webView: WKWebView, context: UIViewRepresentableContext<HtmlViewer>) {
-        
         webView.loadHTMLString(htmlString ?? "none", baseURL: nil)
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-
-            webView.createPDF(configuration: config) { result in
-                switch result {
-                    case .success(let data):
-                        onPdfGenerate(data)
-                    case .failure(let error):
-                        print(error)
-                }
-            }
-        }
+        generatePdf(webView)
     }
 #else
     func makeNSView(context: NSViewRepresentableContext<HtmlViewer>) -> WKWebView {
@@ -61,9 +59,13 @@ struct HtmlViewer: ViewRepresentable {
     }
 
     func updateNSView(_ webView: WKWebView, context: NSViewRepresentableContext<HtmlViewer>) {
-        
         webView.loadHTMLString(htmlString ?? "none", baseURL: nil)
-        
+        generatePdf(webView)
+    }
+#endif
+
+    private func generatePdf(_ webView: WKWebView) {
+
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
 
             webView.createPDF(configuration: config) { result in
@@ -76,5 +78,5 @@ struct HtmlViewer: ViewRepresentable {
             }
         }
     }
-#endif
+
 }
