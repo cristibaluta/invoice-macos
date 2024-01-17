@@ -11,7 +11,7 @@ import SwiftCSV
 
 class ReportEditorViewModel: ObservableObject, InvoiceEditorProtocol {
 
-    var type: EditorType = .report
+    let type: EditorType = .report
     var data: InvoiceData {
         didSet {
             invoiceDataSubject.send(data)
@@ -25,20 +25,19 @@ class ReportEditorViewModel: ObservableObject, InvoiceEditorProtocol {
     /// Publisher for data change
     var invoiceDataChangePublisher: AnyPublisher<InvoiceData, Never> { invoiceDataSubject.eraseToAnyPublisher() }
     private let invoiceDataSubject = PassthroughSubject<InvoiceData, Never>()
-    ///
+    /// Publisher for creating a new company
     var addCompanyPublisher: AnyPublisher<Void, Never> { addCompanySubject.eraseToAnyPublisher() }
     let addCompanySubject = PassthroughSubject<Void, Never>()
 
     init (data: InvoiceData) {
-        print("init InvoiceEditorState")
         self.data = data
-        self.allReports = data.reports.map({
-            return Report(project_name: $0.project_name,
-                          group: $0.group,
-                          description: $0.description,
-                          duration: $0.duration)
+        allReports = data.reports.map({
+            Report(project_name: $0.project_name,
+                   group: $0.group,
+                   description: $0.description,
+                   duration: $0.duration)
         })
-        self.allProjects = projects(from: self.allReports, isOn: true)
+        allProjects = projects(from: allReports, isOn: true)
     }
 
     func openCsv (at fileUrl: URL) {

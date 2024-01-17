@@ -28,7 +28,7 @@ struct InvoicesList: View {
             .onTapGesture {
                 _ = invoicesStore.loadInvoice(invoice)
                     .sink { invoiceStore in
-                        mainViewState.type = .invoice(invoiceStore, invoiceStore.invoiceEditorViewModel)
+                        mainViewState.contentType = .invoice(invoiceStore)
                     }
             }
             .contextMenu {
@@ -38,7 +38,7 @@ struct InvoicesList: View {
                     Text("Show in Finder")
                 }
                 Button(action: {
-                    mainViewState.type = .deleteInvoice(invoice)
+                    mainViewState.contentType = .deleteInvoice(invoice)
                 }) {
                     Text("Delete")
                 }

@@ -10,7 +10,7 @@ import Combine
 
 class InvoiceEditorViewModel: ObservableObject, InvoiceEditorProtocol {
 
-    var type: EditorType = .invoice
+    let type: EditorType = .invoice
     var data: InvoiceData {
         didSet {
             invoiceDataSubject.send(data)
@@ -44,7 +44,7 @@ class InvoiceEditorViewModel: ObservableObject, InvoiceEditorProtocol {
 
 
     init (data: InvoiceData) {
-        print("init InvoiceEditorState")
+        print(">>>>>>>> init InvoiceEditorViewModel")
         self.data = data
 
         invoiceSeries = data.invoice_series
@@ -64,6 +64,10 @@ class InvoiceEditorViewModel: ObservableObject, InvoiceEditorProtocol {
         contractorViewModel = CompanyViewViewModel(data: data.contractor)
         clientName = data.client.name
         contractorName = data.contractor.name
+    }
+
+    deinit {
+        print("<<<<<<< deinit InvoiceEditorViewModel")
     }
 }
 

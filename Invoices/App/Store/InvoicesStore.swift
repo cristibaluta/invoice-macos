@@ -19,12 +19,12 @@ class InvoicesStore: ObservableObject {
     @Published var isShowingEditInvoiceSheet = false
     @Published var isShowingDeleteInvoiceAlert = false
 
-    private var cancellables = Set<AnyCancellable>()
-    private let invoicesInteractor: InvoicesInteractor
-    private let reportsInteractor: ReportsInteractor
 
     private var repository: Repository
     private var project: Project
+    private var cancellables = Set<AnyCancellable>()
+    private let invoicesInteractor: InvoicesInteractor
+    private let reportsInteractor: ReportsInteractor
     var selectedInvoiceStore: InvoiceStore?
 
     var priceChartConfig = ChartConfiguration()
@@ -99,7 +99,8 @@ class InvoicesStore: ObservableObject {
             .map { invoiceData in
                 let invoiceStore = InvoiceStore(project: self.project,
                                                 data: invoiceData,
-                                                invoicesInteractor: self.invoicesInteractor)
+                                                invoicesInteractor: self.invoicesInteractor,
+                                                reportsInteractor: self.reportsInteractor)
 
                 self.selectedInvoiceStore = invoiceStore
 //                self.selectedInvoiceStore?.calculate()
@@ -120,8 +121,9 @@ class InvoicesStore: ObservableObject {
             self.invoices = [invoice]
             self.selectedInvoiceStore = InvoiceStore(project: project,
                                                      data: data,
-                                                     invoicesInteractor: invoicesInteractor)
-            self.selectedInvoiceStore?.calculate()
+                                                     invoicesInteractor: invoicesInteractor,
+                                                     reportsInteractor: reportsInteractor)
+            self.selectedInvoiceStore?.calculate(editorType: .invoice)
 //            self.newInvoiceSubject.send(self.selectedInvoiceStore)
             return
         }
@@ -144,8 +146,9 @@ class InvoicesStore: ObservableObject {
             /// Update the state
             self.selectedInvoiceStore = InvoiceStore(project: self.project,
                                                      data: data,
-                                                     invoicesInteractor: self.invoicesInteractor)
-            self.selectedInvoiceStore?.calculate()
+                                                     invoicesInteractor: self.invoicesInteractor,
+                                                     reportsInteractor: self.reportsInteractor)
+            self.selectedInvoiceStore?.calculate(editorType: .invoice)
 //            self.newInvoiceSubject.send(self.selectedInvoiceStore)
         }
     }
@@ -173,22 +176,22 @@ class InvoicesStore: ObservableObject {
     }
 
     func dismissNewInvoice() {
-        self.isShowingNewInvoiceSheet = false
+        isShowingNewInvoiceSheet = false
     }
 
     func dismissInvoiceEditor() {
-        self.isShowingEditInvoiceSheet = false
+        isShowingEditInvoiceSheet = false
     }
 
     func dismissDeleteInvoice() {
-        self.isShowingDeleteInvoiceAlert = false
+        isShowingDeleteInvoiceAlert = false
     }
 
     func path (for invoice: Invoice) -> String {
-        let invoiceUrl = repository.baseUrl
+        return repository.baseUrl
             .appendingPathComponent(project.name)
             .appendingPathComponent(invoice.name)
-        return invoiceUrl.path
+            .path
     }
 
 
@@ -200,10 +203,10 @@ class InvoicesStore: ObservableObject {
             return
         }
 
-        let folderPath = project.name
-        var prices = [ChartDataEntry]()
-        var rates = [ChartDataEntry]()
-        var total: Decimal = 0
+//        let folderPath = project.name
+//        var prices = [ChartDataEntry]()
+//        var rates = [ChartDataEntry]()
+//        var total: Decimal = 0
 //        for invoice in invoices {
 //            // Load all invoices data and display a chart
 //            let invoiceDataPath = "\(folderPath)/\(invoice.name)/data.json"
@@ -231,14 +234,14 @@ class InvoicesStore: ObservableObject {
 //                print("\(error)")
 //            }
 //        }
-        showChart(prices, rates, total)
+//        showChart(prices, rates, total)
     }
     
     func showChart (_ prices: [ChartDataEntry]?, _ rates: [ChartDataEntry]?, _ total: Decimal) {
         
         if let prices = prices, let rates = rates {
-            self.priceChartEntries = prices.reversed()
-            self.rateChartEntries = rates.reversed()
+            priceChartEntries = prices.reversed()
+            rateChartEntries = rates.reversed()
         }
         DispatchQueue.main.async {
             self.priceChartConfig.data.entries = self.priceChartEntries

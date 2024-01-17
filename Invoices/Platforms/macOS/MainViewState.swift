@@ -16,15 +16,15 @@ enum ContentViewType {
     case charts(ChartConfiguration, ChartConfiguration, Decimal)
     case newInvoice(InvoiceStore)
     case deleteInvoice(Invoice)
-    case invoice(InvoiceStore, any InvoiceEditorProtocol)
-    case report(InvoiceStore, any InvoiceEditorProtocol)
+    case invoice(InvoiceStore)
+    case report(InvoiceStore)
     case company(CompanyData)
     case error(String, String)
 }
 
 class MainViewState: ObservableObject {
 
-    @Published var type: ContentViewType = .noProjects
+    @Published var contentType: ContentViewType = .noProjects
     @Published var editorType: EditorType = .invoice
     @Published var html = ""
     @Published var pdfdata: Data? {
@@ -33,8 +33,6 @@ class MainViewState: ObservableObject {
         }
     }
 
-//    var invoiceStore: InvoiceStore?
-//    var reportStore: InvoiceStore?
 //    var chartCancellable: Cancellable?
 //    var newInvoiceCancellable: Cancellable?
     var htmlCancellable: Cancellable?

@@ -50,7 +50,7 @@ struct SidebarColumn: View {
                 VStack {
                     Button("New Project") {
                         isShowingAddPopover = false
-                        mainViewState.type = .noProjects
+                        mainViewState.contentType = .noProjects
                     }
                     Button("New Invoice") {
                         isShowingAddPopover = false
@@ -58,7 +58,7 @@ struct SidebarColumn: View {
                     }
                     Button("New company") {
                         isShowingAddPopover = false
-                        mainViewState.type = .company(CompaniesInteractor.emptyCompanyDetails)
+                        mainViewState.contentType = .company(CompaniesInteractor.emptyCompanyDetails)
                     }
                 }
                 .padding(20)

@@ -20,7 +20,7 @@ struct ContentColumn: View {
 
         let _ = Self._printChanges()
 
-        switch mainViewState.type {
+        switch mainViewState.contentType {
             case .noProjects:
                 NewProjectView { newProjectName in
                     projectsStore.createProject(named: newProjectName) { proj in
@@ -34,7 +34,7 @@ struct ContentColumn: View {
                 }
 
             case .newInvoice(let invoiceStore):
-                NewInvoiceView(viewModel: invoiceStore.invoiceEditorViewModel)
+                NewInvoiceView(viewModel: invoiceStore.createInvoiceEditor())
                 .padding(40)
 
             case .deleteInvoice(let invoice):
@@ -44,18 +44,19 @@ struct ContentColumn: View {
                 ChartsView(state: ChartsViewState(total: total), priceChartConfig: priceChart, rateChartConfig: rateChart)
                 .padding(40)
 
-            case .invoice(let store, let editor), .report(let store, let editor):
+            case .invoice(let store), .report(let store):
                 HtmlViewer(htmlString: mainViewState.html, pdfData: mainViewState.pdfdata) { printingData in
                     store.pdfData = printingData
                 }
                 .frame(width: 920)
                 .padding(10)
-                .modifier(Toolbar(invoiceStore: store, editorStore: store.invoiceEditorViewModel))
-                .onAppear {
+                .modifier(Toolbar(invoiceStore: store))
+                .task(id: store.id) {
                     mainViewState.htmlCancellable = store.htmlDidChangePublisher.sink { html in
                         mainViewState.html = html
                     }
-                    store.calculate()
+                    mainViewState.editorType = .invoice
+                    store.calculate(editorType: mainViewState.editorType)
                 }
 
             case .company(let companyData):

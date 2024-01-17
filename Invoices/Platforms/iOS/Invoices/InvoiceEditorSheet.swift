@@ -12,12 +12,12 @@ struct InvoiceEditorSheet: View {
 
     @EnvironmentObject var companiesData: CompaniesStore
     @Environment(\.dismiss) var dismiss
-    private var state: InvoiceEditorViewModel
+    private var viewModel: InvoiceEditorViewModel
     private let onSave: (InvoiceData) -> Void
 
-    init (data: InvoiceData, onSave: @escaping (InvoiceData) -> Void) {
+    init (viewModel: InvoiceEditorViewModel, onSave: @escaping (InvoiceData) -> Void) {
+        self.viewModel = viewModel
         self.onSave = onSave
-        self.state = InvoiceEditorViewModel(data: data)
     }
 
     var body: some View {
@@ -26,7 +26,7 @@ struct InvoiceEditorSheet: View {
         
         NavigationView {
             ScrollView {
-                InvoiceEditor(state: state, onTapAddCompany: {
+                InvoiceEditor(viewModel: viewModel, onTapAddCompany: {
                     self.companiesData.isShowingNewCompanySheet = true
                 })
             }
@@ -42,7 +42,7 @@ struct InvoiceEditorSheet: View {
                 }
                 ToolbarItem(placement: .primaryAction) {
                     Button("Save") {
-                        onSave(state.data)
+                        onSave(viewModel.data)
                         dismiss()
                     }
                 }

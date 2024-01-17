@@ -10,99 +10,89 @@ import Combine
 
 class ReportInteractor {
 
-    private var cancellable: Cancellable?
+    private let project: Project
     private let reportsInteractor: ReportsInteractor
 
-    var project: Project
-    var data: InvoiceData
-    var printData: Data?
-    var html = ""
-
-
-    init (project: Project,
-          data: InvoiceData,
-          reportsInteractor: ReportsInteractor) {
-
-        print("init ReportState")
+    init (project: Project, reportsInteractor: ReportsInteractor) {
+        print("init ReportInteractor")
         self.project = project
-        self.data = data
         self.reportsInteractor = reportsInteractor
     }
 
-    func calculate (reports: [Report], projects allProjects: [ReportProject], completion: @escaping (String) -> Void) {
+    func calculate (data: InvoiceData, reports: [Report], projects allProjects: [ReportProject]) -> AnyPublisher<String, Never> {
 
-        cancellable = reportsInteractor.readReportTemplates(in: project)
-        .sink { templates in
+        return reportsInteractor.readReportTemplates(in: project)
+            .map { templates in
+                // template_report
+                // template_report_project
+                // template_report_row
 
-            self.data.calculate()
+//                data.calculate()
 
-            var template = self.data.toHtmlUsingTemplate(templates.0)
-            let templateProject = templates.1
-            let templateRow = templates.2
+                var template = data.toHtmlUsingTemplate(templates.0)
+                let templateProject = templates.1
+                let templateRow = templates.2
 
-            // Calculate the total amount of units
-            let units = self.data.products.reduce(0.0) { u, product in
-                return u + product.units
-            }
-            template = template.replacingOccurrences(of: "::units::", with: units.stringValue_grouped2)
-
-            let projects = self.reportsInteractor.groupReports(reports, duration: units)
-
-            /// Add rows
-            var projectsHtml = ""
-            // Iterate over projects
-            for (projectName, groups) in projects {
-                guard allProjects.first(where: {$0.name == projectName})?.isOn == true else {
-                    continue
+                // Calculate the total amount of units
+                let units = data.products.reduce(0.0) { u, product in
+                    return u + product.units
                 }
-                var project = templateProject.replacingOccurrences(of: "::project_name::", with: projectName)
-                var rowsHtml = ""
+                template = template.replacingOccurrences(of: "::units::", with: units.stringValue_grouped2)
 
-                // Iterate over groups
-                for (groupName, reports) in groups {
-                    if groupName.isEmpty {
-                        // No group, add each report as a new table row
-                        for report in reports {
+                let projects = self.reportsInteractor.groupReports(reports, duration: units)
+
+                /// Add rows
+                var projectsHtml = ""
+                // Iterate over projects
+                for (projectName, groups) in projects {
+                    guard allProjects.first(where: {$0.name == projectName})?.isOn == true else {
+                        continue
+                    }
+                    var project = templateProject.replacingOccurrences(of: "::project_name::", with: projectName)
+                    var rowsHtml = ""
+
+                    // Iterate over groups
+                    for (groupName, reports) in groups {
+                        if groupName.isEmpty {
+                            // No group, add each report as a new table row
+                            for report in reports {
+                                var row = templateRow
+                                row = row.replacingOccurrences(of: "::task::", with: report.description)
+                                row = row.replacingOccurrences(of: "::duration::", with: report.duration.stringValue_grouped2)
+                                rowsHtml += row
+                            }
+                        } else {
+                            // Group found, add each report grouped together in a single row
+                            var groupedTasksHtml = "<p>\(groupName):</p><ul>"
+                            var duration: Decimal = 0.0
+                            for report in reports {
+                                groupedTasksHtml += "<li>\(report.description)</li>"
+                                duration += report.duration
+                            }
+                            groupedTasksHtml += "</ul>"
+
                             var row = templateRow
-                            row = row.replacingOccurrences(of: "::task::", with: report.description)
-                            row = row.replacingOccurrences(of: "::duration::", with: report.duration.stringValue_grouped2)
+                            row = row.replacingOccurrences(of: "::task::", with: groupedTasksHtml)
+                            row = row.replacingOccurrences(of: "::duration::", with: duration.stringValue_grouped2)
                             rowsHtml += row
                         }
-                    } else {
-                        // Group found, add each report grouped together in a single row
-                        var groupedTasksHtml = "<p>\(groupName):</p><ul>"
-                        var duration: Decimal = 0.0
-                        for report in reports {
-                            groupedTasksHtml += "<li>\(report.description)</li>"
-                            duration += report.duration
-                        }
-                        groupedTasksHtml += "</ul>"
-
-                        var row = templateRow
-                        row = row.replacingOccurrences(of: "::task::", with: groupedTasksHtml)
-                        row = row.replacingOccurrences(of: "::duration::", with: duration.stringValue_grouped2)
-                        rowsHtml += row
                     }
+
+                    project = project.replacingOccurrences(of: "::rows::", with: rowsHtml)
+                    projectsHtml += project
                 }
 
-                project = project.replacingOccurrences(of: "::rows::", with: rowsHtml)
-                projectsHtml += project
+                template = template.replacingOccurrences(of: "::projects::", with: projectsHtml)
+                template = template.replacingOccurrences(of: "::month::", with: data.date.fullMonthName)
+                template = template.replacingOccurrences(of: "::year::", with: "\(data.date.year)")
+
+                return template
             }
-
-            template = template.replacingOccurrences(of: "::projects::", with: projectsHtml)
-            template = template.replacingOccurrences(of: "::month::", with: self.data.date.fullMonthName)
-            template = template.replacingOccurrences(of: "::year::", with: "\(self.data.date.year)")
-
-            self.html = template
-            completion(self.html)
-        }
+            .eraseToAnyPublisher()
     }
 
-    func save (pdfData: Data?, completion: @escaping (Invoice?) -> Void) {
-        _ = reportsInteractor.saveReport(data: data, pdfData: pdfData, in: project)
-            .sink { invoice in
-                completion(invoice)
-            }
+    func save (data: InvoiceData, pdfData: Data?) -> AnyPublisher<Invoice, Never> {
+        return reportsInteractor.saveReport(data: data, pdfData: pdfData, in: project)
     }
 
 }

@@ -25,7 +25,7 @@ struct DeleteConfirmationColumn: View {
 
             HStack {
                 Button("Cancel") {
-                    mainViewState.type = .noProjects
+                    mainViewState.contentType = .noProjects
                 }
                 Button("Delete") {
                     invoicesStore.deleteInvoice(invoice)

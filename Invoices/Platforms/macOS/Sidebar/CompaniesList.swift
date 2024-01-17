@@ -32,7 +32,9 @@ struct CompaniesList: View {
             }
         }
         .listStyle(SidebarListStyle())
-        .popover(isPresented: $isShowingCompanyDetailsPopover) {
+        .popover(isPresented: $isShowingCompanyDetailsPopover,
+                 attachmentAnchor: .rect(.bounds),
+                 arrowEdge: .leading) {
             CompanyPopover(data: companiesStore.selectedCompany!)
             .frame(width: 400)
         }

@@ -52,7 +52,7 @@ struct InvoiceData: Codable, PropertyLoopable {
         invoice_series = try container.decode(String.self, forKey: .invoice_series)
         invoice_nr = try container.decode(Int.self, forKey: .invoice_nr)
         invoice_date = try container.decode(String.self, forKey: .invoice_date)
-        invoiced_period = try container.decode(String.self, forKey: .invoiced_period)
+        invoiced_period = try container.decodeIfPresent(String.self, forKey: .invoiced_period) ?? invoice_date
         client = try container.decode(CompanyData.self, forKey: .client)
         contractor = try container.decode(CompanyData.self, forKey: .contractor)
         products = try container.decode([InvoiceProduct].self, forKey: .products)

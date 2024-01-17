@@ -11,7 +11,6 @@ struct Toolbar: ViewModifier {
 
     @EnvironmentObject var mainViewState: MainViewState
     @ObservedObject var invoiceStore: InvoiceStore
-    var editorStore: any InvoiceEditorProtocol
     @State private var isShowingExportPopover = false
     
     func body (content: Content) -> some View {
@@ -38,9 +37,9 @@ struct Toolbar: ViewModifier {
                          arrowEdge: .leading) {
                     switch mainViewState.editorType {
                         case .invoice:
-                            InvoiceEditorPopover(invoiceStore: invoiceStore, editorStore: invoiceStore.invoiceEditorViewModel)
+                            InvoiceEditorPopover(invoiceStore: invoiceStore, editorViewModel: invoiceStore.createInvoiceEditor())
                         case .report:
-                            ReportEditorPopover(invoiceStore: invoiceStore, editorStore: invoiceStore.reportEditorViewModel)
+                            ReportEditorPopover(invoiceStore: invoiceStore, editorViewModel: invoiceStore.createReportEditor())
                             .frame(width: 500, height: 600)
                     }
                 }

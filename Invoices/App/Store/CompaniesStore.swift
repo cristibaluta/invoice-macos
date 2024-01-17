@@ -23,12 +23,10 @@ class CompaniesStore: ObservableObject {
 
     init (repository: Repository) {
         self.interactor = CompaniesInteractor(repository: repository)
-        print("init CompaniesState")
     }
 
     func refresh() {
         _ = interactor.loadCompaniesList()
-        .print("CompaniesState")
         .sink { [weak self] in
             self?.companiesData = $0
             self?.companies = $0.map { Company(name: $0.name, data: $0) }
