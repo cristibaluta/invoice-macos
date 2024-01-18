@@ -29,11 +29,12 @@ class InvoiceStore: ObservableObject {
     private var editorViewModel: (any InvoiceEditorProtocol)?
 
     var id = UUID()// Needed to redraw the HtmlViewer
+    var editorType: EditorType = .invoice
     var project: Project
     var pdfData: Data?
     var data: InvoiceData {
         didSet {
-            calculate(editorType: .invoice)
+            buildHtml()
         }
     }
 
@@ -89,15 +90,15 @@ class InvoiceStore: ObservableObject {
         cancellables.removeAll()
     }
 
-    func calculate(editorType: EditorType) {
+    func buildHtml() {
         switch editorType {
             case .invoice:
-                _ = invoiceInteractor.calculate(data: data)
+                _ = invoiceInteractor.buildHtml(data: data)
                     .sink { html in
                         self.html = html
                     }
             case .report:
-                _ = reportInteractor.calculate(data: data, reports: [], projects: [])
+                _ = reportInteractor.buildHtml(data: data)
                     .sink { html in
                         self.html = html
                     }

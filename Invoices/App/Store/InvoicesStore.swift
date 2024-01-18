@@ -123,11 +123,12 @@ class InvoicesStore: ObservableObject {
                                                      data: data,
                                                      invoicesInteractor: invoicesInteractor,
                                                      reportsInteractor: reportsInteractor)
-            self.selectedInvoiceStore?.calculate(editorType: .invoice)
+            self.selectedInvoiceStore?.buildHtml()
 //            self.newInvoiceSubject.send(self.selectedInvoiceStore)
             return
         }
 
+        // Duplicate the last invoice
         _ = invoicesInteractor.readInvoice(for: lastInvoice, in: project)
         .sink {
             var data = $0
@@ -148,8 +149,8 @@ class InvoicesStore: ObservableObject {
                                                      data: data,
                                                      invoicesInteractor: self.invoicesInteractor,
                                                      reportsInteractor: self.reportsInteractor)
-            self.selectedInvoiceStore?.calculate(editorType: .invoice)
-//            self.newInvoiceSubject.send(self.selectedInvoiceStore)
+            self.selectedInvoiceStore?.buildHtml()
+            self.newInvoiceSubject.send(self.selectedInvoiceStore!)
         }
     }
 

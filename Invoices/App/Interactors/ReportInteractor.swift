@@ -19,7 +19,15 @@ class ReportInteractor {
         self.reportsInteractor = reportsInteractor
     }
 
-    func calculate (data: InvoiceData, reports: [Report], projects allProjects: [ReportProject]) -> AnyPublisher<String, Never> {
+    func buildHtml (data: InvoiceData) -> AnyPublisher<String, Never> {
+
+        let reports: [Report] = data.reports.map({
+            Report(project_name: $0.project_name,
+                   group: $0.group,
+                   description: $0.description,
+                   duration: $0.duration)
+        })
+        let allProjects: [ReportProject] = projects(from: reports, isOn: true)
 
         return reportsInteractor.readReportTemplates(in: project)
             .map { templates in
@@ -95,4 +103,13 @@ class ReportInteractor {
         return reportsInteractor.saveReport(data: data, pdfData: pdfData, in: project)
     }
 
+    private func projects (from reports: [Report], isOn: Bool) -> [ReportProject] {
+        var arr = [ReportProject]()
+        for report in reports {
+            if !arr.contains(where: { $0.name == report.project_name }) {
+                arr.append(ReportProject(name: report.project_name, isOn: isOn))
+            }
+        }
+        return arr
+    }
 }

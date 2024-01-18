@@ -1,27 +1,22 @@
 //
-//  ReportEditorPopover.swift
+//  ReportEditorColumn.swift
 //  Invoices
 //
-//  Created by Cristian Baluta on 28.07.2022.
+//  Created by Cristian Baluta on 18.01.2024.
 //
 
+import Foundation
 import SwiftUI
 import Combine
 
-struct ReportEditorPopover: View {
+struct ReportEditorColumn: View {
 
-    let columns = [
-        GridItem(.adaptive(minimum: 160))
-    ]
-
-    @Environment(\.dismiss) var dismiss
     var invoiceStore: InvoiceStore
     var editorViewModel: ReportEditorViewModel
 
-//    init (store: ReportStore) {
-//        self.store = store
-//        self.reportEditorState = store.reportEditorState
-//    }
+    private let columns = [
+        GridItem(.adaptive(minimum: 160))
+    ]
 
     var body: some View {
 
@@ -45,12 +40,12 @@ struct ReportEditorPopover: View {
 
             ReportEditor(viewModel: editorViewModel)
 
-            Button("Save") {
-                invoiceStore.save()
-                self.dismiss.callAsFunction()
-            }
+//            Button("Save") {
+//                invoiceStore.save()
+//            }
         }
         .padding(20)
     }
 
 }
+

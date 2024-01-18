@@ -44,20 +44,45 @@ struct ContentColumn: View {
                 ChartsView(state: ChartsViewState(total: total), priceChartConfig: priceChart, rateChartConfig: rateChart)
                 .padding(40)
 
-            case .invoice(let store), .report(let store):
+            case .invoice(let store):
                 HtmlViewer(htmlString: mainViewState.html, pdfData: mainViewState.pdfdata) { printingData in
                     store.pdfData = printingData
                 }
                 .frame(width: 920)
                 .padding(10)
-                .modifier(Toolbar(invoiceStore: store))
+                .modifier(Toolbar(invoiceStore: store, isEditing: false))
                 .task(id: store.id) {
+                    // Use task because onAppear will not be called when store changes
                     mainViewState.htmlCancellable = store.htmlDidChangePublisher.sink { html in
                         mainViewState.html = html
                     }
-                    mainViewState.editorType = .invoice
-                    store.calculate(editorType: mainViewState.editorType)
+                    store.buildHtml()
                 }
+                
+            case .invoiceEditor(let store):
+                InvoiceEditorColumn(editorViewModel: store.createInvoiceEditor())
+                .padding(10)
+                .modifier(Toolbar(invoiceStore: store, isEditing: true))
+
+            case .report(let store):
+                HtmlViewer(htmlString: mainViewState.html, pdfData: mainViewState.pdfdata) { printingData in
+                    store.pdfData = printingData
+                }
+                .frame(width: 920)
+                .padding(10)
+                .modifier(Toolbar(invoiceStore: store, isEditing: false))
+                .task(id: store.id) {
+                    // Use task because onAppear will not be called when store changes
+                    mainViewState.htmlCancellable = store.htmlDidChangePublisher.sink { html in
+                        mainViewState.html = html
+                    }
+                    store.buildHtml()
+                }
+
+            case .reportEditor(let store):
+                ReportEditorColumn(invoiceStore: store, editorViewModel: store.createReportEditor())
+                .padding(10)
+                .modifier(Toolbar(invoiceStore: store, isEditing: true))
 
             case .company(let companyData):
                 CompanyColumn(data: companyData)

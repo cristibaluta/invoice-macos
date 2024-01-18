@@ -11,9 +11,11 @@ import WebKit
 #if os(iOS)
 import UIKit
 typealias ViewRepresentable = UIViewRepresentable
+typealias ViewContext = UIViewRepresentableContext<HtmlViewer>
 #else
 import AppKit
 typealias ViewRepresentable = NSViewRepresentable
+typealias ViewContext = NSViewRepresentableContext<HtmlViewer>
 #endif
 
 struct HtmlViewer: ViewRepresentable {
@@ -24,7 +26,7 @@ struct HtmlViewer: ViewRepresentable {
 
     static let size = CGSize(width: 900, height: 1285)
 
-    let htmlString: String?
+    let htmlString: String
     var pdfData: Data?
     let onPdfGenerate: (Data) -> ()
 
@@ -34,7 +36,7 @@ struct HtmlViewer: ViewRepresentable {
         return config
     }
     
-    init (htmlString: String?, pdfData: Data?, onPdfGenerate: @escaping (Data) -> ()) {
+    init (htmlString: String, pdfData: Data?, onPdfGenerate: @escaping (Data) -> ()) {
         self.htmlString = htmlString
         self.pdfData = pdfData
         self.onPdfGenerate = onPdfGenerate
@@ -45,24 +47,27 @@ struct HtmlViewer: ViewRepresentable {
     }
 
 #if os(iOS)
-    func makeUIView(context: UIViewRepresentableContext<HtmlViewer>) -> WKWebView {
+    func makeUIView(context: ViewContext) -> WKWebView {
         return WKWebView()
     }
 
-    func updateUIView(_ webView: WKWebView, context: UIViewRepresentableContext<HtmlViewer>) {
-        webView.loadHTMLString(htmlString ?? "none", baseURL: nil)
-        generatePdf(webView)
+    func updateUIView(_ webView: WKWebView, context: ViewContext) {
+        updateView(webView, context: context)
     }
 #else
-    func makeNSView(context: NSViewRepresentableContext<HtmlViewer>) -> WKWebView {
+    func makeNSView(context: ViewContext) -> WKWebView {
         return WKWebView()
     }
 
-    func updateNSView(_ webView: WKWebView, context: NSViewRepresentableContext<HtmlViewer>) {
-        webView.loadHTMLString(htmlString ?? "none", baseURL: nil)
-        generatePdf(webView)
+    func updateNSView(_ webView: WKWebView, context: ViewContext) {
+        updateView(webView, context: context)
     }
 #endif
+
+    private func updateView(_ webView: WKWebView, context: ViewContext) {
+        webView.loadHTMLString(htmlString, baseURL: nil)
+        generatePdf(webView)
+    }
 
     private func generatePdf(_ webView: WKWebView) {
 

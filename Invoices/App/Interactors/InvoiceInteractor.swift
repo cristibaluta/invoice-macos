@@ -19,7 +19,7 @@ class InvoiceInteractor {
         self.invoicesInteractor = invoicesInteractor
     }
 
-    func calculate (data: InvoiceData) -> AnyPublisher<String, Never> {
+    func buildHtml (data: InvoiceData) -> AnyPublisher<String, Never> {
 
         return invoicesInteractor.readInvoiceTemplates(in: project)
             .map { templates in
