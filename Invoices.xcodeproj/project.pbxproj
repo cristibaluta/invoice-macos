@@ -142,6 +142,8 @@
 		56DAD62F2B59180000A30F9C /* ReportEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD62D2B59180000A30F9C /* ReportEditorViewModel.swift */; };
 		56DAD6312B595A9000A30F9C /* ReportEditorColumn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD6302B595A9000A30F9C /* ReportEditorColumn.swift */; };
 		56DAD6332B598CF100A30F9C /* InvoiceEditorColumn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD6322B598CF100A30F9C /* InvoiceEditorColumn.swift */; };
+		56DAD6352B59CB7E00A30F9C /* InvoiceEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD6342B59CB7E00A30F9C /* InvoiceEditorViewModel.swift */; };
+		56DAD6362B59CB7E00A30F9C /* InvoiceEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD6342B59CB7E00A30F9C /* InvoiceEditorViewModel.swift */; };
 		56EB80CA2B5315280046D72C /* ProjectsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EB80C92B5315280046D72C /* ProjectsMenu.swift */; };
 		56EB80CC2B5315F10046D72C /* InvoicesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EB80CB2B5315F10046D72C /* InvoicesList.swift */; };
 		56EB80CE2B532C7E0046D72C /* CompaniesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EB80CD2B532C7E0046D72C /* CompaniesList.swift */; };
@@ -254,6 +256,7 @@
 		56DAD62D2B59180000A30F9C /* ReportEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportEditorViewModel.swift; sourceTree = "<group>"; };
 		56DAD6302B595A9000A30F9C /* ReportEditorColumn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportEditorColumn.swift; sourceTree = "<group>"; };
 		56DAD6322B598CF100A30F9C /* InvoiceEditorColumn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceEditorColumn.swift; sourceTree = "<group>"; };
+		56DAD6342B59CB7E00A30F9C /* InvoiceEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceEditorViewModel.swift; sourceTree = "<group>"; };
 		56EB80C92B5315280046D72C /* ProjectsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsMenu.swift; sourceTree = "<group>"; };
 		56EB80CB2B5315F10046D72C /* InvoicesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesList.swift; sourceTree = "<group>"; };
 		56EB80CD2B532C7E0046D72C /* CompaniesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesList.swift; sourceTree = "<group>"; };
@@ -504,6 +507,7 @@
 			isa = PBXGroup;
 			children = (
 				56EB80D52B55FAF30046D72C /* InvoiceEditorProtocol.swift */,
+				56DAD6342B59CB7E00A30F9C /* InvoiceEditorViewModel.swift */,
 				28D81C3D27358BD200209EAC /* InvoiceEditor.swift */,
 				56DAD62D2B59180000A30F9C /* ReportEditorViewModel.swift */,
 				28D81C4727380A2900209EAC /* ReportEditor.swift */,
@@ -572,8 +576,8 @@
 		56D38555288C226600E8BEB5 /* Companies */ = {
 			isa = PBXGroup;
 			children = (
-				56D38556288C22AB00E8BEB5 /* CompanyPopover.swift */,
 				56D3856E289C0BBB00E8BEB5 /* CompanyColumn.swift */,
+				56D38556288C22AB00E8BEB5 /* CompanyPopover.swift */,
 			);
 			path = Companies;
 			sourceTree = "<group>";
@@ -813,6 +817,7 @@
 				56B9452B2886C34B00D312A4 /* CompaniesStore.swift in Sources */,
 				56D3854A288A6C0C00E8BEB5 /* MainViewIpad.swift in Sources */,
 				56D385622891E3B000E8BEB5 /* InvoiceInteractor.swift in Sources */,
+				56DAD6362B59CB7E00A30F9C /* InvoiceEditorViewModel.swift in Sources */,
 				56B945232886A29100D312A4 /* NewInvoiceView.swift in Sources */,
 				56B9450928851F3C00D312A4 /* NewProjectView.swift in Sources */,
 				563A6D022821807100C3C30A /* ProjectsStore.swift in Sources */,
@@ -930,6 +935,7 @@
 				28737A68277C83AC004D56C1 /* Company.swift in Sources */,
 				28737A5E277BB9D3004D56C1 /* SidebarColumn.swift in Sources */,
 				2867F84A27065729002CA8CC /* SandboxRepository.swift in Sources */,
+				56DAD6352B59CB7E00A30F9C /* InvoiceEditorViewModel.swift in Sources */,
 				563A6D012821807100C3C30A /* ProjectsStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1214,7 +1220,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = ro.imagin.Invoices;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1245,7 +1251,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = ro.imagin.Invoices;
 				PRODUCT_NAME = "$(TARGET_NAME)";

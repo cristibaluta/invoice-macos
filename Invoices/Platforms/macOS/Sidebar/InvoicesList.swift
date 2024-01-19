@@ -17,13 +17,21 @@ struct InvoicesList: View {
 
         let _ = Self._printChanges()
 
-        Text("Invoices").bold().padding(.leading, 16)
+        Text("Invoices").bold()
+        .padding(.leading, 16)
+        .padding(.bottom, 4)
+
+        Text("+ New invoice").onTapGesture {
+            invoicesStore.createNextInvoiceInProject()
+        }
+        .padding(.leading, 16)
 
         List(invoicesStore.invoices, id: \.self, selection: $invoicesStore.selectedInvoice) { invoice in
             HStack {
                 Text(invoice.name)
                 Spacer()
             }
+            .padding(0)
             .contentShape(Rectangle())
             .onTapGesture {
                 _ = invoicesStore.loadInvoice(invoice)

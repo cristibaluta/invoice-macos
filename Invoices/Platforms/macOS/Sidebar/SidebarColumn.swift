@@ -12,7 +12,6 @@ struct SidebarColumn: View {
 
     @EnvironmentObject var store: Store
     @EnvironmentObject var mainViewState: MainViewState
-    @State private var isShowingAddPopover = false
 
 
     var body: some View {
@@ -23,48 +22,23 @@ struct SidebarColumn: View {
 
             // Projects section
             ProjectsMenu(projectsStore: store.projectsStore)
+            .padding(.leading, 16)
+            .padding(.trailing, 16)
+
+            Divider().padding(16)
 
             // Invoices section
-            Divider().padding(16)
             if let invoicesStore = store.projectsStore.invoicesStore {
                 InvoicesList(invoicesStore: invoicesStore)
             }
 
-            // Companies section
+            Spacer()
             Divider().padding(16)
+
+            // Companies section
             CompaniesList()
-
-            // Add new section
-            Divider()
-
-            Button(action: { isShowingAddPopover = true }) {
-                HStack {
-                    Image(systemName: "plus.app")
-                    Text("Add new")
-                }
-            }
-            .padding(16)
-            .background(Color.clear)
-            .buttonStyle(PlainButtonStyle())
-            .popover(isPresented: $isShowingAddPopover) {
-                VStack {
-                    Button("New Project") {
-                        isShowingAddPopover = false
-                        mainViewState.contentType = .noProjects
-                    }
-                    Button("New Invoice") {
-                        isShowingAddPopover = false
-                        store.projectsStore.invoicesStore?.createNextInvoiceInProject()
-                    }
-                    Button("New company") {
-                        isShowingAddPopover = false
-                        mainViewState.contentType = .company(CompaniesInteractor.emptyCompanyDetails)
-                    }
-                }
-                .padding(20)
-            }
         }
-        .onAppear {
+//        .onAppear {
 //            mainViewState.chartCancellable = store.projectsStore.invoicesStore!.chartPublisher.sink { values in
 //                if store.projectsStore.invoicesStore?.invoices.isEmpty ?? false {
 //                    mainViewState.type = .noInvoices
@@ -76,7 +50,7 @@ struct SidebarColumn: View {
 ////                mainViewState.contentData = contentData
 ////                mainViewState.type = .invoice(contentData)
 //            }
-        }
+//        }
 
     }
 

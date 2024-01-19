@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct InvoiceReport: Codable {
+struct InvoiceReport: Codable, Equatable {
     
     var project_name: String
     var group: String

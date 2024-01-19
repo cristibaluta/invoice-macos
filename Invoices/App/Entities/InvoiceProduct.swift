@@ -8,7 +8,7 @@
 import Foundation
 
 // A product is one line in the invoice
-struct InvoiceProduct: Codable {
+struct InvoiceProduct: Codable, Equatable {
     
     var product_name: String
     var rate: Decimal

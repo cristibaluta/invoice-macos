@@ -37,6 +37,7 @@ struct ReportRowView: View {
                                   description: notes,
                                   duration: report.duration))
             }
+            .scrollDisabled(true)
             TextEditor(text: $duration).frame(width: 50).onChange(of: notes) {_ in
                 completion(Report(id: report.id,
                                   project_name: report.project_name,
@@ -44,6 +45,7 @@ struct ReportRowView: View {
                                   description: notes,
                                   duration: report.duration))
             }
+            .scrollDisabled(true)
         }
         .padding(.bottom, 10)
         .contextMenu {

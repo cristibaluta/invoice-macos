@@ -13,8 +13,8 @@ import Combine
 class InvoiceStore: ObservableObject {
 
     @Published var isShowingEditorSheet = false
-    @Published var html: String = "Loading invoice..."
-    {
+    @Published var hasChanges = false
+    @Published var html: String = "Loading invoice..." {
         didSet {
             self.htmlSubject.send(html)
         }
@@ -34,9 +34,11 @@ class InvoiceStore: ObservableObject {
     var pdfData: Data?
     var data: InvoiceData {
         didSet {
+            hasChanges = data != initialData
             buildHtml()
         }
     }
+    private let initialData: InvoiceData
 
     init (project: Project,
           data: InvoiceData,
@@ -45,6 +47,7 @@ class InvoiceStore: ObservableObject {
 
         self.project = project
         self.data = data
+        self.initialData = data
 
         invoiceInteractor = InvoiceInteractor(project: project, invoicesInteractor: invoicesInteractor)
         reportInteractor = ReportInteractor(project: project, reportsInteractor: reportsInteractor)
@@ -75,7 +78,7 @@ class InvoiceStore: ObservableObject {
     }
 
     func createReportEditor() -> ReportEditorViewModel {
-        let viewModel = ReportEditorViewModel(data: data)
+        let viewModel = ReportEditorViewModel(data: data, reportInteractor: reportInteractor)
         viewModel.invoiceDataChangePublisher
             .sink { newData in
                 self.data = newData

@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SwiftCSV
 
 class ReportInteractor {
 
@@ -35,11 +36,34 @@ class ReportInteractor {
                 // template_report_project
                 // template_report_row
 
-//                data.calculate()
-
-                var template = data.toHtmlUsingTemplate(templates.0)
+                var template = templates.0
                 let templateProject = templates.1
                 let templateRow = templates.2
+
+                let dict = data.toDictionary()
+
+                for (key, value) in dict {
+                    if key == "amount_total" || key == "amount_total_vat", let amount = Decimal(string: value as? String ?? "") {
+                        // Format the money values
+                        template = template.replacingOccurrences(of: "::\(key)::", with: "\(amount.stringValue_grouped2)")
+                    }
+                    else if key == "invoice_date" || key == "invoiced_period", let date = Date(yyyyMMdd: value as? String ?? "") {
+                        template = template.replacingOccurrences(of: "::\(key)::", with: "\(date.mediumDate)")
+                    }
+                    else if key == "invoice_nr" {
+                        // Prefix the invoice nr with zeroes
+                        template = template.replacingOccurrences(of: "::\(key)::", with: data.invoice_nr.prefixedWith0)
+                    }
+                    else if key == "contractor" || key == "client", let dic = value as? [String: Any] {
+                        // Contractor and client have this keywords as prefix
+                        for (k, v) in dic {
+                            template = template.replacingOccurrences(of: "::\(key)_\(k)::", with: "\(v)")
+                        }
+                    }
+                    else {
+                        template = template.replacingOccurrences(of: "::\(key)::", with: "\(value)")
+                    }
+                }
 
                 // Calculate the total amount of units
                 let units = data.products.reduce(0.0) { u, product in
@@ -101,6 +125,43 @@ class ReportInteractor {
 
     func save (data: InvoiceData, pdfData: Data?) -> AnyPublisher<Invoice, Never> {
         return reportsInteractor.saveReport(data: data, pdfData: pdfData, in: project)
+    }
+
+    func readCsv (at fileUrl: URL) -> ([Report], [ReportProject]) {
+
+        var allReports: [Report] = []
+        var allProjects: [ReportProject] = []
+
+        do {
+            let csv = try CSV(url: fileUrl, delimiter: ";")
+            try csv.enumerateAsDict { dict in
+                guard let projectName = dict["Project Name"], !projectName.isEmpty else {
+                    return
+                }
+                let report = Report(project_name: projectName,
+                                    group: "",
+                                    description: dict["Work Description"] ?? "",
+                                    duration: Decimal(Double(dict["Hours"]?.replacingOccurrences(of: ",", with: ".") ?? "0") ?? 0))
+
+                // Find duplicates and add times together
+                var foundDuplicate = false
+                for i in 0..<allReports.count {
+                    if allReports[i].description == report.description {
+                        allReports[i].duration += report.duration
+                        foundDuplicate = true
+                        break
+                    }
+                }
+                if !foundDuplicate {
+                    allReports.append(report)
+                }
+            }
+
+            allProjects = projects(from: allReports, isOn: true)
+        } catch {
+            print(error)
+        }
+        return (allReports, allProjects)
     }
 
     private func projects (from reports: [Report], isOn: Bool) -> [ReportProject] {

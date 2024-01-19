@@ -18,35 +18,29 @@ struct Toolbar: ViewModifier {
         
         content.toolbar {
             ToolbarItem(placement: .principal) {
-                Picker("Section", selection: $mainViewState.editorType) {
-                    Text("Invoice").tag(EditorType.invoice)
-                    Text("Report").tag(EditorType.report)
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .onChange(of: mainViewState.editorType) { editorType in
-                    invoiceStore.editorType = editorType
-                    switch editorType {
-                        case .invoice:
-                            mainViewState.contentType = .invoice(invoiceStore)
-                        case .report:
-                            mainViewState.contentType = .report(invoiceStore)
-                    }
-                }
-            }
-            ToolbarItemGroup(placement: .primaryAction) {
-                Spacer()
                 if isEditing {
-                    Button("Save \(mainViewState.editorType == .invoice ? "invoice" : "report")") {
-                        // Save the invoice
-                        invoiceStore.save()
-                        // Go back to preview mode
-                        switch mainViewState.editorType {
+                    Text(mainViewState.editorType == .invoice ? "Edit invoice" : "Edit report")
+                } else {
+                    Picker("Section", selection: $mainViewState.editorType) {
+                        Text("Invoice").tag(EditorType.invoice)
+                        Text("Report").tag(EditorType.report)
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .onChange(of: mainViewState.editorType) { editorType in
+                        invoiceStore.editorType = editorType
+                        switch editorType {
                             case .invoice:
                                 mainViewState.contentType = .invoice(invoiceStore)
                             case .report:
                                 mainViewState.contentType = .report(invoiceStore)
                         }
                     }
+                }
+            }
+            ToolbarItemGroup(placement: .primaryAction) {
+                Spacer()
+                if isEditing {
+
                 } else {
                     Button("Edit \(mainViewState.editorType == .invoice ? "invoice" : "report")") {
                         //                    invoiceStore.isShowingEditorSheet = true
@@ -69,14 +63,30 @@ struct Toolbar: ViewModifier {
                         }
                     }
 
-                    Button(action: {
-                        isShowingExportPopover = true
-                    }) {
-                        Image(systemName: "square.and.arrow.up")
-                    }
-                    .popover(isPresented: $isShowingExportPopover) {
-                        ExportPopover(state: invoiceStore)
-                            .padding(20)
+//                    Button(action: {
+//                        isShowingExportPopover = true
+//                    }) {
+//                        Image(systemName: "square.and.arrow.up")
+//                    }
+//                    .popover(isPresented: $isShowingExportPopover) {
+//                        ExportPopover(state: invoiceStore)
+//                            .padding(20)
+//                    }
+
+                    ShareLink(item: "Test share")
+                }
+
+                if invoiceStore.hasChanges {
+                    Button("Save") {
+                        // Save the invoice
+                        invoiceStore.save()
+                        // Go back to preview mode
+                        switch mainViewState.editorType {
+                            case .invoice:
+                                mainViewState.contentType = .invoice(invoiceStore)
+                            case .report:
+                                mainViewState.contentType = .report(invoiceStore)
+                        }
                     }
                 }
             }

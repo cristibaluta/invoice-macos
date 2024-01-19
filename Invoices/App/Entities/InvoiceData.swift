@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct InvoiceData: Codable, PropertyLoopable {
-    
+struct InvoiceData: Codable, Equatable, PropertyLoopable {
+
     var invoice_series: String
     var invoice_nr: Int
     var invoice_date: String
@@ -97,36 +97,15 @@ extension InvoiceData {
         return Date(yyyyMMdd: invoice_date) ?? Date()
     }
     
-    func toHtmlUsingTemplate (_ template: String) -> String {
-        /// Convert enum to dict
+    func toDictionary() -> [String: Any] {
         guard let data = try? JSONEncoder().encode(self) else {
-            return ""
+            return [:]
         }
         let dict: [String: Any]? = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments))
-                .flatMap { $0 as? [String: Any] }
-        var template = template
-        for (key, value) in (dict ?? [:]) {
-            if key == "amount_total" || key == "amount_total_vat", let amount = Decimal(string: value as? String ?? "") {
-                template = template.replacingOccurrences(of: "::\(key)::", with: "\(amount.stringValue_grouped2)")
-            }
-            else if key == "invoice_date" || key == "invoiced_period", let date = Date(yyyyMMdd: value as? String ?? "") {
-                template = template.replacingOccurrences(of: "::\(key)::", with: "\(date.mediumDate)")
-            }
-            else if key == "invoice_nr" {
-                template = template.replacingOccurrences(of: "::\(key)::", with: self.invoice_nr.prefixedWith0)
-            }
-            else if key == "contractor" || key == "client", let dic = value as? [String: Any] {
-                for (k, v) in dic {
-                    template = template.replacingOccurrences(of: "::\(key)_\(k)::", with: "\(v)")
-                }
-            }
-            else {
-                template = template.replacingOccurrences(of: "::\(key)::", with: "\(value)")
-            }
-        }
-        return template
+            .flatMap { $0 as? [String: Any] }
+        return dict ?? [:]
     }
-    
+
     mutating func calculate() {
         var products = [InvoiceProduct]()
         /// Calculate the amount
@@ -141,8 +120,7 @@ extension InvoiceData {
                 product.amount = amount_total
                 products.append(product)
             }
-        }
-        else {
+        } else {
             // We know the units
             // We calculate the total amount
             var total: Decimal = 0.0

@@ -10,11 +10,12 @@ import SwiftUI
 
 struct ProjectsMenu: View {
 
+    @EnvironmentObject var mainViewState: MainViewState
     @ObservedObject var projectsStore: ProjectsStore
 
     var body: some View {
 
-        Text("Projects").bold().padding(.leading, 16)
+        Text("Projects").bold()
         Menu {
             ForEach(projectsStore.projects) { project in
                 Button(project.name, action: {
@@ -22,10 +23,13 @@ struct ProjectsMenu: View {
                     projectsStore.objectWillChange.send()
                 })
             }
+            Divider().frame(height: 1)
+            Button("+ New project", action: {
+                mainViewState.contentType = .noProjects
+            })
         } label: {
             Text(projectsStore.selectedProject?.name ?? "Select project")
         }
-        .padding(16)
     }
 
 }

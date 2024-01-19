@@ -75,4 +75,22 @@ class CompaniesInteractor {
             }
             .eraseToAnyPublisher()
     }
+
+    func delete (_ company: CompanyData) -> AnyPublisher<Bool, Never> {
+
+        return loadCompaniesList()
+            .map {
+                var companies: [CompanyData] = $0
+                if let index = companies.firstIndex(where: { company.cui == $0.cui }) {
+                    companies.remove(at: index)
+                }
+                return companies
+            }
+            .encode(encoder: encoder)
+            .replaceError(with: Data())
+            .flatMap { jsonData in
+                return self.repository.writeFile(jsonData, at: self.companiesPath)
+            }
+            .eraseToAnyPublisher()
+    }
 }

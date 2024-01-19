@@ -44,6 +44,13 @@ class CompaniesStore: ObservableObject {
             }
     }
 
+    func delete (_ company: CompanyData) {
+        _ = interactor.delete(company)
+            .sink { success in
+                self.refresh()
+            }
+    }
+
     func dismissNewCompany() {
         self.isShowingNewCompanySheet = false
     }

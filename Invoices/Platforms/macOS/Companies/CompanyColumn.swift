@@ -17,7 +17,6 @@ struct CompanyColumn: View {
         let _ = Self._printChanges()
         VStack {
             CompanyView(data: data) { data in
-                print("onChange \(data.name)")
                 companiesData.selectedCompany = data
             }
             .frame(width: 400)
