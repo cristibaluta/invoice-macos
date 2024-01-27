@@ -38,10 +38,9 @@ struct SidebarColumn: View {
                             mainViewState.contentType = .charts(chartsViewModel)
                         }
                     }
-//                    mainViewState.newInvoiceCancellable = invoicesStore.newInvoicePublisher.sink { contentData in
-//                        //                mainViewState.contentData = contentData
-//                        //                mainViewState.type = .invoice(contentData)
-//                    }
+                    mainViewState.newInvoiceCancellable = invoicesStore.newInvoicePublisher.sink { contentData in
+                        mainViewState.contentType = .invoice(contentData)
+                    }
                 }
             }
 

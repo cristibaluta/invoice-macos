@@ -22,16 +22,16 @@ struct ContentColumn: View {
         switch mainViewState.contentType {
             case .noProjects:
                 NewProjectView { newProjectName in
-                    self.mainStore.projectsStore.createProject(named: newProjectName)
+                    mainStore.projectsStore.createProject(named: newProjectName)
                 }
 
             case .noInvoices:
                 NoInvoicesView {
-
+                    mainStore.projectsStore.invoicesStore?.createNextInvoiceInProject()
                 }
 
             case .newInvoice(let invoiceStore):
-                NewInvoiceView(viewModel: invoiceStore.createInvoiceEditor())
+                NewInvoiceView(viewModel: invoiceStore.invoiceEditorViewModel)
                 .padding(40)
 
             case .deleteInvoice(let invoice):
@@ -41,45 +41,45 @@ struct ContentColumn: View {
                 ChartsView(viewModel: chartsViewModel)
                 .padding(40)
 
-            case .invoice(let store):
-                HtmlViewer(htmlString: mainViewState.html, pdfData: mainViewState.pdfdata) { printingData in
-                    store.pdfData = printingData
+            case .invoice(let invoiceStore):
+                HtmlViewer(htmlString: mainViewState.html) { printingData in
+                    invoiceStore.pdfData = printingData
                 }
                 .frame(width: 920)
                 .padding(10)
-                .modifier(Toolbar(invoiceStore: store, isEditing: false))
-                .task(id: store.id) {
+                .modifier(Toolbar(invoiceStore: invoiceStore))
+                .task(id: invoiceStore.id) {
                     // Use task because onAppear will not be called when store changes
-                    mainViewState.htmlCancellable = store.htmlDidChangePublisher.sink { html in
+                    mainViewState.htmlCancellable = invoiceStore.htmlDidChangePublisher.sink { html in
                         mainViewState.html = html
                     }
-                    store.buildHtml()
+                    invoiceStore.buildHtml()
                 }
                 
-            case .invoiceEditor(let store):
-                InvoiceEditorColumn(editorViewModel: store.createInvoiceEditor())
+            case .invoiceEditor(let invoiceStore):
+                InvoiceEditorColumn(editorViewModel: invoiceStore.invoiceEditorViewModel)
                 .padding(10)
-                .modifier(Toolbar(invoiceStore: store, isEditing: true))
+                .modifier(Toolbar(invoiceStore: invoiceStore))
 
-            case .report(let store):
-                HtmlViewer(htmlString: mainViewState.html, pdfData: mainViewState.pdfdata) { printingData in
-                    store.pdfData = printingData
+            case .report(let invoiceStore):
+                HtmlViewer(htmlString: mainViewState.html) { printingData in
+                    invoiceStore.pdfData = printingData
                 }
                 .frame(width: 920)
                 .padding(10)
-                .modifier(Toolbar(invoiceStore: store, isEditing: false))
-                .task(id: store.id) {
+                .modifier(Toolbar(invoiceStore: invoiceStore))
+                .task(id: invoiceStore.id) {
                     // Use task because onAppear will not be called when store changes
-                    mainViewState.htmlCancellable = store.htmlDidChangePublisher.sink { html in
+                    mainViewState.htmlCancellable = invoiceStore.htmlDidChangePublisher.sink { html in
                         mainViewState.html = html
                     }
-                    store.buildHtml()
+                    invoiceStore.buildHtml()
                 }
 
-            case .reportEditor(let store):
-                ReportEditorColumn(invoiceStore: store, editorViewModel: store.createReportEditor())
+            case .reportEditor(let invoiceStore):
+                ReportEditorColumn(invoiceStore: invoiceStore, editorViewModel: invoiceStore.reportEditorViewModel)
                 .padding(10)
-                .modifier(Toolbar(invoiceStore: store, isEditing: true))
+                .modifier(Toolbar(invoiceStore: invoiceStore))
 
             case .company(let companyData):
                 CompanyColumn(data: companyData)

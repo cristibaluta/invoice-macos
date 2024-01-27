@@ -30,14 +30,9 @@ class MainViewState: ObservableObject {
     @Published var editorType: EditorType = .invoice
     @Published var isEditing = false
     @Published var html = ""
-    @Published var pdfdata: Data? {
-        didSet{
-            print(">>>>>>>> pdfdata did set")
-        }
-    }
 
     var chartCancellable: Cancellable?
-//    var newInvoiceCancellable: Cancellable?
+    var newInvoiceCancellable: Cancellable?
     var htmlCancellable: Cancellable?
     
     init() {

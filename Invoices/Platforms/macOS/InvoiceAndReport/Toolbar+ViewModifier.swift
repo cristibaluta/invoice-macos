@@ -11,14 +11,13 @@ struct Toolbar: ViewModifier {
 
     @EnvironmentObject var mainViewState: MainViewState
     @ObservedObject var invoiceStore: InvoiceStore
-    var isEditing: Bool
     @State private var isShowingExportPopover = false
     
     func body (content: Content) -> some View {
         
         content.toolbar {
             ToolbarItem(placement: .principal) {
-                if isEditing {
+                if invoiceStore.isEditing {
                     Text(mainViewState.editorType == .invoice ? "Edit invoice" : "Edit report")
                 } else {
                     Picker("Section", selection: $mainViewState.editorType) {
@@ -39,8 +38,13 @@ struct Toolbar: ViewModifier {
             }
             ToolbarItemGroup(placement: .primaryAction) {
                 Spacer()
-                if isEditing {
-
+                if invoiceStore.isEditing {
+                    Button("Preview") {
+                        // Dismiss editor
+                        invoiceStore.dismissEditor()
+                        // Go back to preview mode
+                        gotoPreview()
+                    }
                 } else {
                     Button("Edit \(mainViewState.editorType == .invoice ? "invoice" : "report")") {
                         //                    invoiceStore.isShowingEditorSheet = true
@@ -56,13 +60,20 @@ struct Toolbar: ViewModifier {
                              arrowEdge: .leading) {
                         switch mainViewState.editorType {
                             case .invoice:
-                                InvoiceEditorPopover(invoiceStore: invoiceStore, editorViewModel: invoiceStore.createInvoiceEditor())
+                                InvoiceEditorPopover(invoiceStore: invoiceStore, editorViewModel: invoiceStore.invoiceEditorViewModel)
                             case .report:
-                                ReportEditorPopover(invoiceStore: invoiceStore, editorViewModel: invoiceStore.createReportEditor())
+                                ReportEditorPopover(invoiceStore: invoiceStore, editorViewModel: invoiceStore.reportEditorViewModel)
                                     .frame(width: 500, height: 600)
                         }
                     }
-
+                    if invoiceStore.hasChanges {
+                        Button("Save") {
+                            // Save the invoice
+                            invoiceStore.save()
+                            // Go back to preview mode
+                            gotoPreview()
+                        }
+                    }
 //                    Button(action: {
 //                        isShowingExportPopover = true
 //                    }) {
@@ -75,23 +86,18 @@ struct Toolbar: ViewModifier {
 
                     ShareLink(item: "Test share")
                 }
-
-                if invoiceStore.hasChanges {
-                    Button("Save") {
-                        // Save the invoice
-                        invoiceStore.save()
-                        // Go back to preview mode
-                        switch mainViewState.editorType {
-                            case .invoice:
-                                mainViewState.contentType = .invoice(invoiceStore)
-                            case .report:
-                                mainViewState.contentType = .report(invoiceStore)
-                        }
-                    }
-                }
             }
         }
 
+    }
+
+    private func gotoPreview() {
+        switch mainViewState.editorType {
+            case .invoice:
+                mainViewState.contentType = .invoice(invoiceStore)
+            case .report:
+                mainViewState.contentType = .report(invoiceStore)
+        }
     }
 
 }

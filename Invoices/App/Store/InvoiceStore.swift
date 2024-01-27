@@ -14,6 +14,7 @@ class InvoiceStore: ObservableObject {
 
     @Published var isShowingEditorSheet = false
     @Published var hasChanges = false
+    @Published var isEditing = false
     @Published var html: String = "Loading invoice..." {
         didSet {
             self.htmlSubject.send(html)
@@ -26,7 +27,42 @@ class InvoiceStore: ObservableObject {
     private var reportInteractor: ReportInteractor
 
     private var cancellables = Set<AnyCancellable>()
-    private var editorViewModel: (any InvoiceEditorProtocol)?
+    private var activeEditorViewModel: (any InvoiceEditorProtocol)?
+
+    var invoiceEditorViewModel: InvoiceEditorViewModel {
+        if let viewModel = activeEditorViewModel as? InvoiceEditorViewModel {
+            return viewModel
+        }
+        let viewModel = InvoiceEditorViewModel(data: data)
+        viewModel.invoiceDataChangePublisher
+            .sink { newData in
+                self.data = newData
+            }
+            .store(in: &cancellables)
+        viewModel.addCompanyPublisher
+            .sink { _ in
+                print("Request to add new company")
+            }
+            .store(in: &cancellables)
+        activeEditorViewModel = viewModel
+        isEditing = true
+        return viewModel
+    }
+
+    var reportEditorViewModel: ReportEditorViewModel {
+        if let viewModel = activeEditorViewModel as? ReportEditorViewModel {
+            return viewModel
+        }
+        let viewModel = ReportEditorViewModel(data: data, reportInteractor: reportInteractor)
+        viewModel.invoiceDataChangePublisher
+            .sink { newData in
+                self.data = newData
+            }
+            .store(in: &cancellables)
+        activeEditorViewModel = viewModel
+        isEditing = true
+        return viewModel
+    }
 
     var id = UUID()// Needed to redraw the HtmlViewer
     var editorType: EditorType = .invoice
@@ -55,41 +91,13 @@ class InvoiceStore: ObservableObject {
 
     deinit {
         print(">>>>>>>> deinit InvoiceStore")
-    }
-
-    func createInvoiceEditor() -> InvoiceEditorViewModel {
-        if let viewModel = editorViewModel as? InvoiceEditorViewModel {
-            return viewModel
-        }
-        print(">>>>>>>> create InvoiceEditorViewModel")
-        let viewModel = InvoiceEditorViewModel(data: data)
-        viewModel.invoiceDataChangePublisher
-            .sink { newData in
-                self.data = newData
-            }
-            .store(in: &cancellables)
-        viewModel.addCompanyPublisher
-            .sink { _ in
-                print("Request to add new company")
-            }
-            .store(in: &cancellables)
-        self.editorViewModel = viewModel
-        return viewModel
-    }
-
-    func createReportEditor() -> ReportEditorViewModel {
-        let viewModel = ReportEditorViewModel(data: data, reportInteractor: reportInteractor)
-        viewModel.invoiceDataChangePublisher
-            .sink { newData in
-                self.data = newData
-            }
-            .store(in: &cancellables)
-        return viewModel
+        cancellables.removeAll()
     }
 
     func dismissEditor() {
         isShowingEditorSheet = false
-        editorViewModel = nil
+        isEditing = false
+        activeEditorViewModel = nil
         cancellables.removeAll()
     }
 
@@ -116,7 +124,6 @@ class InvoiceStore: ObservableObject {
     }
 
     func export (isPdf: Bool) {
-//        let fileName = "Report-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).\(isPdf ? "pdf" : "html")"
         let fileName = "Invoice-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).\(isPdf ? "pdf" : "html")"
         let exporter = Exporter()
         exporter.export(fileName: fileName,

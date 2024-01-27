@@ -27,7 +27,6 @@ struct HtmlViewer: ViewRepresentable {
     static let size = CGSize(width: 900, height: 1285)
 
     let htmlString: String
-    var pdfData: Data?
     let onPdfGenerate: (Data) -> ()
 
     private var config: WKPDFConfiguration {
@@ -36,9 +35,8 @@ struct HtmlViewer: ViewRepresentable {
         return config
     }
     
-    init (htmlString: String, pdfData: Data?, onPdfGenerate: @escaping (Data) -> ()) {
+    init (htmlString: String, onPdfGenerate: @escaping (Data) -> ()) {
         self.htmlString = htmlString
-        self.pdfData = pdfData
         self.onPdfGenerate = onPdfGenerate
     }
     
