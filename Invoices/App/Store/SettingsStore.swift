@@ -7,6 +7,6 @@
 
 import Foundation
 
-class SetingsStore: ObservableObject {
+class SettingsStore: ObservableObject {
 
 }

@@ -13,7 +13,7 @@ import BarChart
 enum ContentViewType {
     case noProjects
     case noInvoices
-    case charts(ChartConfiguration, ChartConfiguration, Decimal)
+    case charts(ChartsViewModel)
     case newInvoice(InvoiceStore)
     case deleteInvoice(Invoice)
     case invoice(InvoiceStore)
@@ -36,7 +36,7 @@ class MainViewState: ObservableObject {
         }
     }
 
-//    var chartCancellable: Cancellable?
+    var chartCancellable: Cancellable?
 //    var newInvoiceCancellable: Cancellable?
     var htmlCancellable: Cancellable?
     

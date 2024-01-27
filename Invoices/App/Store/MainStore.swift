@@ -26,22 +26,29 @@ enum UserPreferences: String, RCPreferencesProtocol {
     }
 }
 
-class Store: ObservableObject {
+class MainStore: ObservableObject {
 
     var projectsStore: ProjectsStore
     var companiesStore: CompaniesStore
-    var settingsStore: SetingsStore
+    var settingsStore: SettingsStore
 
     private var cancellable: AnyCancellable?
+    private var cancellables = Set<AnyCancellable>()
 
     init (repository: Repository) {
         projectsStore = ProjectsStore(repository: repository)
         companiesStore = CompaniesStore(repository: repository)
-        settingsStore = SetingsStore()
+        settingsStore = SettingsStore()
 
-        cancellable = projectsStore.projectDidChangePublisher
+        projectsStore.projectDidChangePublisher
             .sink {
                 self.objectWillChange.send()
             }
+            .store(in: &cancellables)
+        projectsStore.chartDidChangePublisher
+            .sink { _ in
+                self.objectWillChange.send()
+            }
+            .store(in: &cancellables)
     }
 }

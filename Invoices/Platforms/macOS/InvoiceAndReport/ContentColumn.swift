@@ -13,8 +13,7 @@ import RCPreferences
 struct ContentColumn: View {
 
     @EnvironmentObject private var mainViewState: MainViewState
-    @EnvironmentObject private var projectsStore: ProjectsStore
-    @EnvironmentObject private var companiesStore: CompaniesStore
+    @EnvironmentObject private var mainStore: MainStore
 
     var body: some View {
 
@@ -23,9 +22,7 @@ struct ContentColumn: View {
         switch mainViewState.contentType {
             case .noProjects:
                 NewProjectView { newProjectName in
-                    projectsStore.createProject(named: newProjectName) { proj in
-                        self.projectsStore.selectedProject = proj
-                    }
+                    self.mainStore.projectsStore.createProject(named: newProjectName)
                 }
 
             case .noInvoices:
@@ -40,8 +37,8 @@ struct ContentColumn: View {
             case .deleteInvoice(let invoice):
                 DeleteConfirmationColumn(invoice: invoice)
 
-            case .charts(let priceChart, let rateChart, let total):
-                ChartsView(state: ChartsViewState(total: total), priceChartConfig: priceChart, rateChartConfig: rateChart)
+            case .charts(let chartsViewModel):
+                ChartsView(viewModel: chartsViewModel)
                 .padding(40)
 
             case .invoice(let store):

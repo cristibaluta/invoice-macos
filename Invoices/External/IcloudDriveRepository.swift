@@ -97,6 +97,10 @@ extension IcloudDriveRepository: Repository {
             .eraseToAnyPublisher()
     }
 
+    func readFiles (at paths: [String]) -> AnyPublisher<[Data], Never> {
+        return CurrentValueSubject<[Data], Never>([]).eraseToAnyPublisher()
+    }
+    
     func writeFolder (at url: URL) -> AnyPublisher<Bool, Never> {
         return CurrentValueSubject<Bool, Never>(true).eraseToAnyPublisher()
     }

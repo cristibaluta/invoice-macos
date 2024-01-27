@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct InvoicesApp: App {
 
-    private let store = Store(repository: SandboxRepository())
+    private let store = MainStore(repository: SandboxRepository())
 
 
     var body: some Scene {

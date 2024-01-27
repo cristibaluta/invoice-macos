@@ -7,11 +7,10 @@
 
 import Foundation
 import Combine
-import BarChart
-import SwiftUI
 
 class InvoicesStore: ObservableObject {
 
+    var id = UUID()// Needed to redraw the HtmlViewer
     @Published var invoices: [Invoice] = []
     @Published var selectedInvoice: Invoice?
 
@@ -27,15 +26,9 @@ class InvoicesStore: ObservableObject {
     private let reportsInteractor: ReportsInteractor
     var selectedInvoiceStore: InvoiceStore?
 
-    var priceChartConfig = ChartConfiguration()
-    var rateChartConfig = ChartConfiguration()
-    var priceChartEntries: [ChartDataEntry] = []
-    var rateChartEntries: [ChartDataEntry] = []
-
-
-    private let subject = PassthroughSubject<(ChartConfiguration, ChartConfiguration, Decimal), Never>()
-    var chartPublisher: AnyPublisher<(ChartConfiguration, ChartConfiguration, Decimal), Never> {
-        subject.eraseToAnyPublisher()
+    private let chartSubject = PassthroughSubject<ChartsViewModel, Never>()
+    var chartPublisher: AnyPublisher<ChartsViewModel, Never> {
+        chartSubject.eraseToAnyPublisher()
     }
 
     private let newInvoiceSubject = PassthroughSubject<(InvoiceStore), Never>()
@@ -51,35 +44,6 @@ class InvoicesStore: ObservableObject {
 
         invoicesInteractor = InvoicesInteractor(repository: repository)
         reportsInteractor = ReportsInteractor(repository: repository)
-
-        // Configure charts
-        priceChartConfig.data.color = .red
-        priceChartConfig.xAxis.labelsColor = .gray
-        priceChartConfig.xAxis.ticksColor = .gray
-        priceChartConfig.labelsCTFont = CTFontCreateWithName(("SFProText-Regular" as CFString), 10, nil)
-        priceChartConfig.xAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
-        priceChartConfig.yAxis.labelsColor = .gray
-        priceChartConfig.yAxis.ticksColor = .gray
-        priceChartConfig.yAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
-        priceChartConfig.yAxis.minTicksSpacing = 30.0
-        priceChartConfig.yAxis.formatter = { value, decimals in
-            let format = value == 0 ? "" : "RON"
-            return String(format: "%.\(decimals)f \(format)", value)
-        }
-
-        rateChartConfig.data.color = .orange
-        rateChartConfig.xAxis.labelsColor = .gray
-        rateChartConfig.xAxis.ticksColor = .gray
-        rateChartConfig.labelsCTFont = CTFontCreateWithName(("SFProText-Regular" as CFString), 10, nil)
-        rateChartConfig.xAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
-        rateChartConfig.yAxis.labelsColor = .gray
-        rateChartConfig.yAxis.ticksColor = .gray
-        rateChartConfig.yAxis.ticksStyle = StrokeStyle(lineWidth: 1.5, lineCap: .round, dash: [2, 4])
-        rateChartConfig.yAxis.minTicksSpacing = 30.0
-        rateChartConfig.yAxis.formatter = { value, decimals in
-            let format = value == 0 ? "" : "€"
-            return String(format: "%.\(decimals)f \(format)", value)
-        }
     }
 
     func loadInvoices() {
@@ -87,7 +51,9 @@ class InvoicesStore: ObservableObject {
             .sink { [weak self] in
                 print("Invoices loaded \($0.count)")
                 self?.invoices = $0
-                self?.loadChart()
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+                    self?.loadChart()
+                }
             }
     }
 
@@ -124,7 +90,7 @@ class InvoicesStore: ObservableObject {
                                                      invoicesInteractor: invoicesInteractor,
                                                      reportsInteractor: reportsInteractor)
             self.selectedInvoiceStore?.buildHtml()
-//            self.newInvoiceSubject.send(self.selectedInvoiceStore)
+            self.newInvoiceSubject.send(self.selectedInvoiceStore!)
             return
         }
 
@@ -162,6 +128,7 @@ class InvoicesStore: ObservableObject {
         _ = invoicesInteractor.deleteInvoice(invoice, in: project)
             .sink { success in
                 self.invoices.remove(at: index)
+                self.loadChart()
             }
     }
 
@@ -198,63 +165,15 @@ class InvoicesStore: ObservableObject {
 
     func loadChart() {
         guard !invoices.isEmpty else {
-            priceChartConfig.data.entries = []
-            rateChartConfig.data.entries = []
-            subject.send((priceChartConfig, rateChartConfig, 0))
+            chartSubject.send(ChartsViewModel(invoices: []))
             return
         }
 
-//        let folderPath = project.name
-//        var prices = [ChartDataEntry]()
-//        var rates = [ChartDataEntry]()
-//        var total: Decimal = 0
-//        for invoice in invoices {
-//            // Load all invoices data and display a chart
-//            let invoiceDataPath = "\(folderPath)/\(invoice.name)/data.json"
-//            if FileManager.default.fileExists(atPath: invoiceDataPath) {
-//                print("File exists \(invoiceDataPath)")
-//            } else {
-//                print("Start downloading \(invoiceDataPath)")
-//                do {
-//                    try FileManager.default.startDownloadingUbiquitousItem(at: invoiceDataPath)
-//                } catch {
-//                    print("Error while loading Backup File \(error)")
-//                }
-//            }
-//            do {
-//                let jsonData = try Data(contentsOf: invoiceDataPath)
-//                let invoice = try JSONDecoder().decode(InvoiceData.self, from: jsonData)
-//                let price = invoice.amount_total_vat.doubleValue// + Double.random(in: 0..<10000)
-//                total += invoice.amount_total_vat
-//                let priceEntry = ChartDataEntry(x: "\(invoice.invoice_nr)", y: price)
-//                prices.append(priceEntry)
-//                let rate = invoice.products[0].rate.doubleValue// + Double.random(in: 0..<100)
-//                let rateEntry = ChartDataEntry(x: "\(invoice.invoice_nr)", y: rate)
-//                rates.append(rateEntry)
-//            } catch {
-//                print("\(error)")
-//            }
-//        }
-//        showChart(prices, rates, total)
-    }
-    
-    func showChart (_ prices: [ChartDataEntry]?, _ rates: [ChartDataEntry]?, _ total: Decimal) {
-        
-        if let prices = prices, let rates = rates {
-            priceChartEntries = prices.reversed()
-            rateChartEntries = rates.reversed()
-        }
-        DispatchQueue.main.async {
-            self.priceChartConfig.data.entries = self.priceChartEntries
-            self.rateChartConfig.data.entries = self.rateChartEntries
-            self.subject.send((self.priceChartConfig, self.rateChartConfig, total))
-            // Bug in charts, need to set the data twice
-            DispatchQueue.main.async {
-                self.priceChartConfig.data.entries = self.priceChartEntries
-                self.rateChartConfig.data.entries = self.rateChartEntries
-                self.subject.send((self.priceChartConfig, self.rateChartConfig, total))
+        _ = invoicesInteractor.readInvoices(invoices, in: project)
+            .sink { invoicesData in
+                self.chartSubject.send(ChartsViewModel(invoices: invoicesData))
             }
-        }
     }
+
 }
 

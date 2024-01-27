@@ -7,15 +7,6 @@
 
 import SwiftUI
 
-class CompanyViewViewModel {
-
-    var data: CompanyData
-
-    init (data: CompanyData) {
-        self.data = data
-    }
-}
-
 struct CompanyView: View {
 
 #if os(iOS)

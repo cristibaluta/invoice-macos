@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MainWindow: View {
 
-    @EnvironmentObject var store: Store
+    @EnvironmentObject var store: MainStore
     @EnvironmentObject var companiesStore: CompaniesStore
 
     private let mainViewState = MainViewState()

@@ -50,6 +50,22 @@ class InvoicesInteractor {
             .eraseToAnyPublisher()
     }
 
+    func readInvoices (_ invoices: [Invoice], in project: Project) -> AnyPublisher<[InvoiceData], Never> {
+
+        let paths: [String] = invoices.map({ "\(project.name)/\($0.name)/data.json" })
+
+        return repository
+            .readFiles(at: paths)
+            .compactMap { data in
+                let decoder = JSONDecoder()
+                return try? decoder.decode(InvoiceData.self, from: data)
+            }
+            .collect()
+//            .decode(type: [InvoiceData].self, decoder: JSONDecoder())
+//            .replaceError(with: [])
+            .eraseToAnyPublisher()
+    }
+
     func readInvoiceTemplates (in folder: Project) -> AnyPublisher<(String, String), Never> {
 
         let templatesPath = "\(folder.name)/templates"
@@ -98,7 +114,8 @@ class InvoicesInteractor {
     func deleteInvoice (_ invoice: Invoice, in folder: Project) -> AnyPublisher<Bool, Never> {
 
         let invoicePath = "\(folder.name)/\(invoice.name)"
-        return repository.removeItem(at: invoicePath)
+        return repository
+            .removeItem(at: invoicePath)
     }
 
     static var emptyInvoiceData: InvoiceData {

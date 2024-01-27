@@ -10,7 +10,7 @@ import Combine
 
 struct SidebarColumn: View {
 
-    @EnvironmentObject var store: Store
+    @EnvironmentObject var store: MainStore
     @EnvironmentObject var mainViewState: MainViewState
 
 
@@ -30,6 +30,19 @@ struct SidebarColumn: View {
             // Invoices section
             if let invoicesStore = store.projectsStore.invoicesStore {
                 InvoicesList(invoicesStore: invoicesStore)
+                .task(id: invoicesStore.id) {
+                    mainViewState.chartCancellable = invoicesStore.chartPublisher.sink { chartsViewModel in
+                        if invoicesStore.invoices.isEmpty {
+                            mainViewState.contentType = .noInvoices
+                        } else {
+                            mainViewState.contentType = .charts(chartsViewModel)
+                        }
+                    }
+//                    mainViewState.newInvoiceCancellable = invoicesStore.newInvoicePublisher.sink { contentData in
+//                        //                mainViewState.contentData = contentData
+//                        //                mainViewState.type = .invoice(contentData)
+//                    }
+                }
             }
 
             Spacer()
@@ -38,19 +51,6 @@ struct SidebarColumn: View {
             // Companies section
             CompaniesList()
         }
-//        .onAppear {
-//            mainViewState.chartCancellable = store.projectsStore.invoicesStore!.chartPublisher.sink { values in
-//                if store.projectsStore.invoicesStore?.invoices.isEmpty ?? false {
-//                    mainViewState.type = .noInvoices
-//                } else {
-//                    mainViewState.type = .charts(values.0, values.1, values.2)
-//                }
-//            }
-//            mainViewState.newInvoiceCancellable = store.projectsStore.invoicesStore!.newInvoicePublisher.sink { contentData in
-////                mainViewState.contentData = contentData
-////                mainViewState.type = .invoice(contentData)
-//            }
-//        }
 
     }
 

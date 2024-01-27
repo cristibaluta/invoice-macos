@@ -44,6 +44,9 @@ extension LocalRepository: Repository {
     func readFile (at path: String) -> AnyPublisher<Data, Never> {
         return CurrentValueSubject<Data, Never>(Data()).eraseToAnyPublisher()
     }
+    func readFiles (at paths: [String]) -> Publishers.Sequence<[Data], Never> {
+        return Publishers.Sequence(sequence: [])
+    }
     func writeFolder (at path: String) -> AnyPublisher<Bool, Never> {
         return CurrentValueSubject<Bool, Never>(false).eraseToAnyPublisher()
     }

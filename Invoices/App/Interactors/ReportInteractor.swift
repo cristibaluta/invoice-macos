@@ -15,7 +15,6 @@ class ReportInteractor {
     private let reportsInteractor: ReportsInteractor
 
     init (project: Project, reportsInteractor: ReportsInteractor) {
-        print("init ReportInteractor")
         self.project = project
         self.reportsInteractor = reportsInteractor
     }

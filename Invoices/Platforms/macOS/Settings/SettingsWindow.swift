@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SettingsWindow: View {
 
-    @EnvironmentObject var setingsData: SetingsStore
+    @EnvironmentObject var setingsData: SettingsStore
 
     var body: some View {
         VStack{

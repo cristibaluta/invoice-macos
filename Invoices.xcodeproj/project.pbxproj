@@ -128,8 +128,8 @@
 		56D3856D2899025500E8BEB5 /* ExportPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D3856C2899025500E8BEB5 /* ExportPopover.swift */; };
 		56D3856F289C0BBB00E8BEB5 /* CompanyColumn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D3856E289C0BBB00E8BEB5 /* CompanyColumn.swift */; };
 		56D6799027FEB1C300133E1B /* RCPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 56D6798F27FEB1C300133E1B /* RCPreferences */; };
-		56D6799328017C0A00133E1B /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6799228017C0A00133E1B /* Store.swift */; };
-		56D6799428017C0A00133E1B /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6799228017C0A00133E1B /* Store.swift */; };
+		56D6799328017C0A00133E1B /* MainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6799228017C0A00133E1B /* MainStore.swift */; };
+		56D6799428017C0A00133E1B /* MainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6799228017C0A00133E1B /* MainStore.swift */; };
 		56D6799728017F0D00133E1B /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6799628017F0D00133E1B /* Repository.swift */; };
 		56D6799828017F0D00133E1B /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6799628017F0D00133E1B /* Repository.swift */; };
 		56D6799B28020D0400133E1B /* ProjectsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6799A28020D0400133E1B /* ProjectsInteractor.swift */; };
@@ -144,6 +144,10 @@
 		56DAD6332B598CF100A30F9C /* InvoiceEditorColumn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD6322B598CF100A30F9C /* InvoiceEditorColumn.swift */; };
 		56DAD6352B59CB7E00A30F9C /* InvoiceEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD6342B59CB7E00A30F9C /* InvoiceEditorViewModel.swift */; };
 		56DAD6362B59CB7E00A30F9C /* InvoiceEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD6342B59CB7E00A30F9C /* InvoiceEditorViewModel.swift */; };
+		56DAD6382B6308E200A30F9C /* CompanyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD6372B6308E200A30F9C /* CompanyViewModel.swift */; };
+		56DAD6392B6308E200A30F9C /* CompanyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD6372B6308E200A30F9C /* CompanyViewModel.swift */; };
+		56DAD63B2B654CAD00A30F9C /* ChartsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD63A2B654CAD00A30F9C /* ChartsViewModel.swift */; };
+		56DAD63C2B654CAD00A30F9C /* ChartsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD63A2B654CAD00A30F9C /* ChartsViewModel.swift */; };
 		56EB80CA2B5315280046D72C /* ProjectsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EB80C92B5315280046D72C /* ProjectsMenu.swift */; };
 		56EB80CC2B5315F10046D72C /* InvoicesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EB80CB2B5315F10046D72C /* InvoicesList.swift */; };
 		56EB80CE2B532C7E0046D72C /* CompaniesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EB80CD2B532C7E0046D72C /* CompaniesList.swift */; };
@@ -248,7 +252,7 @@
 		56D38569289896C300E8BEB5 /* TextField+ViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextField+ViewModifier.swift"; sourceTree = "<group>"; };
 		56D3856C2899025500E8BEB5 /* ExportPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportPopover.swift; sourceTree = "<group>"; };
 		56D3856E289C0BBB00E8BEB5 /* CompanyColumn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyColumn.swift; sourceTree = "<group>"; };
-		56D6799228017C0A00133E1B /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		56D6799228017C0A00133E1B /* MainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainStore.swift; sourceTree = "<group>"; };
 		56D6799628017F0D00133E1B /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		56D6799A28020D0400133E1B /* ProjectsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsInteractor.swift; sourceTree = "<group>"; };
 		56D6799D280212B600133E1B /* InvoicesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesInteractor.swift; sourceTree = "<group>"; };
@@ -257,6 +261,8 @@
 		56DAD6302B595A9000A30F9C /* ReportEditorColumn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportEditorColumn.swift; sourceTree = "<group>"; };
 		56DAD6322B598CF100A30F9C /* InvoiceEditorColumn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceEditorColumn.swift; sourceTree = "<group>"; };
 		56DAD6342B59CB7E00A30F9C /* InvoiceEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceEditorViewModel.swift; sourceTree = "<group>"; };
+		56DAD6372B6308E200A30F9C /* CompanyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyViewModel.swift; sourceTree = "<group>"; };
+		56DAD63A2B654CAD00A30F9C /* ChartsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsViewModel.swift; sourceTree = "<group>"; };
 		56EB80C92B5315280046D72C /* ProjectsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsMenu.swift; sourceTree = "<group>"; };
 		56EB80CB2B5315F10046D72C /* InvoicesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesList.swift; sourceTree = "<group>"; };
 		56EB80CD2B532C7E0046D72C /* CompaniesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesList.swift; sourceTree = "<group>"; };
@@ -319,6 +325,7 @@
 		28737A69278310A2004D56C1 /* Companies */ = {
 			isa = PBXGroup;
 			children = (
+				56DAD6372B6308E200A30F9C /* CompanyViewModel.swift */,
 				2867F84B270B595C002CA8CC /* CompanyView.swift */,
 				56B944F72882F5B300D312A4 /* NoCompaniesView.swift */,
 			);
@@ -471,7 +478,7 @@
 		563A6CFF2821805000C3C30A /* Store */ = {
 			isa = PBXGroup;
 			children = (
-				56D6799228017C0A00133E1B /* Store.swift */,
+				56D6799228017C0A00133E1B /* MainStore.swift */,
 				563A6D002821807100C3C30A /* ProjectsStore.swift */,
 				56B945182886283900D312A4 /* InvoicesStore.swift */,
 				56B9451B28868E0D00D312A4 /* InvoiceStore.swift */,
@@ -515,6 +522,7 @@
 				28737A5F277BBC6D004D56C1 /* NewInvoiceView.swift */,
 				56B945342887DFA700D312A4 /* NoInvoicesView.swift */,
 				2814C1ED26E88F510054FD5B /* HtmlViewer.swift */,
+				56DAD63A2B654CAD00A30F9C /* ChartsViewModel.swift */,
 				28C0438227563CA60057C0D0 /* ChartsView.swift */,
 			);
 			path = Invoices;
@@ -720,8 +728,9 @@
 		28F91D4226A1AC100057C5CC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1310;
-				LastUpgradeCheck = 1330;
+				LastUpgradeCheck = 1510;
 				TargetAttributes = {
 					28A73D032763B93700F727C3 = {
 						CreatedOnToolsVersion = 13.1;
@@ -803,6 +812,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56DAD6392B6308E200A30F9C /* CompanyViewModel.swift in Sources */,
 				28737A86278490EA004D56C1 /* PropertyLoopable.swift in Sources */,
 				28737A812784906B004D56C1 /* NewCompanySheet.swift in Sources */,
 				28A73D2B2763BFA600F727C3 /* HtmlViewer.swift in Sources */,
@@ -813,7 +823,7 @@
 				56B945282886B3D300D312A4 /* InvoiceAndReportScreen.swift in Sources */,
 				56B94532288771B000D312A4 /* CompanyScreen.swift in Sources */,
 				56B94516288585E900D312A4 /* NoInvoicesScreen.swift in Sources */,
-				56D6799428017C0A00133E1B /* Store.swift in Sources */,
+				56D6799428017C0A00133E1B /* MainStore.swift in Sources */,
 				56B9452B2886C34B00D312A4 /* CompaniesStore.swift in Sources */,
 				56D3854A288A6C0C00E8BEB5 /* MainViewIpad.swift in Sources */,
 				56D385622891E3B000E8BEB5 /* InvoiceInteractor.swift in Sources */,
@@ -849,6 +859,7 @@
 				56B944FD288366DB00D312A4 /* InvoiceEditor.swift in Sources */,
 				56D3854D288A947300E8BEB5 /* ReportEditorSheet.swift in Sources */,
 				28737A7D27848FD3004D56C1 /* Company.swift in Sources */,
+				56DAD63C2B654CAD00A30F9C /* ChartsViewModel.swift in Sources */,
 				28737A7C27848FCD004D56C1 /* InvoiceProduct.swift in Sources */,
 				56B9450E2885518C00D312A4 /* NoProjectsScreen.swift in Sources */,
 				28737A7B27848FBD004D56C1 /* NewProjectSheet.swift in Sources */,
@@ -882,6 +893,8 @@
 				567F86A328BA05C70091EC54 /* ReportProject.swift in Sources */,
 				28C04362274E2D7B0057C0D0 /* Report.swift in Sources */,
 				28C04387275656DA0057C0D0 /* Project.swift in Sources */,
+				56DAD63B2B654CAD00A30F9C /* ChartsViewModel.swift in Sources */,
+				56DAD6382B6308E200A30F9C /* CompanyViewModel.swift in Sources */,
 				56D38551288B20A600E8BEB5 /* Exporter.swift in Sources */,
 				28737A8B27862F64004D56C1 /* MainWindow.swift in Sources */,
 				568AB7402B50A33600D1679F /* SettingsStore.swift in Sources */,
@@ -930,7 +943,7 @@
 				56D385642891E3BB00E8BEB5 /* ReportInteractor.swift in Sources */,
 				56B9453028876CFA00D312A4 /* LocalRepository.swift in Sources */,
 				56D6799B28020D0400133E1B /* ProjectsInteractor.swift in Sources */,
-				56D6799328017C0A00133E1B /* Store.swift in Sources */,
+				56D6799328017C0A00133E1B /* MainStore.swift in Sources */,
 				56B94500288485AC00D312A4 /* ReportsInteractor.swift in Sources */,
 				28737A68277C83AC004D56C1 /* Company.swift in Sources */,
 				28737A5E277BB9D3004D56C1 /* SidebarColumn.swift in Sources */,
@@ -1042,6 +1055,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = U8W527Y939;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1067,6 +1081,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = U8W527Y939;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1118,9 +1133,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1179,9 +1196,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1209,6 +1228,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 12;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Invoices/Preview Content\"";
 				DEVELOPMENT_TEAM = 5NHDC5EV44;
 				ENABLE_APP_SANDBOX = YES;
@@ -1240,6 +1260,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 12;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Invoices/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = YES;

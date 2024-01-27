@@ -43,6 +43,20 @@ extension SandboxRepository: Repository {
         }
     }
 
+    func readFiles (at paths: [String]) -> Publishers.Sequence<[Data], Never> {
+        var datas = [Data]()
+        for path in paths {
+            do {
+                let url = baseUrl.appendingPathComponent(path)
+                let data = try Data(contentsOf: url)
+                datas.append(data)
+            } catch {
+                print(error)
+            }
+        }
+        return Publishers.Sequence(sequence: datas)
+    }
+
     func writeFolder (at path: String) -> AnyPublisher<Bool, Never> {
         do {
             let url = baseUrl.appendingPathComponent(path)

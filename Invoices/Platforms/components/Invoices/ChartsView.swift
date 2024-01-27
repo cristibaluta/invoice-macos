@@ -8,33 +8,24 @@
 import SwiftUI
 import BarChart
 
-class ChartsViewState: ObservableObject {
-    @Published var totalPrice: String
-    init (total: Decimal) {
-        totalPrice = total.stringValue_grouped2
-    }
-}
-
 struct ChartsView: View {
     
-    @ObservedObject var state: ChartsViewState
-    var priceChartConfig: ChartConfiguration
-    var rateChartConfig: ChartConfiguration
+    @ObservedObject var viewModel: ChartsViewModel
     
     var body: some View {
         
         VStack(alignment: .center) {
             
             Text("Invoiced amount").bold()
-            Text("All time total: \(state.totalPrice) RON")
-            BarChartView(config: priceChartConfig)
+            Text("All time total: \(viewModel.totalPrice) RON")
+            BarChartView(config: viewModel.priceChartConfig)
             .frame(height: 300)
 //            .animation(.easeInOut)
             
             Spacer().frame(height: 30)
             
             Text("Hourly rate").bold()
-            BarChartView(config: rateChartConfig)
+            BarChartView(config: viewModel.rateChartConfig)
             .frame(height: 150)
 //            .animation(.easeInOut)
         }

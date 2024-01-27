@@ -7,22 +7,22 @@
 
 import SwiftUI
 
-struct FoldersListView: View {
-
-    @EnvironmentObject var foldersState: FoldersState
-
-    var body: some View {
-        List(foldersState.folders, id: \.self, selection: $foldersState.selectedFolder) { f in
-            NavigationLink(destination: InvoicesListScreen(folder: f)) {
-                Label(f.name, systemImage: "list.bullet")
-            }
-        }
-        .refreshable {
-            foldersState.refresh()
-        }
-        .onAppear {
-            foldersState.refresh()
-        }
-    }
-
-}
+//struct FoldersListView: View {
+//
+//    @EnvironmentObject var foldersState: FoldersState
+//
+//    var body: some View {
+//        List(foldersState.folders, id: \.self, selection: $foldersState.selectedFolder) { f in
+//            NavigationLink(destination: InvoicesListScreen(folder: f)) {
+//                Label(f.name, systemImage: "list.bullet")
+//            }
+//        }
+//        .refreshable {
+//            foldersState.refresh()
+//        }
+//        .onAppear {
+//            foldersState.refresh()
+//        }
+//    }
+//
+//}

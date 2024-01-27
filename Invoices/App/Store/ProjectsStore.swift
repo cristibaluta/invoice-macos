@@ -5,8 +5,10 @@
 //  Created by Cristian Baluta on 03.05.2022.
 //
 
+import Foundation
 import Combine
 import RCPreferences
+import BarChart
 
 class ProjectsStore: ObservableObject {
 
@@ -17,11 +19,15 @@ class ProjectsStore: ObservableObject {
             pref.set(selectedProject?.name ?? "", forKey: .lastProject)
             if let project = selectedProject {
                 self.invoicesStore = InvoicesStore(repository: repository, project: project)
+                self.cancellable = self.invoicesStore!.chartPublisher
+                    .sink { chartViewModel in
+                        self.chartSubject.send()
+                    }
                 self.invoicesStore?.loadInvoices()
             } else {
                 self.invoicesStore = nil
             }
-            subject.send()
+            projectSubject.send()
         }
     }
     @Published var invoicesStore: InvoicesStore?
@@ -32,12 +38,17 @@ class ProjectsStore: ObservableObject {
     private let repository: Repository
     private var pref = RCPreferences<UserPreferences>()
 //    var cancellables = Set<AnyCancellable>()
-//    var cancellable: AnyCancellable?
+    var cancellable: AnyCancellable?
 
 
-    private let subject = PassthroughSubject<Void, Never>()
+    private let projectSubject = PassthroughSubject<Void, Never>()
     var projectDidChangePublisher: AnyPublisher<Void, Never> {
-        subject.eraseToAnyPublisher()
+        projectSubject.eraseToAnyPublisher()
+    }
+
+    private let chartSubject = PassthroughSubject<Void, Never>()
+    var chartDidChangePublisher: AnyPublisher<Void, Never> {
+        chartSubject.eraseToAnyPublisher()
     }
 
 
@@ -53,16 +64,15 @@ class ProjectsStore: ObservableObject {
             }
     }
 
-    func createProject (named name: String, completion: @escaping (Project?) -> Void) {
+    func createProject (named name: String) {
         guard !name.isEmpty else {
-            completion(nil)
             return
         }
         _ = interactor.createProject(name)
             .sink { project in
                 self.refresh()
                 self.dismissNewProject()
-                completion(project)
+                self.selectedProject = project
             }
     }
 

@@ -13,6 +13,7 @@ protocol Repository {
     func readFolderContent (at path: String) -> Publishers.Sequence<[String], Never>
 //    func readFolderContent2 (at url: URL) -> AnyPublisher<[String], Never>
     func readFile (at path: String) -> AnyPublisher<Data, Never>
+    func readFiles (at paths: [String]) -> Publishers.Sequence<[Data], Never>
     func writeFolder (at path: String) -> AnyPublisher<Bool, Never>
     func writeFile (_ contents: Data, at path: String) -> AnyPublisher<Bool, Never>
     func removeItem (at path: String) -> AnyPublisher<Bool, Never>
