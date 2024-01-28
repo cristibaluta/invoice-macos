@@ -148,6 +148,8 @@
 		56DAD6392B6308E200A30F9C /* CompanyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD6372B6308E200A30F9C /* CompanyViewModel.swift */; };
 		56DAD63B2B654CAD00A30F9C /* ChartsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD63A2B654CAD00A30F9C /* ChartsViewModel.swift */; };
 		56DAD63C2B654CAD00A30F9C /* ChartsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD63A2B654CAD00A30F9C /* ChartsViewModel.swift */; };
+		56DAD63E2B66AB1900A30F9C /* PDFDocument+Transferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD63D2B66AB1900A30F9C /* PDFDocument+Transferable.swift */; };
+		56DAD63F2B66AB1900A30F9C /* PDFDocument+Transferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD63D2B66AB1900A30F9C /* PDFDocument+Transferable.swift */; };
 		56EB80CA2B5315280046D72C /* ProjectsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EB80C92B5315280046D72C /* ProjectsMenu.swift */; };
 		56EB80CC2B5315F10046D72C /* InvoicesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EB80CB2B5315F10046D72C /* InvoicesList.swift */; };
 		56EB80CE2B532C7E0046D72C /* CompaniesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EB80CD2B532C7E0046D72C /* CompaniesList.swift */; };
@@ -263,6 +265,7 @@
 		56DAD6342B59CB7E00A30F9C /* InvoiceEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceEditorViewModel.swift; sourceTree = "<group>"; };
 		56DAD6372B6308E200A30F9C /* CompanyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyViewModel.swift; sourceTree = "<group>"; };
 		56DAD63A2B654CAD00A30F9C /* ChartsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsViewModel.swift; sourceTree = "<group>"; };
+		56DAD63D2B66AB1900A30F9C /* PDFDocument+Transferable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PDFDocument+Transferable.swift"; sourceTree = "<group>"; };
 		56EB80C92B5315280046D72C /* ProjectsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsMenu.swift; sourceTree = "<group>"; };
 		56EB80CB2B5315F10046D72C /* InvoicesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesList.swift; sourceTree = "<group>"; };
 		56EB80CD2B532C7E0046D72C /* CompaniesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesList.swift; sourceTree = "<group>"; };
@@ -406,6 +409,7 @@
 				2814C1F326E910930054FD5B /* Numbers.swift */,
 				56D38552288B392A00E8BEB5 /* Keyboard+ViewModifier.swift */,
 				56D38569289896C300E8BEB5 /* TextField+ViewModifier.swift */,
+				56DAD63D2B66AB1900A30F9C /* PDFDocument+Transferable.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -818,6 +822,7 @@
 				28A73D2B2763BFA600F727C3 /* HtmlViewer.swift in Sources */,
 				562965062B4EE2CC00C44605 /* ProjectsListScreen.swift in Sources */,
 				28A73D282763BF9C00F727C3 /* ReportEditor.swift in Sources */,
+				56DAD63F2B66AB1900A30F9C /* PDFDocument+Transferable.swift in Sources */,
 				56DAD62F2B59180000A30F9C /* ReportEditorViewModel.swift in Sources */,
 				56D6799828017F0D00133E1B /* Repository.swift in Sources */,
 				56B945282886B3D300D312A4 /* InvoiceAndReportScreen.swift in Sources */,
@@ -909,6 +914,7 @@
 				28737A6D2783110B004D56C1 /* PropertyLoopable.swift in Sources */,
 				56DAD6332B598CF100A30F9C /* InvoiceEditorColumn.swift in Sources */,
 				56B9452E28874E1A00D312A4 /* NoCompaniesView.swift in Sources */,
+				56DAD63E2B66AB1900A30F9C /* PDFDocument+Transferable.swift in Sources */,
 				2814C1EE26E88F510054FD5B /* HtmlViewer.swift in Sources */,
 				28F91D5026A1AC110057C5CC /* ContentColumn.swift in Sources */,
 				56D6799E280212B600133E1B /* InvoicesInteractor.swift in Sources */,

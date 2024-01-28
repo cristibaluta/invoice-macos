@@ -14,7 +14,7 @@ struct ExportPopover: View {
 
     var body: some View {
         VStack {
-            switch mainViewState.editorType {
+            switch state.editorType {
                 case .invoice:
                     Text("Export Invoice to file")
                     Divider()

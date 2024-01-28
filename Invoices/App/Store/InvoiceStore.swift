@@ -12,6 +12,7 @@ import Combine
 // It also stores the html to display
 class InvoiceStore: ObservableObject {
 
+    @Published var editorType: EditorType = .invoice
     @Published var isShowingEditorSheet = false
     @Published var hasChanges = false
     @Published var isEditing = false
@@ -20,8 +21,9 @@ class InvoiceStore: ObservableObject {
             self.htmlSubject.send(html)
         }
     }
-    var htmlDidChangePublisher: AnyPublisher<String, Never> { htmlSubject.eraseToAnyPublisher() }
     private let htmlSubject = PassthroughSubject<String, Never>()
+    var htmlDidChangePublisher: AnyPublisher<String, Never> { htmlSubject.eraseToAnyPublisher() }
+    var htmlCancellable: Cancellable?
 
     private var invoiceInteractor: InvoiceInteractor
     private var reportInteractor: ReportInteractor
@@ -65,10 +67,9 @@ class InvoiceStore: ObservableObject {
     }
 
     var id = UUID()// Needed to redraw the HtmlViewer
-    var editorType: EditorType = .invoice
-    var project: Project
+    private var project: Project
     var pdfData: Data?
-    var data: InvoiceData {
+    private var data: InvoiceData {
         didSet {
             hasChanges = data != initialData
             buildHtml()
@@ -87,6 +88,8 @@ class InvoiceStore: ObservableObject {
 
         invoiceInteractor = InvoiceInteractor(project: project, invoicesInteractor: invoicesInteractor)
         reportInteractor = ReportInteractor(project: project, reportsInteractor: reportsInteractor)
+
+        buildHtml()
     }
 
     deinit {

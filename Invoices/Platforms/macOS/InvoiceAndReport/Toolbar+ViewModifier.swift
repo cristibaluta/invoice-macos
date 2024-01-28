@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PDFKit
 
 struct Toolbar: ViewModifier {
 
@@ -18,14 +19,14 @@ struct Toolbar: ViewModifier {
         content.toolbar {
             ToolbarItem(placement: .principal) {
                 if invoiceStore.isEditing {
-                    Text(mainViewState.editorType == .invoice ? "Edit invoice" : "Edit report")
+                    Text(invoiceStore.editorType == .invoice ? "Edit invoice" : "Edit report")
                 } else {
-                    Picker("Section", selection: $mainViewState.editorType) {
+                    Picker("Section", selection: $invoiceStore.editorType) {
                         Text("Invoice").tag(EditorType.invoice)
                         Text("Report").tag(EditorType.report)
                     }
                     .pickerStyle(SegmentedPickerStyle())
-                    .onChange(of: mainViewState.editorType) { editorType in
+                    .onChange(of: invoiceStore.editorType) { editorType in
                         invoiceStore.editorType = editorType
                         switch editorType {
                             case .invoice:
@@ -38,6 +39,25 @@ struct Toolbar: ViewModifier {
             }
             ToolbarItemGroup(placement: .primaryAction) {
                 Spacer()
+                Button("Editor") {
+                    switch invoiceStore.editorType {
+                        case .invoice:
+                            invoiceStore.isShowingEditorSheet = true
+                        case .report:
+                            invoiceStore.isShowingEditorSheet = true
+                    }
+                }
+                .popover(isPresented: $invoiceStore.isShowingEditorSheet,
+                         attachmentAnchor: .point(.leading),
+                         arrowEdge: .leading) {
+                    switch invoiceStore.editorType {
+                        case .invoice:
+                            InvoiceEditorPopover(invoiceStore: invoiceStore, editorViewModel: invoiceStore.invoiceEditorViewModel)
+                        case .report:
+                            ReportEditorPopover(invoiceStore: invoiceStore, editorViewModel: invoiceStore.reportEditorViewModel)
+                                .frame(width: 500, height: 600)
+                    }
+                }
                 if invoiceStore.isEditing {
                     Button("Preview") {
                         // Dismiss editor
@@ -46,24 +66,12 @@ struct Toolbar: ViewModifier {
                         gotoPreview()
                     }
                 } else {
-                    Button("Edit \(mainViewState.editorType == .invoice ? "invoice" : "report")") {
-                        //                    invoiceStore.isShowingEditorSheet = true
-                        switch mainViewState.editorType {
+                    Button("Edit \(invoiceStore.editorType == .invoice ? "invoice" : "report")") {
+                        switch invoiceStore.editorType {
                             case .invoice:
                                 mainViewState.contentType = .invoiceEditor(invoiceStore)
                             case .report:
                                 mainViewState.contentType = .reportEditor(invoiceStore)
-                        }
-                    }
-                    .popover(isPresented: $invoiceStore.isShowingEditorSheet,
-                             attachmentAnchor: .point(.leading),
-                             arrowEdge: .leading) {
-                        switch mainViewState.editorType {
-                            case .invoice:
-                                InvoiceEditorPopover(invoiceStore: invoiceStore, editorViewModel: invoiceStore.invoiceEditorViewModel)
-                            case .report:
-                                ReportEditorPopover(invoiceStore: invoiceStore, editorViewModel: invoiceStore.reportEditorViewModel)
-                                    .frame(width: 500, height: 600)
                         }
                     }
                     if invoiceStore.hasChanges {
@@ -84,7 +92,10 @@ struct Toolbar: ViewModifier {
 //                            .padding(20)
 //                    }
 
-                    ShareLink(item: "Test share")
+                    if let pdfData = invoiceStore.pdfData,
+                       let pdf = PDFDocument(data: pdfData) {
+                        ShareLink(item: pdf, preview: SharePreview("PDF"))
+                    }
                 }
             }
         }
@@ -92,7 +103,7 @@ struct Toolbar: ViewModifier {
     }
 
     private func gotoPreview() {
-        switch mainViewState.editorType {
+        switch invoiceStore.editorType {
             case .invoice:
                 mainViewState.contentType = .invoice(invoiceStore)
             case .report:

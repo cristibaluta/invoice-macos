@@ -31,14 +31,14 @@ struct SidebarColumn: View {
             if let invoicesStore = store.projectsStore.invoicesStore {
                 InvoicesList(invoicesStore: invoicesStore)
                 .task(id: invoicesStore.id) {
-                    mainViewState.chartCancellable = invoicesStore.chartPublisher.sink { chartsViewModel in
+                    invoicesStore.chartCancellable = invoicesStore.chartPublisher.sink { chartsViewModel in
                         if invoicesStore.invoices.isEmpty {
                             mainViewState.contentType = .noInvoices
                         } else {
                             mainViewState.contentType = .charts(chartsViewModel)
                         }
                     }
-                    mainViewState.newInvoiceCancellable = invoicesStore.newInvoicePublisher.sink { contentData in
+                    invoicesStore.newInvoiceCancellable = invoicesStore.newInvoicePublisher.sink { contentData in
                         mainViewState.contentType = .invoice(contentData)
                     }
                 }

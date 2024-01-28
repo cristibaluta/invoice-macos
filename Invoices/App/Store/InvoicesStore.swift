@@ -30,11 +30,13 @@ class InvoicesStore: ObservableObject {
     var chartPublisher: AnyPublisher<ChartsViewModel, Never> {
         chartSubject.eraseToAnyPublisher()
     }
+    var chartCancellable: Cancellable?
 
-    private let newInvoiceSubject = PassthroughSubject<(InvoiceStore), Never>()
-    var newInvoicePublisher: AnyPublisher<(InvoiceStore), Never> {
+    private let newInvoiceSubject = PassthroughSubject<InvoiceStore, Never>()
+    var newInvoicePublisher: AnyPublisher<InvoiceStore, Never> {
         newInvoiceSubject.eraseToAnyPublisher()
     }
+    var newInvoiceCancellable: Cancellable?
 
 
     init (repository: Repository, project: Project) {

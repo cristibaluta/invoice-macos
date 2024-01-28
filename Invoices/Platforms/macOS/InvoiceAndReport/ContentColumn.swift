@@ -42,7 +42,7 @@ struct ContentColumn: View {
                 .padding(40)
 
             case .invoice(let invoiceStore):
-                HtmlViewer(htmlString: mainViewState.html) { printingData in
+                HtmlViewer(htmlString: invoiceStore.html) { printingData in
                     invoiceStore.pdfData = printingData
                 }
                 .frame(width: 920)
@@ -50,10 +50,10 @@ struct ContentColumn: View {
                 .modifier(Toolbar(invoiceStore: invoiceStore))
                 .task(id: invoiceStore.id) {
                     // Use task because onAppear will not be called when store changes
-                    mainViewState.htmlCancellable = invoiceStore.htmlDidChangePublisher.sink { html in
-                        mainViewState.html = html
+                    invoiceStore.htmlCancellable = invoiceStore.htmlDidChangePublisher.sink { html in
+                        // InvoiceStore changes don't trigger ContentColumn redraw
+                        mainViewState.objectWillChange.send()
                     }
-                    invoiceStore.buildHtml()
                 }
                 
             case .invoiceEditor(let invoiceStore):
@@ -62,7 +62,7 @@ struct ContentColumn: View {
                 .modifier(Toolbar(invoiceStore: invoiceStore))
 
             case .report(let invoiceStore):
-                HtmlViewer(htmlString: mainViewState.html) { printingData in
+                HtmlViewer(htmlString: invoiceStore.html) { printingData in
                     invoiceStore.pdfData = printingData
                 }
                 .frame(width: 920)
@@ -70,8 +70,9 @@ struct ContentColumn: View {
                 .modifier(Toolbar(invoiceStore: invoiceStore))
                 .task(id: invoiceStore.id) {
                     // Use task because onAppear will not be called when store changes
-                    mainViewState.htmlCancellable = invoiceStore.htmlDidChangePublisher.sink { html in
-                        mainViewState.html = html
+                    invoiceStore.htmlCancellable = invoiceStore.htmlDidChangePublisher.sink { html in
+                        // InvoiceStore changes don't trigger ContentColumn redraw
+                        mainViewState.objectWillChange.send()
                     }
                     invoiceStore.buildHtml()
                 }

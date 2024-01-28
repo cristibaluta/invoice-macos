@@ -36,6 +36,7 @@ class MainStore: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     init (repository: Repository) {
+
         projectsStore = ProjectsStore(repository: repository)
         companiesStore = CompaniesStore(repository: repository)
         settingsStore = SettingsStore()
@@ -45,6 +46,7 @@ class MainStore: ObservableObject {
                 self.objectWillChange.send()
             }
             .store(in: &cancellables)
+
         projectsStore.chartDidChangePublisher
             .sink { _ in
                 self.objectWillChange.send()

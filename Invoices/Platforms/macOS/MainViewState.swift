@@ -27,13 +27,6 @@ enum ContentViewType {
 class MainViewState: ObservableObject {
 
     @Published var contentType: ContentViewType = .noProjects
-    @Published var editorType: EditorType = .invoice
-    @Published var isEditing = false
-    @Published var html = ""
-
-    var chartCancellable: Cancellable?
-    var newInvoiceCancellable: Cancellable?
-    var htmlCancellable: Cancellable?
     
     init() {
         print(">>>>>> init ContentColumnState")
