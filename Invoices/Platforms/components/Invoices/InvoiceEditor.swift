@@ -16,7 +16,6 @@ struct InvoiceEditor: View {
     private var onTapAddCompany: () -> Void
 
     init (viewModel: InvoiceEditorViewModel, onTapAddCompany: @escaping () -> Void) {
-        print("init InvoiceEditor")
         self.onTapAddCompany = onTapAddCompany
         self.viewModel = viewModel
     }
@@ -136,6 +135,19 @@ struct InvoiceEditor: View {
                         }
                     }
                     HStack(alignment: .center) {
+                        Text("Total #7 (2 * 3 * 5):").font(appFont)
+                        TextField("Total", text: $viewModel.amountTotalVat)
+                        .disabled(true)
+                        .font(appFont)
+                        .modifier(OutlineTextField())
+                        .modifier(NumberKeyboard())
+                    }
+                }
+                
+                Divider().padding(.top, 10).padding(.bottom, 10)
+                
+                Group {
+                    HStack(alignment: .center) {
                         Text("VAT:").font(appFont)
                         TextField("VAT", text: $viewModel.vat)
                         .onChange(of: viewModel.vat) { newValue in
@@ -148,32 +160,35 @@ struct InvoiceEditor: View {
                         .modifier(OutlineTextField())
                         .modifier(NumberKeyboard())
                     }
-                }
-                
-                Divider().padding(.top, 10).padding(.bottom, 10)
-                
-                Group {
-                    if viewModel.isFixedTotal {
-                        HStack(alignment: .center) {
-                            Text("Total amount (#7 + VAT):").font(appFont)
-                            TextField("Total", text: $viewModel.amountTotalVat)
-                            .onChange(of: viewModel.amountTotalVat) { newValue in
-                                viewModel.data.amount_total_vat = Decimal(string: newValue) ?? 0
-                                // When total amount changes recalculate the quantity
-                                viewModel.data.calculate()
-                                viewModel.units = viewModel.data.products[0].units.stringValue
-                            }
-                            .font(appFont)
-                            .modifier(OutlineTextField())
-                            .modifier(NumberKeyboard())
-                        }
-                    } else {
-                        Text("Total amount (#7 + VAT): \(viewModel.amountTotalVat)").font(appFont)
+                    HStack(alignment: .center) {
+                        Text("Total amount (#7 + VAT):").font(appFont)
+                        TextField("Total", text: $viewModel.amountTotalVat)
+                        .disabled(true)
+                        .font(appFont)
+                        .modifier(OutlineTextField())
+                        .modifier(NumberKeyboard())
                     }
-                    Toggle("Fixed total (recalculates the quantity)", isOn: $viewModel.isFixedTotal)
-                    .onChange(of: viewModel.isFixedTotal) { newValue in
-                        viewModel.data.isFixedTotal = newValue
-                    }
+//                    if viewModel.isFixedTotal {
+//                        HStack(alignment: .center) {
+//                            Text("Total amount (#7 + VAT):").font(appFont)
+//                            TextField("Total", text: $viewModel.amountTotalVat)
+//                            .onChange(of: viewModel.amountTotalVat) { newValue in
+//                                viewModel.data.amount_total_vat = Decimal(string: newValue) ?? 0
+//                                // When total amount changes recalculate the quantity
+//                                viewModel.data.calculate()
+//                                viewModel.units = viewModel.data.products[0].units.stringValue
+//                            }
+//                            .font(appFont)
+//                            .modifier(OutlineTextField())
+//                            .modifier(NumberKeyboard())
+//                        }
+//                    } else {
+//                        Text("Total amount (#7 + VAT): \(viewModel.amountTotalVat)").font(appFont)
+//                    }
+//                    Toggle("Fixed total (recalculates the quantity)", isOn: $viewModel.isFixedTotal)
+//                    .onChange(of: viewModel.isFixedTotal) { newValue in
+//                        viewModel.data.isFixedTotal = newValue
+//                    }
                 }
                 
                 Divider().padding(.top, 10).padding(.bottom, 10)

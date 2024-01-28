@@ -117,20 +117,28 @@ class InvoiceStore: ObservableObject {
     }
 
     func save() {
-        _ = invoiceInteractor.save(data: data, pdfData: pdfData)
-            .sink { invoiceFolder in
+        switch editorType {
+            case .invoice:
+                _ = invoiceInteractor.save(data: data, pdfData: pdfData)
+                    .sink { invoiceFolder in
 
-            }
+                    }
+            case .report:
+                _ = reportInteractor.save(data: data, pdfData: pdfData)
+                    .sink { invoiceFolder in
+
+                    }
+        }
     }
 
-    func export (isPdf: Bool) {
-        let fileName = "Invoice-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).\(isPdf ? "pdf" : "html")"
-        let exporter = Exporter()
-        exporter.export(fileName: fileName,
-                        data: data,
-                        printData: pdfData,
-                        html: html,
-                        isPdf: isPdf)
-    }
+//    func export (isPdf: Bool) {
+//        let fileName = "Invoice-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).\(isPdf ? "pdf" : "html")"
+//        let exporter = Exporter()
+//        exporter.export(fileName: fileName,
+//                        data: data,
+//                        printData: pdfData,
+//                        html: html,
+//                        isPdf: isPdf)
+//    }
 
 }

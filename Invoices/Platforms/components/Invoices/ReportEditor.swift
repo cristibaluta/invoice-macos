@@ -37,6 +37,7 @@ struct ReportEditor: View {
             .padding(10)
 
             Divider()
+            // List of reports
             List(viewModel.reports) { report in
                 ReportRowView(report: report) { newReport in
                     viewModel.updateReport(newReport)

@@ -46,8 +46,12 @@ class ReportInteractor {
                         // Format the money values
                         template = template.replacingOccurrences(of: "::\(key)::", with: "\(amount.stringValue_grouped2)")
                     }
-                    else if key == "invoice_date" || key == "invoiced_period", let date = Date(yyyyMMdd: value as? String ?? "") {
+                    else if key == "invoice_date", let date = Date(yyyyMMdd: value as? String ?? "") {
                         template = template.replacingOccurrences(of: "::\(key)::", with: "\(date.mediumDate)")
+                    }
+                    else if key == "invoiced_period", let date = Date(yyyyMMdd: value as? String ?? "") {
+                        template = template.replacingOccurrences(of: "::invoiced_month::", with: "\(date.fullMonthName)")
+                        template = template.replacingOccurrences(of: "::invoiced_year::", with: "\(date.year)")
                     }
                     else if key == "invoice_nr" {
                         // Prefix the invoice nr with zeroes

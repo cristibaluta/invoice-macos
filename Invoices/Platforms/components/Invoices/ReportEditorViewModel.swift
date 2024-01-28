@@ -49,8 +49,12 @@ class ReportEditorViewModel: ObservableObject, InvoiceEditorProtocol {
         allReports = report.0
         allProjects = report.1
         data.reports = allReports.map {
-            InvoiceReport(project_name: $0.project_name, group: $0.group, description: $0.description, duration: $0.duration)
+            InvoiceReport(project_name: $0.project_name, 
+                          group: $0.group,
+                          description: $0.description,
+                          duration: $0.duration)
         }
+        updateReports()
     }
 
     private func projects (from reports: [Report], isOn: Bool) -> [ReportProject] {
@@ -76,7 +80,7 @@ class ReportEditorViewModel: ObservableObject, InvoiceEditorProtocol {
                 break
             }
         }
-//        calculate { _ in }
+        updateData()
     }
 
     func updateReports() {
@@ -84,5 +88,14 @@ class ReportEditorViewModel: ObservableObject, InvoiceEditorProtocol {
             let pn = $0.project_name
             return self.allProjects.contains(where: {$0.name == pn && $0.isOn})
         })
+    }
+
+    private func updateData() {
+        data.reports = allReports.map {
+            InvoiceReport(project_name: $0.project_name,
+                          group: $0.group,
+                          description: $0.description,
+                          duration: $0.duration)
+        }
     }
 }

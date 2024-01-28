@@ -19,23 +19,23 @@ struct ExportPopover: View {
                     Text("Export Invoice to file")
                     Divider()
                     HStack {
-                        Button("pdf") {
-                            state.export(isPdf: true)
-                        }
-                        Button("html") {
-                            state.export(isPdf: false)
-                        }
+//                        Button("pdf") {
+//                            state.export(isPdf: true)
+//                        }
+//                        Button("html") {
+//                            state.export(isPdf: false)
+//                        }
                     }
                 case .report:
                     Text("Export Report to file")
                     Divider()
                     HStack {
-                        Button("pdf") {
-                            state.export(isPdf: true)
-                        }
-                        Button("html") {
-                            state.export(isPdf: false)
-                        }
+//                        Button("pdf") {
+//                            state.export(isPdf: true)
+//                        }
+//                        Button("html") {
+//                            state.export(isPdf: false)
+//                        }
                     }
             }
         }
