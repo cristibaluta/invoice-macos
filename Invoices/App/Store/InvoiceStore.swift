@@ -12,6 +12,7 @@ import Combine
 // It also stores the html to display
 class InvoiceStore: ObservableObject {
 
+    let id = UUID()// Needed to redraw the HtmlViewer
     @Published var editorType: EditorType = .invoice
     @Published var isShowingEditorSheet = false
     @Published var hasChanges = false
@@ -66,7 +67,6 @@ class InvoiceStore: ObservableObject {
         return viewModel
     }
 
-    var id = UUID()// Needed to redraw the HtmlViewer
     private var project: Project
     var pdfData: Data?
     private var data: InvoiceData {

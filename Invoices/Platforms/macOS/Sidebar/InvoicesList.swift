@@ -10,7 +10,7 @@ import SwiftUI
 
 struct InvoicesList: View {
 
-    @EnvironmentObject var mainViewState: MainViewState
+    @EnvironmentObject var mainWindowState: MainWindowState
     @ObservedObject var invoicesStore: InvoicesStore
 
     var body: some View {
@@ -36,7 +36,7 @@ struct InvoicesList: View {
             .onTapGesture {
                 _ = invoicesStore.loadInvoice(invoice)
                     .sink { invoiceStore in
-                        mainViewState.contentType = .invoice(invoiceStore)
+                        mainWindowState.contentType = .invoice(invoiceStore)
                     }
             }
             .contextMenu {
@@ -46,7 +46,7 @@ struct InvoicesList: View {
                     Text("Show in Finder")
                 }
                 Button(action: {
-                    mainViewState.contentType = .deleteInvoice(invoice)
+                    mainWindowState.contentType = .deleteInvoice(invoice)
                 }) {
                     Text("Delete")
                 }

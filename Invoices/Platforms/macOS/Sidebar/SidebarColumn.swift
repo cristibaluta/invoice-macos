@@ -11,7 +11,7 @@ import Combine
 struct SidebarColumn: View {
 
     @EnvironmentObject var store: MainStore
-    @EnvironmentObject var mainViewState: MainViewState
+    @EnvironmentObject var mainWindowState: MainWindowState
 
 
     var body: some View {
@@ -33,13 +33,13 @@ struct SidebarColumn: View {
                 .task(id: invoicesStore.id) {
                     invoicesStore.chartCancellable = invoicesStore.chartPublisher.sink { chartsViewModel in
                         if invoicesStore.invoices.isEmpty {
-                            mainViewState.contentType = .noInvoices
+                            mainWindowState.contentType = .noInvoices
                         } else {
-                            mainViewState.contentType = .charts(chartsViewModel)
+                            mainWindowState.contentType = .charts(chartsViewModel)
                         }
                     }
                     invoicesStore.newInvoiceCancellable = invoicesStore.newInvoicePublisher.sink { contentData in
-                        mainViewState.contentType = .invoice(contentData)
+                        mainWindowState.contentType = .invoice(contentData)
                     }
                 }
             }

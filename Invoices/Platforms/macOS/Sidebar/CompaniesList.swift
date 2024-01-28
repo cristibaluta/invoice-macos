@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CompaniesList: View {
 
-    @EnvironmentObject var mainViewState: MainViewState
+    @EnvironmentObject var mainWindowState: MainWindowState
     @EnvironmentObject var companiesStore: CompaniesStore
     @State private var isShowingCompanyDetailsPopover = false
 //    @State private var isShowingAddCompanyPopover = false
@@ -22,7 +22,7 @@ struct CompaniesList: View {
         .padding(.bottom, 4)
 
         Text("+ New company").onTapGesture {
-            mainViewState.contentType = .company(CompaniesInteractor.emptyCompanyDetails)
+            mainWindowState.contentType = .company(CompaniesInteractor.emptyCompanyDetails)
         }
         .padding(.leading, 16)
 
@@ -34,7 +34,7 @@ struct CompaniesList: View {
             .padding(0)
             .contextMenu {
                 Button(action: {
-//                    mainViewState.contentType = .deleteC
+//                    mainWindowState.contentType = .deleteC
                     companiesStore.delete(comp.data)
                 }) {
                     Text("Delete")

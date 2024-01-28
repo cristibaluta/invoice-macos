@@ -13,7 +13,7 @@ struct MainWindow: View {
     @EnvironmentObject var store: MainStore
     @EnvironmentObject var companiesStore: CompaniesStore
 
-    private let mainViewState = MainViewState()
+    private let mainWindowState = MainWindowState()
 
     var body: some View {
 
@@ -48,7 +48,7 @@ struct MainWindow: View {
             }
         }
         .navigationViewStyle(.columns)
-        .environmentObject(mainViewState)
+        .environmentObject(mainWindowState)
 //        .navigationTitle(state.invoiceName)
     }
 

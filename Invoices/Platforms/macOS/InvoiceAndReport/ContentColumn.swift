@@ -12,14 +12,14 @@ import RCPreferences
 
 struct ContentColumn: View {
 
-    @EnvironmentObject private var mainViewState: MainViewState
+    @EnvironmentObject private var mainWindowState: MainWindowState
     @EnvironmentObject private var mainStore: MainStore
 
     var body: some View {
 
         let _ = Self._printChanges()
 
-        switch mainViewState.contentType {
+        switch mainWindowState.contentType {
             case .noProjects:
                 NewProjectView { newProjectName in
                     mainStore.projectsStore.createProject(named: newProjectName)
@@ -52,7 +52,7 @@ struct ContentColumn: View {
                     // Use task because onAppear will not be called when store changes
                     invoiceStore.htmlCancellable = invoiceStore.htmlDidChangePublisher.sink { html in
                         // InvoiceStore changes don't trigger ContentColumn redraw
-                        mainViewState.objectWillChange.send()
+                        mainWindowState.objectWillChange.send()
                     }
                 }
                 
@@ -72,7 +72,7 @@ struct ContentColumn: View {
                     // Use task because onAppear will not be called when store changes
                     invoiceStore.htmlCancellable = invoiceStore.htmlDidChangePublisher.sink { html in
                         // InvoiceStore changes don't trigger ContentColumn redraw
-                        mainViewState.objectWillChange.send()
+                        mainWindowState.objectWillChange.send()
                     }
                     invoiceStore.buildHtml()
                 }

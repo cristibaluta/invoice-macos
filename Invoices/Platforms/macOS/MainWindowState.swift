@@ -1,5 +1,5 @@
 //
-//  MainViewState.swift
+//  mainWindowState.swift
 //  Invoices
 //
 //  Created by Cristian Baluta on 12.01.2024.
@@ -24,7 +24,7 @@ enum ContentViewType {
     case error(String, String)
 }
 
-class MainViewState: ObservableObject {
+class MainWindowState: ObservableObject {
 
     @Published var contentType: ContentViewType = .noProjects
     

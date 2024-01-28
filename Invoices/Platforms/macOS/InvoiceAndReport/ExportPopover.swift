@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ExportPopover: View {
 
-    @EnvironmentObject var mainViewState: MainViewState
+    @EnvironmentObject var mainWindowState: MainWindowState
     @ObservedObject var state: InvoiceStore
 
     var body: some View {

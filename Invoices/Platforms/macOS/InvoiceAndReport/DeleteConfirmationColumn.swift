@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DeleteConfirmationColumn: View {
 
-    @EnvironmentObject private var mainViewState: MainViewState
+    @EnvironmentObject private var mainWindowState: MainWindowState
     @EnvironmentObject private var mainStore: MainStore
 
     var invoice: Invoice
@@ -25,7 +25,7 @@ struct DeleteConfirmationColumn: View {
 
             HStack {
                 Button("Cancel") {
-                    mainViewState.contentType = .noProjects
+                    mainWindowState.contentType = .noProjects
                 }
                 Button("Delete") {
                     mainStore.projectsStore.invoicesStore?.deleteInvoice(invoice)

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ProjectsMenu: View {
 
-    @EnvironmentObject var mainViewState: MainViewState
+    @EnvironmentObject var mainWindowState: MainWindowState
     @ObservedObject var projectsStore: ProjectsStore
 
     var body: some View {
@@ -25,7 +25,7 @@ struct ProjectsMenu: View {
             }
             Divider().frame(height: 1)
             Button("+ New project", action: {
-                mainViewState.contentType = .noProjects
+                mainWindowState.contentType = .noProjects
             })
         } label: {
             Text(projectsStore.selectedProject?.name ?? "Select project")

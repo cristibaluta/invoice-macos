@@ -10,7 +10,7 @@ import Combine
 
 class InvoicesStore: ObservableObject {
 
-    var id = UUID()// Needed to redraw the HtmlViewer
+    let id = UUID()// Needed to redraw the HtmlViewer
     @Published var invoices: [Invoice] = []
     @Published var selectedInvoice: Invoice?
 

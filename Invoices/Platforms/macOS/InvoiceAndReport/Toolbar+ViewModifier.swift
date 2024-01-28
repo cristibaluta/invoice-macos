@@ -10,7 +10,7 @@ import PDFKit
 
 struct Toolbar: ViewModifier {
 
-    @EnvironmentObject var mainViewState: MainViewState
+    @EnvironmentObject var mainWindowState: MainWindowState
     @ObservedObject var invoiceStore: InvoiceStore
     @State private var isShowingExportPopover = false
     
@@ -30,9 +30,9 @@ struct Toolbar: ViewModifier {
                         invoiceStore.editorType = editorType
                         switch editorType {
                             case .invoice:
-                                mainViewState.contentType = .invoice(invoiceStore)
+                                mainWindowState.contentType = .invoice(invoiceStore)
                             case .report:
-                                mainViewState.contentType = .report(invoiceStore)
+                                mainWindowState.contentType = .report(invoiceStore)
                         }
                     }
                 }
@@ -69,9 +69,9 @@ struct Toolbar: ViewModifier {
                     Button("Edit \(invoiceStore.editorType == .invoice ? "invoice" : "report")") {
                         switch invoiceStore.editorType {
                             case .invoice:
-                                mainViewState.contentType = .invoiceEditor(invoiceStore)
+                                mainWindowState.contentType = .invoiceEditor(invoiceStore)
                             case .report:
-                                mainViewState.contentType = .reportEditor(invoiceStore)
+                                mainWindowState.contentType = .reportEditor(invoiceStore)
                         }
                     }
                     if invoiceStore.hasChanges {
@@ -105,9 +105,9 @@ struct Toolbar: ViewModifier {
     private func gotoPreview() {
         switch invoiceStore.editorType {
             case .invoice:
-                mainViewState.contentType = .invoice(invoiceStore)
+                mainWindowState.contentType = .invoice(invoiceStore)
             case .report:
-                mainViewState.contentType = .report(invoiceStore)
+                mainWindowState.contentType = .report(invoiceStore)
         }
     }
 
