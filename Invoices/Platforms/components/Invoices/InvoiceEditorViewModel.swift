@@ -10,7 +10,6 @@ import Combine
 
 class InvoiceEditorViewModel: ObservableObject, InvoiceEditorProtocol {
 
-    let type: EditorType = .invoice
     var data: InvoiceData {
         didSet {
             invoiceDataSubject.send(data)
@@ -21,16 +20,11 @@ class InvoiceEditorViewModel: ObservableObject, InvoiceEditorProtocol {
     @Published var invoiceNr: String
     @Published var invoiceDate: Date
     @Published var invoicedDate: Date
-    @Published var rate: String
-    @Published var exchangeRate: String
-    @Published var units: String
-    @Published var unitsName: String
-    @Published var productName: String
+    @Published var products: [InvoiceProductEditorViewModel]
     @Published var vat: String
     @Published var amountTotalVat: String
-    @Published var isFixedTotal: Bool = false
-    @Published var clientName: String = "Add new"
-    @Published var contractorName: String = "Add new"
+    @Published var clientName: String
+    @Published var contractorName: String
 
     private var clientViewModel: CompanyViewViewModel
     private var contractorViewModel: CompanyViewViewModel
@@ -51,14 +45,11 @@ class InvoiceEditorViewModel: ObservableObject, InvoiceEditorProtocol {
         invoiceNr = String(data.invoice_nr)
         invoiceDate = Date(yyyyMMdd: data.invoice_date) ?? Date()
         invoicedDate = Date(yyyyMMdd: data.invoiced_period) ?? Date()
+        
+        products = data.products.map({ InvoiceProductEditorViewModel(data: $0) })
+
         vat = data.vat.stringValue_2
         amountTotalVat = data.amount_total_vat.stringValue_2
-
-        rate = data.products[0].rate.stringValue_2
-        exchangeRate = data.products[0].exchange_rate.stringValue_4
-        units = data.products[0].units.stringValue
-        unitsName = data.products[0].units_name
-        productName = data.products[0].product_name
 
         clientViewModel = CompanyViewViewModel(data: data.client)
         contractorViewModel = CompanyViewViewModel(data: data.contractor)
@@ -68,5 +59,45 @@ class InvoiceEditorViewModel: ObservableObject, InvoiceEditorProtocol {
 
     deinit {
         print("<<<<<<< deinit InvoiceEditorViewModel")
+    }
+
+    func addNewProduct() {
+        data.products.append(InvoiceProduct(product_name: "",
+                                            rate: 0,
+                                            exchange_rate: 0,
+                                            units: 0,
+                                            units_name: "",
+                                            amount_per_unit: 0,
+                                            amount: 0))
+        products = data.products.map({ InvoiceProductEditorViewModel(data: $0) })
+    }
+}
+
+class InvoiceProductEditorViewModel: ObservableObject, Identifiable {
+
+    let id = UUID()
+    var data: InvoiceProduct {
+        didSet {
+//            invoiceDataSubject.send(data)
+        }
+    }
+
+    @Published var productName: String
+    @Published var rate: String
+    @Published var exchangeRate: String
+    @Published var unitsName: String
+    @Published var units: String
+    @Published var amount: String
+
+    init (data: InvoiceProduct) {
+
+        self.data = data
+
+        productName = data.product_name
+        rate = data.rate.stringValue_2
+        exchangeRate = data.exchange_rate.stringValue_4
+        unitsName = data.units_name
+        units = data.units.stringValue
+        amount = data.amount.stringValue_2
     }
 }

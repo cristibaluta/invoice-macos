@@ -7,8 +7,6 @@
 import Foundation
 import SwiftUI
 import Combine
-import BarChart
-import RCPreferences
 
 struct ContentColumn: View {
 
@@ -74,7 +72,6 @@ struct ContentColumn: View {
                         // InvoiceStore changes don't trigger ContentColumn redraw
                         mainWindowState.objectWillChange.send()
                     }
-                    invoiceStore.buildHtml()
                 }
 
             case .reportEditor(let invoiceStore):

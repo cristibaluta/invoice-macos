@@ -38,17 +38,17 @@ struct NewInvoiceView: View {
                 HStack(alignment: .center) {
                     Text("Exchange rate:").font(.system(size: 20))
                     Spacer()
-                    TextField("0.0", text: $viewModel.exchangeRate).font(.system(size: 20))
-                    .modifier(NumberKeyboard())
-                    .modifier(OutlineTextField())
+//                    TextField("0.0", text: $viewModel.exchangeRate).font(.system(size: 20))
+//                    .modifier(NumberKeyboard())
+//                    .modifier(OutlineTextField())
                 }
                 
                 HStack(alignment: .center) {
-                    Text("Quantity (\(viewModel.unitsName)):").font(.system(size: 20))
-                    Spacer()
-                    TextField("0.0", text: $viewModel.units).font(.system(size: 20))
-                    .modifier(NumberKeyboard())
-                    .modifier(OutlineTextField())
+//                    Text("Quantity (\(viewModel.unitsName)):").font(.system(size: 20))
+//                    Spacer()
+//                    TextField("0.0", text: $viewModel.units).font(.system(size: 20))
+//                    .modifier(NumberKeyboard())
+//                    .modifier(OutlineTextField())
                 }
             }
             Spacer()

@@ -12,7 +12,7 @@ struct Toolbar: ViewModifier {
 
     @EnvironmentObject var mainWindowState: MainWindowState
     @ObservedObject var invoiceStore: InvoiceStore
-    @State private var isShowingExportPopover = false
+//    @State private var isShowingExportPopover = false
     
     func body (content: Content) -> some View {
         
@@ -39,25 +39,25 @@ struct Toolbar: ViewModifier {
             }
             ToolbarItemGroup(placement: .primaryAction) {
                 Spacer()
-                Button("Editor") {
-                    switch invoiceStore.editorType {
-                        case .invoice:
-                            invoiceStore.isShowingEditorSheet = true
-                        case .report:
-                            invoiceStore.isShowingEditorSheet = true
-                    }
-                }
-                .popover(isPresented: $invoiceStore.isShowingEditorSheet,
-                         attachmentAnchor: .point(.leading),
-                         arrowEdge: .leading) {
-                    switch invoiceStore.editorType {
-                        case .invoice:
-                            InvoiceEditorPopover(invoiceStore: invoiceStore, editorViewModel: invoiceStore.invoiceEditorViewModel)
-                        case .report:
-                            ReportEditorPopover(invoiceStore: invoiceStore, editorViewModel: invoiceStore.reportEditorViewModel)
-                                .frame(width: 500, height: 600)
-                    }
-                }
+//                Button("Editor") {
+//                    switch invoiceStore.editorType {
+//                        case .invoice:
+//                            invoiceStore.isShowingEditorSheet = true
+//                        case .report:
+//                            invoiceStore.isShowingEditorSheet = true
+//                    }
+//                }
+//                .popover(isPresented: $invoiceStore.isShowingEditorSheet,
+//                         attachmentAnchor: .point(.leading),
+//                         arrowEdge: .leading) {
+//                    switch invoiceStore.editorType {
+//                        case .invoice:
+//                            InvoiceEditorPopover(invoiceStore: invoiceStore, editorViewModel: invoiceStore.invoiceEditorViewModel)
+//                        case .report:
+//                            ReportEditorPopover(invoiceStore: invoiceStore, editorViewModel: invoiceStore.reportEditorViewModel)
+//                                .frame(width: 500, height: 600)
+//                    }
+//                }
                 if invoiceStore.isEditing {
                     Button("Preview") {
                         // Dismiss editor
@@ -66,7 +66,7 @@ struct Toolbar: ViewModifier {
                         gotoPreview()
                     }
                 } else {
-                    Button("Edit \(invoiceStore.editorType == .invoice ? "invoice" : "report")") {
+                    Button("Edit") {
                         switch invoiceStore.editorType {
                             case .invoice:
                                 mainWindowState.contentType = .invoiceEditor(invoiceStore)
@@ -78,8 +78,6 @@ struct Toolbar: ViewModifier {
                         Button("Save") {
                             // Save the invoice
                             invoiceStore.save()
-                            // Go back to preview mode
-                            gotoPreview()
                         }
                     }
 //                    Button(action: {

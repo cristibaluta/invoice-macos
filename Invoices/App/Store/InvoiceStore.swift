@@ -13,7 +13,11 @@ import Combine
 class InvoiceStore: ObservableObject {
 
     let id = UUID()// Needed to redraw the HtmlViewer
-    @Published var editorType: EditorType = .invoice
+    @Published var editorType: EditorType = .invoice {
+        didSet {
+            buildHtml()
+        }
+    }
     @Published var isShowingEditorSheet = false
     @Published var hasChanges = false
     @Published var isEditing = false
@@ -124,12 +128,12 @@ class InvoiceStore: ObservableObject {
             case .invoice:
                 _ = invoiceInteractor.save(data: data, pdfData: pdfData)
                     .sink { invoiceFolder in
-
+                        self.hasChanges = false
                     }
             case .report:
                 _ = reportInteractor.save(data: data, pdfData: pdfData)
                     .sink { invoiceFolder in
-
+                        self.hasChanges = false
                     }
         }
     }
