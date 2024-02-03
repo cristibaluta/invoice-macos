@@ -53,8 +53,8 @@ class InvoiceEditorViewModel: ObservableObject, InvoiceEditorProtocol {
 
         clientViewModel = CompanyViewViewModel(data: data.client)
         contractorViewModel = CompanyViewViewModel(data: data.contractor)
-        clientName = data.client.name
-        contractorName = data.contractor.name
+        clientName = data.client.name.isEmpty ? "-" : data.client.name
+        contractorName = data.contractor.name.isEmpty ? "-" : data.contractor.name
 
 
         $invoiceSeries.removeDuplicates().sink { newValue in self.data.invoice_series = newValue }
