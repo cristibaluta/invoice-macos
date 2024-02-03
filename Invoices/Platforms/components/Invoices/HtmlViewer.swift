@@ -18,31 +18,16 @@ typealias ViewRepresentable = NSViewRepresentable
 typealias ViewContext = NSViewRepresentableContext<HtmlViewer>
 #endif
 
-struct HtmlViewer: ViewRepresentable {
+class WrappedData {
+    var data: Data = Data()
+}
 
-    class Coordinator: NSObject {
-        var webView: WKWebView?
-    }
+struct HtmlViewer: ViewRepresentable {
 
     static let size = CGSize(width: 900, height: 1285)
 
     let htmlString: String
-    let onPdfGenerate: (Data) -> ()
-
-    private var config: WKPDFConfiguration {
-        let config = WebKit.WKPDFConfiguration()
-        config.rect = CGRect(origin: .zero, size: HtmlViewer.size)
-        return config
-    }
-    
-    init (htmlString: String, onPdfGenerate: @escaping (Data) -> ()) {
-        self.htmlString = htmlString
-        self.onPdfGenerate = onPdfGenerate
-    }
-    
-    func makeCoordinator() -> Coordinator {
-        return Coordinator()
-    }
+    let wrappedPdfData: WrappedData
 
 #if os(iOS)
     func makeUIView(context: ViewContext) -> WKWebView {
@@ -64,22 +49,26 @@ struct HtmlViewer: ViewRepresentable {
 
     private func updateView(_ webView: WKWebView, context: ViewContext) {
         webView.loadHTMLString(htmlString, baseURL: nil)
-        generatePdf(webView)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(1000)) {
+            generatePdf(webView)
+        }
     }
 
     private func generatePdf(_ webView: WKWebView) {
-
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-
-            webView.createPDF(configuration: config) { result in
-                switch result {
-                    case .success(let data):
-                        onPdfGenerate(data)
-                    case .failure(let error):
-                        print(error)
-                }
+        webView.createPDF(configuration: config) { result in
+            switch result {
+                case .success(let data):
+                    print(">>>>> pdf generated")
+                    self.wrappedPdfData.data = data
+                case .failure(let error):
+                    print(error)
             }
         }
     }
 
+    private var config: WKPDFConfiguration {
+        let config = WebKit.WKPDFConfiguration()
+        config.rect = CGRect(origin: .zero, size: HtmlViewer.size)
+        return config
+    }
 }

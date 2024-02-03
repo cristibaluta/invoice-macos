@@ -40,9 +40,7 @@ struct ContentColumn: View {
                 .padding(40)
 
             case .invoice(let invoiceStore):
-                HtmlViewer(htmlString: invoiceStore.html) { printingData in
-                    invoiceStore.pdfData = printingData
-                }
+                HtmlViewer(htmlString: invoiceStore.html, wrappedPdfData: invoiceStore.wrappedPdfData)
                 .frame(width: 920)
                 .padding(10)
                 .modifier(Toolbar(invoiceStore: invoiceStore))
@@ -60,9 +58,7 @@ struct ContentColumn: View {
                 .modifier(Toolbar(invoiceStore: invoiceStore))
 
             case .report(let invoiceStore):
-                HtmlViewer(htmlString: invoiceStore.html) { printingData in
-                    invoiceStore.pdfData = printingData
-                }
+                HtmlViewer(htmlString: invoiceStore.html, wrappedPdfData: invoiceStore.wrappedPdfData)
                 .frame(width: 920)
                 .padding(10)
                 .modifier(Toolbar(invoiceStore: invoiceStore))

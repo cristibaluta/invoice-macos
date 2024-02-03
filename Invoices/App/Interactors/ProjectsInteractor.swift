@@ -12,8 +12,6 @@ import SwiftUI
 class ProjectsInteractor {
 
     private let repository: Repository
-//    var cancellables = Set<AnyCancellable>()
-//    var cancellable: AnyCancellable?
 
     init (repository: Repository) {
         self.repository = repository

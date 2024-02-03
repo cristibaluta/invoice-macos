@@ -26,6 +26,8 @@ class InvoiceStore: ObservableObject {
             self.htmlSubject.send(html)
         }
     }
+    var wrappedPdfData = WrappedData()
+
     private let htmlSubject = PassthroughSubject<String, Never>()
     var htmlDidChangePublisher: AnyPublisher<String, Never> { htmlSubject.eraseToAnyPublisher() }
     var htmlCancellable: Cancellable?
@@ -78,7 +80,6 @@ class InvoiceStore: ObservableObject {
     }
 
     private var project: Project
-    var pdfData: Data?
     private var data: InvoiceData {
         didSet {
             hasChanges = data != initialData
@@ -133,13 +134,13 @@ class InvoiceStore: ObservableObject {
     func save() {
         switch editorType {
             case .invoice:
-                _ = invoiceInteractor.save(data: data, pdfData: pdfData)
+                _ = invoiceInteractor.save(data: data, pdfData: wrappedPdfData.data)
                     .sink { invoice in
                         self.hasChanges = false
                         self.dataSaveSubject.send(invoice)
                     }
             case .report:
-                _ = reportInteractor.save(data: data, pdfData: pdfData)
+                _ = reportInteractor.save(data: data, pdfData: wrappedPdfData.data)
                     .sink { invoice in
                         self.hasChanges = false
                         self.dataSaveSubject.send(invoice)

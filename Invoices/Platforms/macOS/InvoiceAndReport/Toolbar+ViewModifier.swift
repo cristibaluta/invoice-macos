@@ -90,8 +90,8 @@ struct Toolbar: ViewModifier {
 //                            .padding(20)
 //                    }
 
-                    if let pdfData = invoiceStore.pdfData,
-                       let pdf = PDFDocument(data: pdfData) {
+//                    if let pdfData = invoiceStore.pdfData,
+                    if let pdf = PDFDocument(data: invoiceStore.wrappedPdfData.data) {
                         ShareLink(item: pdf, preview: SharePreview("PDF"))
                     }
                 }

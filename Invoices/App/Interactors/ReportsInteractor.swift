@@ -120,6 +120,7 @@ class ReportsInteractor {
         .map { x in
             return Invoice(date: data.date, invoiceNr: invoiceNr, name: invoiceName)
         }
+        
         return publisher.eraseToAnyPublisher()
     }
 
