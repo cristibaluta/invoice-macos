@@ -32,10 +32,6 @@ struct InvoiceEditor: View {
                         Text("Invoice series:")
                         .font(appFont)
                         TextField("", text: $viewModel.invoiceSeries)
-                        .onChange(of: viewModel.invoiceSeries) { newValue in
-                            // Data is update through onChange because didSet on the property does not work properly
-                            viewModel.data.invoice_series = newValue
-                        }
                         .font(appFont)
                         .modifier(OutlineTextField())
                     }
@@ -43,9 +39,6 @@ struct InvoiceEditor: View {
                         Text("Invoice nr:")
                         .font(appFont)
                         TextField("", text: $viewModel.invoiceNr)
-                        .onChange(of: viewModel.invoiceNr) { newValue in
-                            viewModel.data.invoice_nr = Int(newValue) ?? 0
-                        }
                         .font(appFont)
                         .modifier(OutlineTextField())
                         .modifier(NumberKeyboard())
@@ -54,18 +47,12 @@ struct InvoiceEditor: View {
                         Text("Invoice date:")
                         .font(appFont)
                         DatePicker("", selection: $viewModel.invoiceDate, displayedComponents: .date)
-                        .onChange(of: viewModel.invoiceDate) { newValue in
-                            viewModel.data.invoice_date = newValue.yyyyMMdd
-                        }
                         .font(appFont)
                     }
                     HStack(alignment: .center) {
                         Text("Invoiced month:")
                         .font(appFont)
                         DatePicker("", selection: $viewModel.invoicedDate, displayedComponents: .date)
-                        .onChange(of: viewModel.invoicedDate) { newValue in
-                            viewModel.data.invoiced_period = newValue.yyyyMMdd
-                        }
                         .font(appFont)
                     }
                 }
@@ -116,11 +103,7 @@ struct InvoiceEditor: View {
                 Divider().padding(.top, 10).padding(.bottom, 10)
 
                 ForEach(Array(viewModel.products.enumerated()), id: \.offset) { index, product in
-                    InvoiceProductEditor(viewModel: product) { updatedProduct in
-                        viewModel.data.products[index] = updatedProduct.data
-                        viewModel.data.calculate()
-                        viewModel.amountTotalVat = viewModel.data.amount_total_vat.stringValue_2
-                    }
+                    InvoiceProductEditor(viewModel: product)
                 }
                 Button("+ Add new product", action: {
                     viewModel.addNewProduct()
@@ -132,12 +115,6 @@ struct InvoiceEditor: View {
                     HStack(alignment: .center) {
                         Text("VAT:").font(appFont)
                         TextField("VAT", text: $viewModel.vat)
-                        .onChange(of: viewModel.vat) { newValue in
-                            viewModel.data.vat = Decimal(string: viewModel.vat) ?? 0
-                            // When VAT changes recalculate the total amount
-                            viewModel.data.calculate()
-                            viewModel.amountTotalVat = viewModel.data.amount_total_vat.stringValue_2
-                        }
                         .font(appFont)
                         .modifier(OutlineTextField())
                         .modifier(NumberKeyboard())
@@ -187,7 +164,6 @@ struct InvoiceEditor: View {
 struct InvoiceProductEditor: View {
 
     @ObservedObject var viewModel: InvoiceProductEditorViewModel
-    var onChange: (InvoiceProductEditorViewModel) -> Void
 
     var body: some View {
 
@@ -197,10 +173,6 @@ struct InvoiceProductEditor: View {
             HStack(alignment: .center) {
                 Text("Product:").font(appFont)
                 TextField("", text: $viewModel.productName)
-                    .onChange(of: viewModel.productName) { newValue in
-                        viewModel.data.product_name = newValue
-                        calculateAmount()
-                    }
                     .font(appFont)
                     .modifier(OutlineTextField())
             }
@@ -212,11 +184,6 @@ struct InvoiceProductEditor: View {
                 VStack(alignment: .center) {
                     Text("Rate #1:").font(appFont)
                     TextField("", text: $viewModel.rate)
-                        .onChange(of: viewModel.rate) { newValue in
-                            viewModel.data.rate = Decimal(string: newValue) ?? 0
-                            // When rate changes recalculate the total amount
-                            calculateAmount()
-                        }
                         .font(appFont)
                         .modifier(OutlineTextField())
                         .modifier(NumberKeyboard())
@@ -225,11 +192,6 @@ struct InvoiceProductEditor: View {
                 VStack(alignment: .center) {
                     Text("Exchange Rate #2:").font(appFont)
                     TextField("", text: $viewModel.exchangeRate)
-                        .onChange(of: viewModel.exchangeRate) { newValue in
-                            viewModel.data.exchange_rate = Decimal(string: newValue) ?? 0
-                            // When exchange rate changes recalculate the total amount
-                            calculateAmount()
-                        }
                         .font(appFont)
                         .modifier(OutlineTextField())
                         .modifier(NumberKeyboard())
@@ -238,10 +200,6 @@ struct InvoiceProductEditor: View {
                 VStack(alignment: .center) {
                     Text("Units #3:").font(appFont)
                     TextField("", text: $viewModel.unitsName)
-                        .onChange(of: viewModel.unitsName) { newValue in
-                            viewModel.data.units_name = newValue
-                            calculateAmount()
-                        }
                         .font(appFont)
                         .modifier(OutlineTextField())
                 }
@@ -249,11 +207,6 @@ struct InvoiceProductEditor: View {
                 VStack(alignment: .center) {
                     Text("Quantity #4:").font(appFont)
                     TextField("", text: $viewModel.units)
-                        .onChange(of: viewModel.units) { newValue in
-                            viewModel.data.units = Decimal(string: newValue) ?? 0
-                            // When quantity changes recalculate the total amount
-                            calculateAmount()
-                        }
                         .font(appFont)
                         .modifier(OutlineTextField())
                         .modifier(NumberKeyboard())
@@ -269,11 +222,5 @@ struct InvoiceProductEditor: View {
         .background(.clear)
         .cornerRadius(8)
         .overlay(RoundedRectangle(cornerRadius: 8).stroke(.gray, lineWidth: 1))
-    }
-
-    private func calculateAmount() {
-        viewModel.data.calculate()
-        viewModel.amount = viewModel.data.amount.stringValue_2
-        onChange(viewModel)
     }
 }

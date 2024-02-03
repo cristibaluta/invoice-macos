@@ -17,6 +17,7 @@ struct OutlineTextField: ViewModifier {
             .overlay(RoundedRectangle(cornerRadius: 8.0).strokeBorder(Color.gray, style: StrokeStyle(lineWidth: 0.5)))
         #else
         content
+            .textFieldStyle(.roundedBorder)
         #endif
     }
 }
