@@ -38,6 +38,10 @@ class InvoicesStore: ObservableObject {
     }
     var newInvoiceCancellable: Cancellable?
 
+    private let didSaveInvoiceSubject = PassthroughSubject<Void, Never>()
+    var didSaveInvoicePublisher: AnyPublisher<Void, Never> {
+        didSaveInvoiceSubject.eraseToAnyPublisher()
+    }
 
     init (repository: Repository, project: Project) {
         
@@ -51,7 +55,6 @@ class InvoicesStore: ObservableObject {
     func loadInvoices() {
         _ = invoicesInteractor.refreshInvoicesList(for: project)
             .sink { [weak self] in
-                print("Invoices loaded \($0.count)")
                 self?.invoices = $0
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
                     self?.loadChart()
@@ -65,15 +68,8 @@ class InvoicesStore: ObservableObject {
 
         return invoicesInteractor.readInvoice(for: invoice, in: project)
             .map { invoiceData in
-                let invoiceStore = InvoiceStore(project: self.project,
-                                                data: invoiceData,
-                                                invoicesInteractor: self.invoicesInteractor,
-                                                reportsInteractor: self.reportsInteractor)
-
-                self.selectedInvoiceStore = invoiceStore
-//                self.selectedInvoiceStore?.calculate()
-
-                return invoiceStore
+                self.selectedInvoiceStore = self.createInvoiceStore(invoice: invoice, data: invoiceData)
+                return self.selectedInvoiceStore!
             }
             .eraseToAnyPublisher()
     }
@@ -81,18 +77,15 @@ class InvoicesStore: ObservableObject {
     func createNextInvoiceInProject() {
 
         guard let lastInvoice = invoices.first else {
-            // If this is the first invoice create an empty invoice
+            // If this is the first invoice, create an empty invoice
             let data = InvoicesInteractor.emptyInvoiceData
             let invoice = Invoice(date: data.date,
                                   invoiceNr: "\(data.invoice_series)\(data.invoice_nr)",
                                   name: "\(data.date.yyyyMMdd)-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)")
-            self.invoices = [invoice]
-            self.selectedInvoiceStore = InvoiceStore(project: project,
-                                                     data: data,
-                                                     invoicesInteractor: invoicesInteractor,
-                                                     reportsInteractor: reportsInteractor)
-            self.selectedInvoiceStore?.buildHtml()
-            self.newInvoiceSubject.send(self.selectedInvoiceStore!)
+            invoices = [invoice]
+            selectedInvoice = invoice
+            selectedInvoiceStore = createInvoiceStore(invoice: invoice, data: data)
+            newInvoiceSubject.send(selectedInvoiceStore!)
             return
         }
 
@@ -112,14 +105,45 @@ class InvoicesStore: ObservableObject {
                                   invoiceNr: "\(data.invoice_series)\(data.invoice_nr)",
                                   name: "\(nextDate.yyyyMMdd)-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)")
             self.invoices.insert(invoice, at: 0)
+            self.selectedInvoice = invoice
             /// Update the state
-            self.selectedInvoiceStore = InvoiceStore(project: self.project,
-                                                     data: data,
-                                                     invoicesInteractor: self.invoicesInteractor,
-                                                     reportsInteractor: self.reportsInteractor)
-            self.selectedInvoiceStore?.buildHtml()
+            self.selectedInvoiceStore = self.createInvoiceStore(invoice: invoice, data: data)
             self.newInvoiceSubject.send(self.selectedInvoiceStore!)
         }
+    }
+
+    private func createInvoiceStore (invoice: Invoice, data: InvoiceData) -> InvoiceStore {
+        cancellables.removeAll()
+        let store = InvoiceStore(project: project,
+                                 data: data,
+                                 invoicesInteractor: invoicesInteractor,
+                                 reportsInteractor: reportsInteractor)
+        store.dataSavePublisher
+            .sink { newInvoice in
+                // If the name of the invoice changed, delete the old invoice, then reload all of them
+                if invoice.name.lowercased() != newInvoice.name.lowercased() {
+                    _ = self.invoicesInteractor.deleteInvoice(invoice, in: self.project)
+                        .sink { success in
+                            self.selectedInvoice = nil
+                            self.loadInvoices()
+                        }
+                }
+            }
+            .store(in: &cancellables)
+
+        store.dataChangePublisher
+            .sink { invoiceData in
+                if let selectedInvoice = self.selectedInvoice,
+                    let index = self.invoices.firstIndex(of: selectedInvoice) {
+                    var invoice = self.invoices[index]
+                    invoice.name = "\(invoiceData.date.yyyyMMdd)-\(invoiceData.invoice_series)\(invoiceData.invoice_nr.prefixedWith0)"
+                    self.invoices[index] = invoice
+                    self.selectedInvoice = invoice
+                }
+            }
+            .store(in: &cancellables)
+
+        return store
     }
 
     func deleteInvoice (at index: Int) {
@@ -130,6 +154,7 @@ class InvoicesStore: ObservableObject {
         _ = invoicesInteractor.deleteInvoice(invoice, in: project)
             .sink { success in
                 self.invoices.remove(at: index)
+                self.selectedInvoice = nil
                 self.loadChart()
             }
     }
@@ -141,6 +166,7 @@ class InvoicesStore: ObservableObject {
         _ = invoicesInteractor.deleteInvoice(invoice, in: project)
             .sink { success in
                 self.invoices.remove(at: index)
+                self.selectedInvoice = nil
                 self.loadChart()
             }
     }

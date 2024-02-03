@@ -60,4 +60,9 @@ struct InvoiceProduct: Codable, Equatable {
         self.amount_per_unit = amount_per_unit
         self.amount = amount
     }
+
+    mutating func calculate() {
+        amount_per_unit = rate * exchange_rate
+        amount = units * amount_per_unit
+    }
 }

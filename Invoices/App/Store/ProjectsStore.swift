@@ -17,12 +17,21 @@ class ProjectsStore: ObservableObject {
         didSet {
             print("Selected new projects \(String(describing: selectedProject))")
             pref.set(selectedProject?.name ?? "", forKey: .lastProject)
+
+            cancellables.removeAll()
+
             if let project = selectedProject {
                 self.invoicesStore = InvoicesStore(repository: repository, project: project)
-                self.cancellable = self.invoicesStore!.chartPublisher
+                self.invoicesStore!.chartPublisher
                     .sink { chartViewModel in
                         self.chartSubject.send()
                     }
+                    .store(in: &cancellables)
+                self.invoicesStore!.didSaveInvoicePublisher
+                    .sink {
+                        self.invoicesStore?.loadInvoices()
+                    }
+                    .store(in: &cancellables)
                 self.invoicesStore?.loadInvoices()
             } else {
                 self.invoicesStore = nil
@@ -37,9 +46,7 @@ class ProjectsStore: ObservableObject {
     private let interactor: ProjectsInteractor
     private let repository: Repository
     private var pref = RCPreferences<UserPreferences>()
-//    var cancellables = Set<AnyCancellable>()
-    var cancellable: AnyCancellable?
-
+    private var cancellables = Set<AnyCancellable>()
 
     private let projectSubject = PassthroughSubject<Void, Never>()
     var projectDidChangePublisher: AnyPublisher<Void, Never> {

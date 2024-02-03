@@ -112,7 +112,7 @@ struct InvoiceEditor: View {
                     }
                     Spacer()
                 }
-                
+
                 Divider().padding(.top, 10).padding(.bottom, 10)
 
                 ForEach(Array(viewModel.products.enumerated()), id: \.offset) { index, product in
@@ -272,6 +272,8 @@ struct InvoiceProductEditor: View {
     }
 
     private func calculateAmount() {
+        viewModel.data.calculate()
+        viewModel.amount = viewModel.data.amount.stringValue_2
         onChange(viewModel)
     }
 }

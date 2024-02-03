@@ -30,6 +30,12 @@ class InvoiceStore: ObservableObject {
     var htmlDidChangePublisher: AnyPublisher<String, Never> { htmlSubject.eraseToAnyPublisher() }
     var htmlCancellable: Cancellable?
 
+    private let dataSaveSubject = PassthroughSubject<Invoice, Never>()
+    var dataSavePublisher: AnyPublisher<Invoice, Never> { dataSaveSubject.eraseToAnyPublisher() }
+
+    private let dataChangeSubject = PassthroughSubject<InvoiceData, Never>()
+    var dataChangePublisher: AnyPublisher<InvoiceData, Never> { dataChangeSubject.eraseToAnyPublisher() }
+
     private var invoiceInteractor: InvoiceInteractor
     private var reportInteractor: ReportInteractor
 
@@ -41,7 +47,7 @@ class InvoiceStore: ObservableObject {
             return viewModel
         }
         let viewModel = InvoiceEditorViewModel(data: data)
-        viewModel.invoiceDataChangePublisher
+        viewModel.$data
             .sink { newData in
                 self.data = newData
             }
@@ -61,7 +67,7 @@ class InvoiceStore: ObservableObject {
             return viewModel
         }
         let viewModel = ReportEditorViewModel(data: data, reportInteractor: reportInteractor)
-        viewModel.invoiceDataChangePublisher
+        viewModel.$data
             .sink { newData in
                 self.data = newData
             }
@@ -77,6 +83,7 @@ class InvoiceStore: ObservableObject {
         didSet {
             hasChanges = data != initialData
             buildHtml()
+            dataChangeSubject.send(data)
         }
     }
     private let initialData: InvoiceData
@@ -108,7 +115,7 @@ class InvoiceStore: ObservableObject {
         cancellables.removeAll()
     }
 
-    func buildHtml() {
+    private func buildHtml() {
         switch editorType {
             case .invoice:
                 _ = invoiceInteractor.buildHtml(data: data)
@@ -127,13 +134,15 @@ class InvoiceStore: ObservableObject {
         switch editorType {
             case .invoice:
                 _ = invoiceInteractor.save(data: data, pdfData: pdfData)
-                    .sink { invoiceFolder in
+                    .sink { invoice in
                         self.hasChanges = false
+                        self.dataSaveSubject.send(invoice)
                     }
             case .report:
                 _ = reportInteractor.save(data: data, pdfData: pdfData)
-                    .sink { invoiceFolder in
+                    .sink { invoice in
                         self.hasChanges = false
+                        self.dataSaveSubject.send(invoice)
                     }
         }
     }

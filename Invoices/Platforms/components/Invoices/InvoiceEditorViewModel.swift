@@ -10,11 +10,7 @@ import Combine
 
 class InvoiceEditorViewModel: ObservableObject, InvoiceEditorProtocol {
 
-    var data: InvoiceData {
-        didSet {
-            invoiceDataSubject.send(data)
-        }
-    }
+    @Published var data: InvoiceData
 
     @Published var invoiceSeries: String
     @Published var invoiceNr: String
@@ -29,9 +25,6 @@ class InvoiceEditorViewModel: ObservableObject, InvoiceEditorProtocol {
     private var clientViewModel: CompanyViewViewModel
     private var contractorViewModel: CompanyViewViewModel
 
-    /// Publisher for data change
-    var invoiceDataChangePublisher: AnyPublisher<InvoiceData, Never> { invoiceDataSubject.eraseToAnyPublisher() }
-    private let invoiceDataSubject = PassthroughSubject<InvoiceData, Never>()
     /// Publisher to add new company
     var addCompanyPublisher: AnyPublisher<Void, Never> { addCompanySubject.eraseToAnyPublisher() }
     let addCompanySubject = PassthroughSubject<Void, Never>()
@@ -76,11 +69,7 @@ class InvoiceEditorViewModel: ObservableObject, InvoiceEditorProtocol {
 class InvoiceProductEditorViewModel: ObservableObject, Identifiable {
 
     let id = UUID()
-    var data: InvoiceProduct {
-        didSet {
-//            invoiceDataSubject.send(data)
-        }
-    }
+    var data: InvoiceProduct
 
     @Published var productName: String
     @Published var rate: String

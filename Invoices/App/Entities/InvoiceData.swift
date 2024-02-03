@@ -107,37 +107,31 @@ extension InvoiceData {
     }
 
     mutating func calculate() {
-        var products = [InvoiceProduct]()
-        /// Calculate the amount
+        /// Calculate the total amount
         if isFixedTotal == true {
             // We know the total amount vat
             // We calculate the amount and the units
-            amount_total = amount_total_vat / (1 + (vat / 100))
-
-            for var product in self.products {
-                product.amount_per_unit = product.rate * product.exchange_rate
-                product.units = amount_total / product.amount_per_unit
-                product.amount = amount_total
-                products.append(product)
-            }
+//            amount_total = amount_total_vat / (1 + (vat / 100))
+//
+//            for var product in self.products {
+//                product.amount_per_unit = product.rate * product.exchange_rate
+//                product.units = amount_total / product.amount_per_unit
+//                product.amount = amount_total
+//                products.append(product)
+//            }
         } else {
             // We know the units
             // We calculate the total amount
             var total: Decimal = 0.0
-            
-            for var product in self.products {
-                let amount_per_unit = product.rate * product.exchange_rate
-                let amount = product.units * amount_per_unit
-                total += amount
-                
-                product.amount_per_unit = amount_per_unit
-                product.amount = amount
-                products.append(product)
+
+            for i in 0..<products.count {
+                products[i].calculate()
+                total += products[i].amount
             }
-            
+
             amount_total = total
             amount_total_vat = amount_total + amount_total * vat / 100
         }
-        self.products = products
     }
+
 }

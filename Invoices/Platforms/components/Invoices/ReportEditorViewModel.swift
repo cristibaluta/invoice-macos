@@ -10,21 +10,13 @@ import Combine
 
 class ReportEditorViewModel: ObservableObject, InvoiceEditorProtocol {
 
-    let type: EditorType = .report
-    internal var data: InvoiceData {
-        didSet {
-            invoiceDataSubject.send(data)
-        }
-    }
+    @Published var data: InvoiceData
     private let reportInteractor: ReportInteractor
 
     @Published var allProjects: [ReportProject] = []
     @Published var reports: [Report] = []
     private var allReports: [Report] = []
 
-    /// Publisher for data change
-    var invoiceDataChangePublisher: AnyPublisher<InvoiceData, Never> { invoiceDataSubject.eraseToAnyPublisher() }
-    private let invoiceDataSubject = PassthroughSubject<InvoiceData, Never>()
     /// Publisher for creating a new company
     var addCompanyPublisher: AnyPublisher<Void, Never> { addCompanySubject.eraseToAnyPublisher() }
     private let addCompanySubject = PassthroughSubject<Void, Never>()

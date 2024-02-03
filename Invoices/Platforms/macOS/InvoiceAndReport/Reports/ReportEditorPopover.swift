@@ -18,11 +18,6 @@ struct ReportEditorPopover: View {
     var invoiceStore: InvoiceStore
     var editorViewModel: ReportEditorViewModel
 
-//    init (store: ReportStore) {
-//        self.store = store
-//        self.reportEditorState = store.reportEditorState
-//    }
-
     var body: some View {
 
         let _ = Self._printChanges()
