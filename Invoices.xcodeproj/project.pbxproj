@@ -80,6 +80,7 @@
 		568AB73E2B50A10600D1679F /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568AB73D2B50A10600D1679F /* SettingsWindow.swift */; };
 		568AB7402B50A33600D1679F /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568AB73F2B50A33600D1679F /* SettingsStore.swift */; };
 		568AB7422B513CA800D1679F /* MainWindowState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568AB7412B513CA800D1679F /* MainWindowState.swift */; };
+		569326BB2B6FBAF300579BA7 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568AB73F2B50A33600D1679F /* SettingsStore.swift */; };
 		56B944F528822FBA00D312A4 /* NoCompaniesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B944F328822FBA00D312A4 /* NoCompaniesScreen.swift */; };
 		56B944FD288366DB00D312A4 /* InvoiceEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D81C3D27358BD200209EAC /* InvoiceEditor.swift */; };
 		56B94500288485AC00D312A4 /* ReportsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B944FF288485AC00D312A4 /* ReportsInteractor.swift */; };
@@ -855,6 +856,7 @@
 				28A73D182763BF6100F727C3 /* Report.swift in Sources */,
 				28A73D162763BF5800F727C3 /* InvoiceData.swift in Sources */,
 				28A73D152763BF5500F727C3 /* Project.swift in Sources */,
+				569326BB2B6FBAF300579BA7 /* SettingsStore.swift in Sources */,
 				28A73D172763BF5B00F727C3 /* Invoice.swift in Sources */,
 				56B945362887DFA700D312A4 /* NoInvoicesView.swift in Sources */,
 				28A73D1C2763BF7100F727C3 /* SandboxRepository.swift in Sources */,
@@ -1005,7 +1007,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1046,7 +1048,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

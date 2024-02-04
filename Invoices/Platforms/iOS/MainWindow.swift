@@ -11,15 +11,16 @@ import Combine
 
 struct MainWindow: View {
 
-    @EnvironmentObject var projectsData: ProjectsStore
+    @EnvironmentObject var store: MainStore
     @EnvironmentObject var companiesData: CompaniesStore
     
     var body: some View {
         TabView {
             //
+            // Projects and invoices tab
             //
-            NavigationView {
-                if $projectsData.projects.count > 0 {
+            NavigationStack {
+                if $store.projectsStore.projects.count > 0 {
                     ProjectsListScreen()
                 } else {
                     NoProjectsScreen()
@@ -28,23 +29,25 @@ struct MainWindow: View {
             .tabItem { Label("Invoices", systemImage: "list.bullet") }
             .tag(0)
             .onAppear {
-                projectsData.refresh()
+                store.projectsStore.refresh()
             }
             //
+            // Companies tab
             //
-            NavigationView {
+            NavigationStack {
                 if $companiesData.companies.count > 0 {
                     CompaniesListScreen()
                 } else {
                     NoCompaniesScreen()
                 }
             }
-            .tabItem { Label("Companies", systemImage: "heart.fill") }
+            .tabItem { Label("Companies", systemImage: "c.circle") }
             .tag(1)
             .onAppear() {
                 companiesData.refresh()
             }
             //
+            // Settings tab
             //
             NavigationView {
                 

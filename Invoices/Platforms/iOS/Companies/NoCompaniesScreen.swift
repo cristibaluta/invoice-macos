@@ -9,13 +9,13 @@ import SwiftUI
 
 struct NoCompaniesScreen: View {
 
-    @EnvironmentObject private var companiesData: CompaniesStore
+    @EnvironmentObject var companiesStore: CompaniesStore
 
     var body: some View {
         NoCompaniesView() {
-            companiesData.isShowingNewCompanySheet = true
+            companiesStore.isShowingNewCompanySheet = true
         }
-        .sheet(isPresented: $companiesData.isShowingNewCompanySheet) {
+        .sheet(isPresented: $companiesStore.isShowingNewCompanySheet) {
             NewCompanySheet()
         }
     }

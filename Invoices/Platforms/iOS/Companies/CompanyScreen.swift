@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CompanyScreen: View {
 
-    @EnvironmentObject var companiesData: CompaniesStore
+    @EnvironmentObject var companiesStore: CompaniesStore
     @State var isEditing = false
     private var data: CompanyData
 
@@ -21,7 +21,7 @@ struct CompanyScreen: View {
     var body: some View {
         ScrollView(.vertical) {
             CompanyView(data: data) { data in
-                companiesData.selectedCompany = data
+                companiesStore.selectedCompany = data
                 isEditing = true
             }
             .padding()
@@ -33,7 +33,7 @@ struct CompanyScreen: View {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 if isEditing {
                     Button("Save") {
-                        companiesData.saveSelectedCompany()
+                        companiesStore.saveSelectedCompany()
                     }
                 }
             }

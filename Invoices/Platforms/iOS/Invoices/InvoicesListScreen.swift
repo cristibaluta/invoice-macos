@@ -9,34 +9,41 @@ import SwiftUI
 
 struct InvoicesListScreen: View {
 
-    @EnvironmentObject private var invoicesData: InvoicesStore
-    private var project: Project
+    @EnvironmentObject var store: MainStore
+    @EnvironmentObject var invoicesStore: InvoicesStore
+    var project: Project
 
-    init (folder: Project) {
-        self.project = folder
+    init (project: Project) {
+        self.project = project
+//        invoicesStore = store.projectsStore.invoicesStore!
+//        store.projectsStore.selectedProject = project
     }
     
     var body: some View {
 
-        if $invoicesData.invoices.count > 0 {
-            invoicesListBody
+        if let invoiceStore = store.projectsStore.invoicesStore {
+            if invoicesStore.invoices.count > 0 {
+                invoicesListBody
+            } else {
+                noInvoicesBody
+            }
         } else {
-            noInvoicesBody
+            Text("No InvoicesStore")
         }
     }
 
     private var invoicesListBody: some View {
 
         List {
-            ForEach(invoicesData.invoices, id: \.self) { invoice in
-                NavigationLink(destination: InvoiceAndReportScreen(state: InvoiceAndReportScreenState(invoice: invoice, contentData: invoicesData.selectedInvoiceContentData))) {
-                    Label(invoice.name, systemImage: "doc.text")
-                }
+            ForEach(invoicesStore.invoices, id: \.self) { invoice in
+//                NavigationLink(destination: InvoiceAndReportScreen(state: InvoiceAndReportScreenState(invoice: invoice, contentData: invoicesStore.selectedInvoiceContentData))) {
+//                    Label(invoice.name, systemImage: "doc.text")
+//                }
             }
             .onDelete(perform: delete)
         }
         .refreshable {
-            invoicesData.refresh(project)
+            invoicesStore.loadInvoices()
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -44,15 +51,15 @@ struct InvoicesListScreen: View {
             }
             ToolbarItem(placement: .primaryAction) {
                 Button("Add") {
-                    invoicesData.isShowingNewInvoiceSheet = true
+                    invoicesStore.isShowingNewInvoiceSheet = true
                 }
             }
         }
-        .sheet(isPresented: $invoicesData.isShowingNewInvoiceSheet) {
+        .sheet(isPresented: $invoicesStore.isShowingNewInvoiceSheet) {
             NewInvoiceScreen()
         }
         .onAppear {
-            invoicesData.refresh(project)
+            invoicesStore.loadInvoices()
         }
     }
 
@@ -65,7 +72,7 @@ struct InvoicesListScreen: View {
             }
         }
         .onAppear {
-            invoicesData.refresh(project)
+            invoicesStore.loadInvoices()
         }
     }
 
@@ -73,7 +80,7 @@ struct InvoicesListScreen: View {
         guard let index = offsets.first else {
             return
         }
-        invoicesData.deleteInvoice(at: index)
+        invoicesStore.deleteInvoice(at: index)
     }
 
 }

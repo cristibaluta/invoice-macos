@@ -23,14 +23,8 @@ class MainStore: ObservableObject {
         companiesStore = CompaniesStore(repository: repository)
         settingsStore = SettingsStore()
 
-        projectsStore.projectDidChangePublisher
+        projectsStore.changePublisher
             .sink {
-                self.objectWillChange.send()
-            }
-            .store(in: &cancellables)
-
-        projectsStore.chartDidChangePublisher
-            .sink { _ in
                 self.objectWillChange.send()
             }
             .store(in: &cancellables)

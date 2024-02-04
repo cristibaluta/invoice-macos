@@ -24,7 +24,7 @@ class ProjectsStore: ObservableObject {
                 self.invoicesStore = InvoicesStore(repository: repository, project: project)
                 self.invoicesStore!.chartPublisher
                     .sink { chartViewModel in
-                        self.chartSubject.send()
+                        self.changeSubject.send()
                     }
                     .store(in: &cancellables)
                 self.invoicesStore!.didSaveInvoicePublisher
@@ -36,7 +36,7 @@ class ProjectsStore: ObservableObject {
             } else {
                 self.invoicesStore = nil
             }
-            projectSubject.send()
+            changeSubject.send()
         }
     }
     @Published var invoicesStore: InvoicesStore?
@@ -48,15 +48,8 @@ class ProjectsStore: ObservableObject {
     private var pref = RCPreferences<UserPreferences>()
     private var cancellables = Set<AnyCancellable>()
 
-    private let projectSubject = PassthroughSubject<Void, Never>()
-    var projectDidChangePublisher: AnyPublisher<Void, Never> {
-        projectSubject.eraseToAnyPublisher()
-    }
-
-    private let chartSubject = PassthroughSubject<Void, Never>()
-    var chartDidChangePublisher: AnyPublisher<Void, Never> {
-        chartSubject.eraseToAnyPublisher()
-    }
+    private let changeSubject = PassthroughSubject<Void, Never>()
+    var changePublisher: AnyPublisher<Void, Never> { changeSubject.eraseToAnyPublisher() }
 
 
     init (repository: Repository) {
@@ -68,6 +61,7 @@ class ProjectsStore: ObservableObject {
         _ = interactor.loadProjectsList()
             .sink { [weak self] in
                 self?.projects = $0
+                self?.changeSubject.send()
             }
     }
 

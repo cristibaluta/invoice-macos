@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProjectsListScreen: View {
 
-    @EnvironmentObject var projectsData: ProjectsStore
+    @EnvironmentObject var store: MainStore
 
     
     var body: some View {
@@ -17,18 +17,24 @@ struct ProjectsListScreen: View {
         let _ = Self._printChanges()
 
         List {
-            ForEach(projectsData.projects, id: \.self) { f in
-                NavigationLink(destination: InvoicesListScreen(folder: f)) {
-                    Label(f.name, systemImage: "list.bullet")
-                }
+            ForEach(store.projectsStore.projects, id: \.self) { proj in
+                NavigationLink(proj.name, value: proj)
+//                NavigationLink {
+//                    Text(proj.name)
+//                } label: {
+//                    Label(proj.name, systemImage: "list.bullet")
+//                }
+//                NavigationLink(destination: InvoicesListScreen(project: proj)) {
+//                    Label(proj.name, systemImage: "list.bullet")
+//                }
             }
             .onDelete(perform: delete)
         }
-        .refreshable {
-            projectsData.refresh()
+        .navigationDestination(for: Project.self) { proj in
+            InvoicesListScreen(project: proj)
         }
-        .onAppear {
-            projectsData.refresh()
+        .refreshable {
+            store.projectsStore.refresh()
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -36,9 +42,10 @@ struct ProjectsListScreen: View {
             }
             ToolbarItem(placement: .primaryAction) {
                 Button("New") {
-                    projectsData.isShowingNewProjectSheet = true
+                    store.projectsStore.isShowingNewProjectSheet = true
+                    store.objectWillChange.send()
                 }
-                .sheet(isPresented: $projectsData.isShowingNewProjectSheet) {
+                .sheet(isPresented: $store.projectsStore.isShowingNewProjectSheet) {
                     NewProjectSheet()
                 }
             }
@@ -46,10 +53,10 @@ struct ProjectsListScreen: View {
         
     }
 
-    private func delete(at offsets: IndexSet) {
+    private func delete (at offsets: IndexSet) {
         guard let index = offsets.first else {
             return
         }
-        projectsData.deleteProject(at: index)
+        store.projectsStore.deleteProject(at: index)
     }
 }

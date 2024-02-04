@@ -46,10 +46,10 @@ struct ContentColumn: View {
                 .modifier(Toolbar(invoiceStore: invoiceStore))
                 .task(id: invoiceStore.id) {
                     // Use task because onAppear will not be called when store changes
-                    invoiceStore.htmlCancellable = invoiceStore.htmlDidChangePublisher.sink { html in
-                        // InvoiceStore changes don't trigger ContentColumn redraw
-                        mainWindowState.objectWillChange.send()
-                    }
+//                    invoiceStore.htmlCancellable = invoiceStore.htmlDidChangePublisher.sink { html in
+//                        // InvoiceStore changes don't trigger ContentColumn redraw
+//                        mainWindowState.objectWillChange.send()
+//                    }
                 }
                 
             case .invoiceEditor(let invoiceStore):
@@ -64,10 +64,10 @@ struct ContentColumn: View {
                 .modifier(Toolbar(invoiceStore: invoiceStore))
                 .task(id: invoiceStore.id) {
                     // Use task because onAppear will not be called when store changes
-                    invoiceStore.htmlCancellable = invoiceStore.htmlDidChangePublisher.sink { html in
-                        // InvoiceStore changes don't trigger ContentColumn redraw
-                        mainWindowState.objectWillChange.send()
-                    }
+//                    invoiceStore.htmlCancellable = invoiceStore.htmlDidChangePublisher.sink { html in
+//                        // InvoiceStore changes don't trigger ContentColumn redraw
+//                        mainWindowState.objectWillChange.send()
+//                    }
                 }
 
             case .reportEditor(let invoiceStore):

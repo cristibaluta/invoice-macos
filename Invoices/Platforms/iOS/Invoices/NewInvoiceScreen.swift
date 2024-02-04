@@ -14,25 +14,25 @@ struct NewInvoiceScreen: View {
 
     var body: some View {
         NavigationView {
-            NewInvoiceView(viewModel: invoicesData.selectedInvoiceContentData.invoiceEditorState)
-            .padding(20)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        self.invoicesData.dismissNewInvoice()
-                    }
-                }
-                ToolbarItem(placement: .primaryAction) {
-                    Button("Save") {
-                        self.invoicesData.selectedInvoiceContentData.calculate()
-                        self.invoicesData.selectedInvoiceContentData.save()
-                        self.invoicesData.dismissNewInvoice()
-                    }
-                }
-            }
-            .onAppear {
-                invoicesData.createNextInvoiceInProject()
-            }
+//            NewInvoiceView(viewModel: invoicesData.selectedInvoiceContentData.invoiceEditorState)
+//            .padding(20)
+//            .toolbar {
+//                ToolbarItem(placement: .cancellationAction) {
+//                    Button("Cancel") {
+//                        self.invoicesData.dismissNewInvoice()
+//                    }
+//                }
+//                ToolbarItem(placement: .primaryAction) {
+//                    Button("Save") {
+//                        self.invoicesData.selectedInvoiceContentData.calculate()
+//                        self.invoicesData.selectedInvoiceContentData.save()
+//                        self.invoicesData.dismissNewInvoice()
+//                    }
+//                }
+//            }
+//            .onAppear {
+//                invoicesData.createNextInvoiceInProject()
+//            }
         }
         
     }
