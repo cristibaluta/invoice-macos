@@ -505,8 +505,7 @@
 			children = (
 				28737A8827849F0B004D56C1 /* MainWindow.swift */,
 				56B9450628851EAD00D312A4 /* Projects */,
-				56B94510288552D800D312A4 /* Invoices */,
-				56D3854B288A944F00E8BEB5 /* Reports */,
+				56B94510288552D800D312A4 /* InvoiceAndReport */,
 				56B9450F288552C700D312A4 /* Companies */,
 			);
 			path = iOS;
@@ -520,6 +519,16 @@
 				28737A69278310A2004D56C1 /* Companies */,
 			);
 			path = components;
+			sourceTree = "<group>";
+		};
+		569326BC2B70BC7600579BA7 /* Invoice */ = {
+			isa = PBXGroup;
+			children = (
+				28737A5B277BB8B3004D56C1 /* NoInvoicesScreen.swift */,
+				56B9451E2886A1A900D312A4 /* NewInvoiceScreen.swift */,
+				56B944F9288359C300D312A4 /* InvoiceEditorSheet.swift */,
+			);
+			path = Invoice;
 			sourceTree = "<group>";
 		};
 		56B944FB28835A6700D312A4 /* Invoices */ = {
@@ -562,17 +571,16 @@
 			path = Companies;
 			sourceTree = "<group>";
 		};
-		56B94510288552D800D312A4 /* Invoices */ = {
+		56B94510288552D800D312A4 /* InvoiceAndReport */ = {
 			isa = PBXGroup;
 			children = (
 				28737A9327878B33004D56C1 /* InvoicesListScreen.swift */,
 				28737A9B278A1FF7004D56C1 /* InvoiceAndReportScreen.swift */,
-				56B944F9288359C300D312A4 /* InvoiceEditorSheet.swift */,
-				56B9451E2886A1A900D312A4 /* NewInvoiceScreen.swift */,
-				28737A5B277BB8B3004D56C1 /* NoInvoicesScreen.swift */,
 				56D3854E288B207B00E8BEB5 /* Exporter.swift */,
+				569326BC2B70BC7600579BA7 /* Invoice */,
+				56D3854B288A944F00E8BEB5 /* Reports */,
 			);
-			path = Invoices;
+			path = InvoiceAndReport;
 			sourceTree = "<group>";
 		};
 		56B9453328878E2600D312A4 /* App */ = {

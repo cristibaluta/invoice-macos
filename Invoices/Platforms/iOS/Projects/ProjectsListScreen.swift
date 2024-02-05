@@ -19,14 +19,6 @@ struct ProjectsListScreen: View {
         List {
             ForEach(store.projectsStore.projects, id: \.self) { proj in
                 NavigationLink(proj.name, value: proj)
-//                NavigationLink {
-//                    Text(proj.name)
-//                } label: {
-//                    Label(proj.name, systemImage: "list.bullet")
-//                }
-//                NavigationLink(destination: InvoicesListScreen(project: proj)) {
-//                    Label(proj.name, systemImage: "list.bullet")
-//                }
             }
             .onDelete(perform: delete)
         }
