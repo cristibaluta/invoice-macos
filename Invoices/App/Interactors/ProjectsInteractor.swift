@@ -47,19 +47,21 @@ class ProjectsInteractor {
             .writeFolder(at: templatesPath)
 
         // Copy templates from bundle to templates folder
-        let templates = ["template_invoice",
-                         "template_invoice_row",
-                         "template_report",
-                         "template_report_project",
-                         "template_report_row"]
+        let templates = ["template_invoice.html",
+                         "template_invoice.xml",
+                         "template_invoice_row.html",
+                         "template_invoice_row.xml",
+                         "template_report.html",
+                         "template_report_project.html",
+                         "template_report_row.html"]
         let publishers: [AnyPublisher<Bool, Never>] = templates.compactMap { template in
-            guard let bundleUrl = Bundle.main.url(forResource: template, withExtension: ".html") else {
+            guard let bundleUrl = Bundle.main.url(forResource: template, withExtension: nil) else {
                 return nil
             }
             guard let templateData = try? Data(contentsOf: bundleUrl) else {
                 return nil
             }
-            let templatePath = "\(templatesPath)/\(template).html"
+            let templatePath = "\(templatesPath)/\(template)"
             return self.repository.writeFile(templateData, at: templatePath)
         }
         let copyTemplates = Publishers.MergeMany(publishers)

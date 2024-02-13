@@ -40,7 +40,13 @@ extension Date {
         dateFormatter.dateFormat = "yyyy.MM.dd"
         return dateFormatter.string(from: self)
     }
-    
+
+    var yyyyMMdd_dashes: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.string(from: self)
+    }
+
     var mediumDate: String {
         let comp = Calendar.current.dateComponents([.year, .month, .day], from: self)
         var month = ""

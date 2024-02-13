@@ -1,0 +1,21 @@
+<cac:InvoiceLine>
+    <cbc:ID>::nr::</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="H87">1.00</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="RON">::amount::</cbc:LineExtensionAmount>
+    <cac:Item>
+        <cbc:Name>::product::</cbc:Name>
+		<cac:OriginCountry>
+			<cbc:IdentificationCode>RO</cbc:IdentificationCode>
+		</cac:OriginCountry>
+        <cac:ClassifiedTaxCategory>
+            <cbc:ID>O</cbc:ID>
+            <cac:TaxScheme>
+                <cbc:ID>VAT</cbc:ID>
+            </cac:TaxScheme>
+        </cac:ClassifiedTaxCategory>
+    </cac:Item>
+    <cac:Price>
+        <cbc:PriceAmount currencyID="RON">::amount::</cbc:PriceAmount>
+		<cbc:BaseQuantity unitCode="H87">1</cbc:BaseQuantity>
+    </cac:Price>
+</cac:InvoiceLine>

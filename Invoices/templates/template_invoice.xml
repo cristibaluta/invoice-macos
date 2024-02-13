@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:ns4="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd">
+    <cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:efactura.mfinante.ro:CIUS-RO:1.0.1</cbc:CustomizationID>
+    <cbc:ID>::invoice_series::-::invoice_nr::</cbc:ID>
+    <cbc:IssueDate>::invoice_date::</cbc:IssueDate>
+	<cbc:DueDate>::invoice_date::</cbc:DueDate>
+    <cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+    <cbc:DocumentCurrencyCode>RON</cbc:DocumentCurrencyCode>
+    <cac:AccountingSupplierParty>
+        <cac:Party>
+			<cac:PartyIdentification>
+				<cbc:ID schemeID="0206">::contractor_orc::</cbc:ID>
+			</cac:PartyIdentification>
+            <cac:PartyName>
+                <cbc:Name>::contractor_name::</cbc:Name>
+            </cac:PartyName>
+            <cac:PostalAddress>
+                <cbc:StreetName>::contractor_address::</cbc:StreetName>
+                <cbc:CityName>Cluj-Napoca</cbc:CityName>
+                <cbc:CountrySubentity>RO-CJ</cbc:CountrySubentity>
+                <cac:Country>
+                    <cbc:IdentificationCode>RO</cbc:IdentificationCode>
+                </cac:Country>
+            </cac:PostalAddress>
+            <cac:PartyLegalEntity>
+                <cbc:RegistrationName>::contractor_name::</cbc:RegistrationName>
+                <cbc:CompanyID schemeID="0210">::contractor_cui::</cbc:CompanyID>
+            </cac:PartyLegalEntity>
+            <cac:Contact>
+                <cbc:Telephone>::contractor_phone::</cbc:Telephone>
+                <cbc:ElectronicMail>::contractor_email::</cbc:ElectronicMail>
+            </cac:Contact>
+        </cac:Party>
+    </cac:AccountingSupplierParty>
+    <cac:AccountingCustomerParty>
+        <cac:Party>
+			<cac:PartyIdentification>
+				<cbc:ID schemeID="0206">::client_orc::</cbc:ID>
+			</cac:PartyIdentification>
+            <cac:PartyName>
+                <cbc:Name>::client_name::</cbc:Name>
+            </cac:PartyName>
+            <cac:PostalAddress>
+                <cbc:StreetName>::client_address::</cbc:StreetName>
+                <cbc:CityName>Cluj-Napoca</cbc:CityName>
+                <cbc:CountrySubentity>RO-CJ</cbc:CountrySubentity>
+                <cac:Country>
+                    <cbc:IdentificationCode>RO</cbc:IdentificationCode>
+                </cac:Country>
+            </cac:PostalAddress>
+            <cac:PartyLegalEntity>
+                <cbc:RegistrationName>::client_name::</cbc:RegistrationName>
+                <cbc:CompanyID schemeID="0210">::client_cui::</cbc:CompanyID>
+            </cac:PartyLegalEntity>
+        </cac:Party>
+    </cac:AccountingCustomerParty>
+	<cac:PaymentMeans>
+		<cbc:PaymentMeansCode name="Cash">10</cbc:PaymentMeansCode>
+		<cac:PayeeFinancialAccount>
+			<cbc:ID>::contractor_bank_account::</cbc:ID>
+		</cac:PayeeFinancialAccount>
+	</cac:PaymentMeans>
+    <cac:TaxTotal>
+        <cbc:TaxAmount currencyID="RON">0</cbc:TaxAmount>
+        <cac:TaxSubtotal>
+            <cbc:TaxableAmount currencyID="RON">::amount_total::</cbc:TaxableAmount>
+            <cbc:TaxAmount currencyID="RON">0</cbc:TaxAmount>
+            <cac:TaxCategory>
+                <cbc:ID>O</cbc:ID>
+                <cbc:Percent>0.00</cbc:Percent>
+                <cbc:TaxExemptionReasonCode>VATEX-EU-O</cbc:TaxExemptionReasonCode>
+                <cac:TaxScheme>
+                    <cbc:ID>VAT</cbc:ID>
+                </cac:TaxScheme>
+            </cac:TaxCategory>
+        </cac:TaxSubtotal>
+    </cac:TaxTotal>
+    <cac:LegalMonetaryTotal>
+        <cbc:LineExtensionAmount currencyID="RON">::amount_total::</cbc:LineExtensionAmount>
+        <cbc:TaxExclusiveAmount currencyID="RON">::amount_total::</cbc:TaxExclusiveAmount>
+        <cbc:TaxInclusiveAmount currencyID="RON">::amount_total_vat::</cbc:TaxInclusiveAmount>
+        <cbc:AllowanceTotalAmount currencyID="RON">0.00</cbc:AllowanceTotalAmount>
+        <cbc:ChargeTotalAmount currencyID="RON">0.00</cbc:ChargeTotalAmount>
+		<cbc:PrepaidAmount currencyID="RON">0.00</cbc:PrepaidAmount>
+		<cbc:PayableRoundingAmount currencyID="RON">0.00</cbc:PayableRoundingAmount>
+        <cbc:PayableAmount currencyID="RON">::amount_total_vat::</cbc:PayableAmount>
+    </cac:LegalMonetaryTotal>
+    ::rows::
+</Invoice>

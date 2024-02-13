@@ -75,6 +75,12 @@
 		563A6D022821807100C3C30A /* ProjectsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563A6D002821807100C3C30A /* ProjectsStore.swift */; };
 		564788AD287E959F0034AA4C /* RCPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 564788AC287E959F0034AA4C /* RCPreferences */; };
 		564788AF287E95B10034AA4C /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 564788AE287E95B10034AA4C /* CloudKit.framework */; };
+		566EE0762B7C287C000353DC /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566EE0752B7C287C000353DC /* String.swift */; };
+		566EE0772B7C287C000353DC /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566EE0752B7C287C000353DC /* String.swift */; };
+		566EE07A2B7C2B5D000353DC /* template_invoice_row.xml in Resources */ = {isa = PBXBuildFile; fileRef = 566EE0782B7C2B5D000353DC /* template_invoice_row.xml */; };
+		566EE07B2B7C2B5D000353DC /* template_invoice_row.xml in Resources */ = {isa = PBXBuildFile; fileRef = 566EE0782B7C2B5D000353DC /* template_invoice_row.xml */; };
+		566EE07C2B7C2B5D000353DC /* template_invoice.xml in Resources */ = {isa = PBXBuildFile; fileRef = 566EE0792B7C2B5D000353DC /* template_invoice.xml */; };
+		566EE07D2B7C2B5D000353DC /* template_invoice.xml in Resources */ = {isa = PBXBuildFile; fileRef = 566EE0792B7C2B5D000353DC /* template_invoice.xml */; };
 		567F86A328BA05C70091EC54 /* ReportProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567F86A228BA05C70091EC54 /* ReportProject.swift */; };
 		567F86A428BA05C70091EC54 /* ReportProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567F86A228BA05C70091EC54 /* ReportProject.swift */; };
 		568AB73E2B50A10600D1679F /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568AB73D2B50A10600D1679F /* SettingsWindow.swift */; };
@@ -227,6 +233,9 @@
 		562965042B4EE26A00C44605 /* ProjectsListScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectsListScreen.swift; sourceTree = "<group>"; };
 		563A6D002821807100C3C30A /* ProjectsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsStore.swift; sourceTree = "<group>"; };
 		564788AE287E95B10034AA4C /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.5.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
+		566EE0752B7C287C000353DC /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		566EE0782B7C2B5D000353DC /* template_invoice_row.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = template_invoice_row.xml; sourceTree = "<group>"; };
+		566EE0792B7C2B5D000353DC /* template_invoice.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = template_invoice.xml; sourceTree = "<group>"; };
 		567F86A228BA05C70091EC54 /* ReportProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProject.swift; sourceTree = "<group>"; };
 		568AB73D2B50A10600D1679F /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindow.swift; sourceTree = "<group>"; };
 		568AB73F2B50A33600D1679F /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
@@ -315,11 +324,13 @@
 		2867F84027062EFC002CA8CC /* templates */ = {
 			isa = PBXGroup;
 			children = (
-				28D81C522738F32100209EAC /* template_invoice_row.html */,
 				28D81C4E2738F32100209EAC /* template_invoice.html */,
-				28D81C502738F32100209EAC /* template_report_project.html */,
-				28D81C512738F32100209EAC /* template_report_row.html */,
+				566EE0792B7C2B5D000353DC /* template_invoice.xml */,
+				28D81C522738F32100209EAC /* template_invoice_row.html */,
+				566EE0782B7C2B5D000353DC /* template_invoice_row.xml */,
 				28D81C4F2738F32100209EAC /* template_report.html */,
+				28D81C512738F32100209EAC /* template_report_row.html */,
+				28D81C502738F32100209EAC /* template_report_project.html */,
 			);
 			path = templates;
 			sourceTree = "<group>";
@@ -415,6 +426,7 @@
 				2814C1F526E9323A0054FD5B /* Date.swift */,
 				56CB792C28A140D000E85EF7 /* DateTests.swift */,
 				2814C1F326E910930054FD5B /* Numbers.swift */,
+				566EE0752B7C287C000353DC /* String.swift */,
 				56D38552288B392A00E8BEB5 /* Keyboard+ViewModifier.swift */,
 				56D38569289896C300E8BEB5 /* TextField+ViewModifier.swift */,
 				56DAD63D2B66AB1900A30F9C /* PDFDocument+Transferable.swift */,
@@ -801,6 +813,8 @@
 				28A73D2F2763BFB100F727C3 /* template_report_project.html in Resources */,
 				28A73D2D2763BFB100F727C3 /* template_invoice_row.html in Resources */,
 				28A73D0B2763B93900F727C3 /* Assets.xcassets in Resources */,
+				566EE07D2B7C2B5D000353DC /* template_invoice.xml in Resources */,
+				566EE07B2B7C2B5D000353DC /* template_invoice_row.xml in Resources */,
 				28A73D302763BFB100F727C3 /* template_report_row.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -822,6 +836,8 @@
 				28D81C552738F32100209EAC /* template_report_project.html in Resources */,
 				28D81C542738F32100209EAC /* template_report.html in Resources */,
 				28F91D5226A1AC150057C5CC /* Assets.xcassets in Resources */,
+				566EE07C2B7C2B5D000353DC /* template_invoice.xml in Resources */,
+				566EE07A2B7C2B5D000353DC /* template_invoice_row.xml in Resources */,
 				28D81C562738F32100209EAC /* template_report_row.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -863,6 +879,7 @@
 				56B9451A2886283900D312A4 /* InvoicesStore.swift in Sources */,
 				28A73D182763BF6100F727C3 /* Report.swift in Sources */,
 				28A73D162763BF5800F727C3 /* InvoiceData.swift in Sources */,
+				566EE0772B7C287C000353DC /* String.swift in Sources */,
 				28A73D152763BF5500F727C3 /* Project.swift in Sources */,
 				569326BB2B6FBAF300579BA7 /* SettingsStore.swift in Sources */,
 				28A73D172763BF5B00F727C3 /* Invoice.swift in Sources */,
@@ -965,6 +982,7 @@
 				28D81C3E27358BD300209EAC /* InvoiceEditor.swift in Sources */,
 				56D385682892DE6600E8BEB5 /* ReportEditorPopover.swift in Sources */,
 				568AB73E2B50A10600D1679F /* SettingsWindow.swift in Sources */,
+				566EE0762B7C287C000353DC /* String.swift in Sources */,
 				56B945352887DFA700D312A4 /* NoInvoicesView.swift in Sources */,
 				56DAD62E2B59180000A30F9C /* ReportEditorViewModel.swift in Sources */,
 				56D679A1280212CC00133E1B /* CompaniesInteractor.swift in Sources */,
