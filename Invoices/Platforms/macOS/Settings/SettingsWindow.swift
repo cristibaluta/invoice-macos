@@ -10,11 +10,49 @@ import SwiftUI
 
 struct SettingsWindow: View {
 
-    @EnvironmentObject var setingsData: SettingsStore
+    @EnvironmentObject var settingsStore: SettingsStore
 
     var body: some View {
-        VStack{
-            Text("Settings view")
+        ScrollView {
+            VStack(alignment: .leading) {
+
+                Text("Files location:")
+                    .bold()
+
+                HStack {
+                    Menu {
+                        ForEach(settingsStore.repositories) { repository in
+                            Button(repository.type.name, action: {
+                                self.settingsStore.setCurrentRepository(repository.type)
+                            })
+                        }
+                    } label: {
+                        Text(settingsStore.currentRepository.name)
+                    }
+                    Spacer()
+                }
+
+                HStack {
+                    Toggle("Backup", isOn: $settingsStore.enableBackup)
+
+                    if settingsStore.enableBackup {
+                        Button("Chose path") {
+                            let panel = NSOpenPanel()
+                            panel.canChooseFiles = false
+                            panel.canChooseDirectories = true
+                            panel.allowsMultipleSelection = false
+                            if panel.runModal() == .OK {
+                                if let url = panel.urls.first {
+                                    LocalRepository.setBaseUrl(url)
+                                }
+                            }
+                        }
+                        .padding(.leading, 16)
+                    }
+                }
+
+            }
+            .padding()
         }
         .frame(width: 500, height: 500)
     }

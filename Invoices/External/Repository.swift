@@ -8,6 +8,20 @@
 import Foundation
 import Combine
 
+enum RepositoryType: Int {
+    case sandbox
+    case icloud
+    case custom
+
+    var name: String {
+        switch self {
+            case .sandbox: return "App's Sandbox"
+            case .icloud: return "iCloud Drive"
+            case .custom: return "Custom path"
+        }
+    }
+}
+
 protocol Repository {
     var baseUrl: URL? { get }
     func readFolderContent (at path: String) -> Publishers.Sequence<[String], Never>

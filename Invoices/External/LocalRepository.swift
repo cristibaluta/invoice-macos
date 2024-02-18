@@ -10,11 +10,14 @@ import Combine
 
 class LocalRepository {
 
+    static fileprivate let bookmarkKey = "baseUrlBookmarkKey"
+
     var baseUrl: URL? {
-        return BookmarkUrl().getBaseUrlBookmark()!
+        return LocalRepository.getBaseUrlBookmark()
     }
+
     private func execute (_ block: (URL) -> Void) {
-        if let baseUrl = BookmarkUrl().getBaseUrlBookmark() {
+        if let baseUrl = LocalRepository.getBaseUrlBookmark() {
             let _ = baseUrl.startAccessingSecurityScopedResource()
             block(baseUrl)
             baseUrl.stopAccessingSecurityScopedResource()
@@ -25,47 +28,136 @@ class LocalRepository {
 extension LocalRepository: Repository {
 
     func readFolderContent (at path: String) -> Publishers.Sequence<[String], Never> {
-        let p = PassthroughSubject<[String], Never>()
-        execute { baseUrl in
-            do {
-                let url = baseUrl.appendingPathComponent(path)
-                let folders = try FileManager.default.contentsOfDirectory(atPath: url.path).sorted(by: {$0 > $1})
-                p.send(folders)
-            }
-            catch {
-                print(error)
-                p.send([])
-            }
-            p.send(completion: .finished)
+
+        guard let baseUrl = LocalRepository.getBaseUrlBookmark() else {
+            return Publishers.Sequence(sequence: [])
         }
-//        return p.eraseToAnyPublisher()
-        return Publishers.Sequence(sequence: [])
+        defer {
+            baseUrl.stopAccessingSecurityScopedResource()
+        }
+        _ = baseUrl.startAccessingSecurityScopedResource()
+
+        do {
+            let url = baseUrl.appendingPathComponent(path)
+            let folders = try FileManager.default.contentsOfDirectory(atPath: url.path).sorted(by: {$0 > $1})
+            return Publishers.Sequence(sequence: folders)
+        }
+        catch {
+            print(error)
+            return Publishers.Sequence(sequence: [])
+        }
     }
 
     func readFile (at path: String) -> AnyPublisher<Data, Never> {
-        return CurrentValueSubject<Data, Never>(Data()).eraseToAnyPublisher()
+
+        return Future<Data, Never> { promise in
+            self.execute { baseUrl in
+                do {
+                    let url = baseUrl.appendingPathComponent(path)
+                    let data = try Data(contentsOf: url)
+                    promise(.success(data))
+                } catch {
+                    print(error)
+                    promise(.success(Data()))
+                }
+            }
+        }
+        .flatMap { data in
+            CurrentValueSubject<Data, Never>(data)
+        }
+        .eraseToAnyPublisher()
     }
+    
     func readFiles (at paths: [String]) -> Publishers.Sequence<[Data], Never> {
-        return Publishers.Sequence(sequence: [])
+        
+        guard let baseUrl = LocalRepository.getBaseUrlBookmark() else {
+            return Publishers.Sequence(sequence: [])
+        }
+        defer {
+            baseUrl.stopAccessingSecurityScopedResource()
+        }
+        _ = baseUrl.startAccessingSecurityScopedResource()
+
+        var datas = [Data]()
+        for path in paths {
+            do {
+                let url = baseUrl.appendingPathComponent(path)
+                let data = try Data(contentsOf: url)
+                datas.append(data)
+            } catch {
+                print(error)
+            }
+        }
+        return Publishers.Sequence(sequence: datas)
     }
+
     func writeFolder (at path: String) -> AnyPublisher<Bool, Never> {
-        return CurrentValueSubject<Bool, Never>(false).eraseToAnyPublisher()
+        
+        return Future<Bool, Never> { promise in
+            self.execute { baseUrl in
+                do {
+                    let url = baseUrl.appendingPathComponent(path)
+                    try FileManager.default.createDirectory(at: url,
+                                                            withIntermediateDirectories: true,
+                                                            attributes: nil)
+                    promise(.success(true))
+                } catch {
+                    print(error)
+                    promise(.success(false))
+                }
+            }
+        }
+        .flatMap { success in
+            CurrentValueSubject<Bool, Never>(success)
+        }
+        .eraseToAnyPublisher()
     }
+
     func writeFile (_ contents: Data, at path: String) -> AnyPublisher<Bool, Never> {
-        return CurrentValueSubject<Bool, Never>(false).eraseToAnyPublisher()
+
+        return Future<Bool, Never> { promise in
+            self.execute { baseUrl in
+                do {
+                    let url = baseUrl.appendingPathComponent(path)
+                    try contents.write(to: url)
+                    promise(.success(true))
+                } catch {
+                    print(error)
+                    promise(.success(false))
+                }
+            }
+        }
+        .flatMap { success in
+            CurrentValueSubject<Bool, Never>(success)
+        }
+        .eraseToAnyPublisher()
     }
+
     func removeItem (at path: String) -> AnyPublisher<Bool, Never> {
-        return CurrentValueSubject<Bool, Never>(false).eraseToAnyPublisher()
+
+        return Future<Bool, Never> { promise in
+            self.execute { baseUrl in
+                do {
+                    let url = baseUrl.appendingPathComponent(path)
+                    try FileManager.default.removeItem(at: url)
+                    promise(.success(true))
+                } catch {
+                    print(error)
+                    promise(.success(false))
+                }
+            }
+        }
+        .flatMap { success in
+            CurrentValueSubject<Bool, Never>(success)
+        }
+        .eraseToAnyPublisher()
     }
 }
 
-
-class BookmarkUrl {
-
-    let bookmarkKey = "baseUrlBookmarkKey"
+extension LocalRepository {
 
     /// Returns a temporary url
-    func getBaseUrlBookmark() -> URL? {
+    static func getBaseUrlBookmark() -> URL? {
         if let bookmark = UserDefaults.standard.object(forKey: bookmarkKey) as? NSData as Data? {
             var stale = false
             if let url = try? URL(resolvingBookmarkData: bookmark,
@@ -78,7 +170,7 @@ class BookmarkUrl {
         return nil
     }
 
-    func setBaseUrl (_ url: URL?) {
+    static func setBaseUrl (_ url: URL?) {
         guard let bookmark = try? url?.bookmarkData(options: URL.BookmarkCreationOptions.withSecurityScope,
                                                     includingResourceValuesForKeys: nil,
                                                     relativeTo: nil) else {
@@ -88,7 +180,7 @@ class BookmarkUrl {
         UserDefaults.standard.synchronize()
     }
 
-    func clear() {
+    static func clear() {
         UserDefaults.standard.removeObject(forKey: bookmarkKey)
         UserDefaults.standard.synchronize()
     }

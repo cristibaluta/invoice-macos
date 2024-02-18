@@ -10,8 +10,7 @@ import SwiftUI
 @main
 struct InvoicesApp: App {
 
-//    private let store = MainStore(repository: SandboxRepository())
-    private let store = MainStore(repository: IcloudDriveRepository())
+    private let store = MainStore()
 
 
     var body: some Scene {

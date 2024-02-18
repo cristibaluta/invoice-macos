@@ -18,10 +18,15 @@ let appFont = Font.system(.body)
 enum UserPreferences: String, RCPreferencesProtocol {
 
     case lastProject = "lastProject"
+    case repository = "repository"
+    case backupRepository = "backupRepository"
 
     func defaultValue() -> Any {
         switch self {
             case .lastProject: return ""
+            case .repository: return RepositoryType.sandbox.rawValue
+            case .backupRepository: return -1
         }
     }
+
 }
