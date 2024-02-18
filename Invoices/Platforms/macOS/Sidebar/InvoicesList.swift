@@ -41,7 +41,9 @@ struct InvoicesList: View {
             }
             .contextMenu {
                 Button(action: {
-                    NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: invoicesStore.path(for: invoice))
+                    if let path = invoicesStore.path(for: invoice) {
+                        NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: path)
+                    }
                 }) {
                     Text("Show in Finder")
                 }

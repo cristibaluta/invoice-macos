@@ -183,8 +183,8 @@ class InvoicesStore: ObservableObject {
         isShowingDeleteInvoiceAlert = false
     }
 
-    func path (for invoice: Invoice) -> String {
-        return repository.baseUrl
+    func path (for invoice: Invoice) -> String? {
+        return repository.baseUrl?
             .appendingPathComponent(project.name)
             .appendingPathComponent(invoice.name)
             .path

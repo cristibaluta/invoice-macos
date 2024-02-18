@@ -10,161 +10,100 @@ import Combine
 
 class IcloudDriveRepository {
 
-    var baseUrl: URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentsDirectory = paths[0]
-        return documentsDirectory
-    }
+    private let containerIdentifier = "iCloud.ro.imagin.Invoices"
 
-    var publisher: AnyPublisher<String, Never> {
-        subject.eraseToAnyPublisher()
-    }
-    private let subject = PassthroughSubject<String, Never>()
-
-    private var iCloudContainer: URL? {
-        return FileManager.default.url(forUbiquityContainerIdentifier: nil)
+    var baseUrl: URL? {
+        // Only the Documents directory is displayed in Finder
+        return FileManager.default.url(forUbiquityContainerIdentifier: containerIdentifier)?.appendingPathComponent("Documents")
     }
     
-    init() {
-        metadataQuery.start()
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    func execute (_ block: (URL) -> Void) {
-        if let containerUrl = iCloudContainer?.appendingPathComponent("Documents") {
-            if !FileManager.default.fileExists(atPath: containerUrl.path, isDirectory: nil) {
-                do {
-//                    try FileManager.default.removeItem(at: containerUrl)
-                    try FileManager.default.createDirectory(at: containerUrl,
-                                                            withIntermediateDirectories: true,
-                                                            attributes: nil)
-                }
-                catch {
-                    print(error.localizedDescription)
-                }
-            }
-            
-//            let fileUrl = containerUrl.appendingPathComponent("hello.txt")
-//            do {
-//                try FileManager.default.removeItem(at: fileUrl)
-////                try "Hello iCloud!".write(to: fileUrl, atomically: true, encoding: .utf8)
-////                print(try String(contentsOfFile: fileUrl.path))
-//            }
-//            catch {
-//                print(error.localizedDescription)
-//            }
-            block(containerUrl)
-        }
-    }
-
-    func getFilePath (container: URL, fileName: String) -> String {
-        let filePath = container.appendingPathComponent(fileName).path
-        return filePath
-    }
-
-    lazy var metadataQuery: NSMetadataQuery = {
-        let query = NSMetadataQuery()
-        query.searchScopes = [NSMetadataQueryUbiquitousDocumentsScope]
-        query.predicate = NSPredicate(format: "%K CONTAINS %@", NSMetadataItemFSNameKey, "List")
-
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(didFinishGathering),
-                                               name: NSNotification.Name.NSMetadataQueryDidUpdate,
-                                               object: query)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(didFinishGathering),
-                                               name: NSNotification.Name.NSMetadataQueryDidFinishGathering,
-                                               object: query)
-        return query
-    }()
-
-    private func isMetadataItemDownloaded (item : NSMetadataItem) -> Bool {
-        if item.value(forAttribute: NSMetadataUbiquitousItemDownloadingStatusKey) as? String == NSMetadataUbiquitousItemDownloadingStatusCurrent {
-            return true
-        } else {
-            return false
-        }
-    }
 }
 
 extension IcloudDriveRepository: Repository {
 
-    func readFolderContent (at url: URL) -> Publishers.Sequence<[String], Never> {
-        return publisher
-            .eraseToAnyPublisher()
+    func readFolderContent (at path: String) -> Publishers.Sequence<[String], Never> {
+        guard let url = baseUrl?.appendingPathComponent(path) else {
+            return Publishers.Sequence(sequence: [])
+        }
+        do {
+            let folders = try FileManager.default.contentsOfDirectory(atPath: url.path).sorted(by: {$0 > $1})
+            return folders.publisher
+        }
+        catch {
+            print(error)
+            return Publishers.Sequence(sequence: [])
+        }
     }
 
-    func readFiles (at paths: [String]) -> AnyPublisher<[Data], Never> {
-        return CurrentValueSubject<[Data], Never>([]).eraseToAnyPublisher()
+    func readFile (at path: String) -> AnyPublisher<Data, Never> {
+        guard let url = baseUrl?.appendingPathComponent(path) else {
+            return CurrentValueSubject<Data, Never>(Data()).eraseToAnyPublisher()
+        }
+        do {
+            let data = try Data(contentsOf: url)
+            return CurrentValueSubject<Data, Never>(data).eraseToAnyPublisher()
+        } catch {
+            print(error)
+            return CurrentValueSubject<Data, Never>(Data()).eraseToAnyPublisher()
+        }
     }
-    
-    func writeFolder (at url: URL) -> AnyPublisher<Bool, Never> {
-        return CurrentValueSubject<Bool, Never>(true).eraseToAnyPublisher()
-    }
 
-    func writeFile (_ contents: Data, at url: URL) -> AnyPublisher<Bool, Never> {
-        return CurrentValueSubject<Bool, Never>(true).eraseToAnyPublisher()
-    }
-
-    func removeItem (at url: URL) -> AnyPublisher<Bool, Never>  {
-        return CurrentValueSubject<Bool, Never>(true).eraseToAnyPublisher()
-    }
-}
-
-extension IcloudDriveRepository {
-    
-    @objc func didFinishGathering (notification: Notification?) {
-        let query = notification?.object as? NSMetadataQuery
-
-        query?.enumerateResults { (item: Any, index: Int, stop: UnsafeMutablePointer<ObjCBool>) in
-            let metadataItem = item as! NSMetadataItem
-
-            if isMetadataItemDownloaded(item: metadataItem) == false {
-                let url = metadataItem.value(forAttribute: NSMetadataItemURLKey) as! URL
-                try? FileManager.default.startDownloadingUbiquitousItem(at: url)
+    func readFiles (at paths: [String]) -> Publishers.Sequence<[Data], Never> {
+        guard let baseUrl else {
+            return Publishers.Sequence(sequence: [])
+        }
+        var datas = [Data]()
+        for path in paths {
+            do {
+                let url = baseUrl.appendingPathComponent(path)
+                let data = try Data(contentsOf: url)
+                datas.append(data)
+            } catch {
+                print(error)
             }
         }
+        return Publishers.Sequence(sequence: datas)
+    }
 
-        guard let queryresultsCount = query?.resultCount else { return }
-        for index in 0..<queryresultsCount {
-            let item = query?.result(at: index) as? NSMetadataItem
-            let itemName = item?.value(forAttribute: NSMetadataItemFSNameKey) as! String
-
-            let container = self.iCloudContainer
-            let filePath = self.getFilePath(container: container!, fileName: "TaskList")
-            let addressPath = self.getFilePath(container: container!, fileName: "CategoryList")
-
-//            if itemName == "TaskList" {
-//                if let jsonData = NSKeyedUnarchiver.unarchiveObject(withFile: filePath) as? Data {
-//                    if let person = try? JSONDecoder().decode(Person.self, from: jsonData) {
-//                        nameLabel.text = person.name
-//                        weightLabel.text = String(person.weight)
-//                    } else {
-//                        nameLabel.text = "NOT decoded"
-//                        weightLabel.text = "NOT decoded"
-//                    }
-//                } else {
-//                    nameLabel.text = "NOT unarchived"
-//                    weightLabel.text = "NOT unarchived"
-//                }
-//            }
+    func writeFolder (at path: String) -> AnyPublisher<Bool, Never> {
+        guard let url = baseUrl?.appendingPathComponent(path) else {
+            return CurrentValueSubject<Bool, Never>(false).eraseToAnyPublisher()
+        }
+        do {
+            try FileManager.default.createDirectory(at: url,
+                                                    withIntermediateDirectories: true,
+                                                    attributes: nil)
+            return CurrentValueSubject<Bool, Never>(true).eraseToAnyPublisher()
+        } catch {
+            print(error)
+            return CurrentValueSubject<Bool, Never>(false).eraseToAnyPublisher()
         }
     }
 
-//    @IBAction func saveButtonPressed(_ sender: UIButton) {
-//        let container = filesCoordinator.iCloudContainer
-//        let personPath = filesCoordinator.getFilePath(container: container!, fileName: "TaskList")
-//        let addressPath = filesCoordinator.getFilePath(container: container!, fileName: "CategoryList")
-//
-//        let person = Person(name: nameTextField.text!, weight: Double(weightTextField.text!)!)
-//        let jsonPersonData = try? JSONEncoder().encode(person)
-//        NSKeyedArchiver.archiveRootObject(jsonPersonData!, toFile: personPath)
-//
-//        let address = Address(street: streetTextField.text!, house: Int(houseTextField.text!)!)
-//        let jsonAddressData = try? JSONEncoder().encode(address)
-//        NSKeyedArchiver.archiveRootObject(jsonAddressData!, toFile: addressPath)
-//    }
+    func writeFile (_ contents: Data, at path: String) -> AnyPublisher<Bool, Never> {
+        guard let url = baseUrl?.appendingPathComponent(path) else {
+            return CurrentValueSubject<Bool, Never>(false).eraseToAnyPublisher()
+        }
+        do {
+            try contents.write(to: url)
+            return CurrentValueSubject<Bool, Never>(true).eraseToAnyPublisher()
+        } catch {
+            print(error)
+            return CurrentValueSubject<Bool, Never>(false).eraseToAnyPublisher()
+        }
+    }
+
+    func removeItem (at path: String) -> AnyPublisher<Bool, Never> {
+        guard let url = baseUrl?.appendingPathComponent(path) else {
+            return CurrentValueSubject<Bool, Never>(false).eraseToAnyPublisher()
+        }
+        do {
+            try FileManager.default.removeItem(at: url)
+            return CurrentValueSubject<Bool, Never>(true).eraseToAnyPublisher()
+        } catch {
+            print(error)
+            return CurrentValueSubject<Bool, Never>(false).eraseToAnyPublisher()
+        }
+    }
+
 }

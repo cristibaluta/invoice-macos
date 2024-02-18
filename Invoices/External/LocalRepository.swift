@@ -9,7 +9,8 @@ import Foundation
 import Combine
 
 class LocalRepository {
-    var baseUrl: URL {
+
+    var baseUrl: URL? {
         return BookmarkUrl().getBaseUrlBookmark()!
     }
     private func execute (_ block: (URL) -> Void) {

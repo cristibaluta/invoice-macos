@@ -32,6 +32,5 @@ extension PDFDocument: Transferable {
                 return Data()
             }
         }
-     }
+    }
 }
-

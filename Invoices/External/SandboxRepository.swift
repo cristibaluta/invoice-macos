@@ -10,7 +10,7 @@ import Combine
 
 class SandboxRepository {
 
-    var baseUrl: URL {
+    var baseUrl: URL? {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
 //        print(documentsDirectory)
@@ -21,6 +21,9 @@ class SandboxRepository {
 extension SandboxRepository: Repository {
 
     func readFolderContent (at path: String) -> Publishers.Sequence<[String], Never> {
+        guard let baseUrl else {
+            return Publishers.Sequence(sequence: [])
+        }
         do {
             let url = baseUrl.appendingPathComponent(path)
             let folders = try FileManager.default.contentsOfDirectory(atPath: url.path).sorted(by: {$0 > $1})
@@ -33,6 +36,9 @@ extension SandboxRepository: Repository {
     }
 
     func readFile (at path: String) -> AnyPublisher<Data, Never> {
+        guard let baseUrl else {
+            return CurrentValueSubject<Data, Never>(Data()).eraseToAnyPublisher()
+        }
         do {
             let url = baseUrl.appendingPathComponent(path)
             let data = try Data(contentsOf: url)
@@ -44,6 +50,9 @@ extension SandboxRepository: Repository {
     }
 
     func readFiles (at paths: [String]) -> Publishers.Sequence<[Data], Never> {
+        guard let baseUrl else {
+            return Publishers.Sequence(sequence: [])
+        }
         var datas = [Data]()
         for path in paths {
             do {
@@ -58,6 +67,9 @@ extension SandboxRepository: Repository {
     }
 
     func writeFolder (at path: String) -> AnyPublisher<Bool, Never> {
+        guard let baseUrl else {
+            return CurrentValueSubject<Bool, Never>(false).eraseToAnyPublisher()
+        }
         do {
             let url = baseUrl.appendingPathComponent(path)
             try FileManager.default.createDirectory(at: url,
@@ -71,6 +83,9 @@ extension SandboxRepository: Repository {
     }
 
     func writeFile (_ contents: Data, at path: String) -> AnyPublisher<Bool, Never> {
+        guard let baseUrl else {
+            return CurrentValueSubject<Bool, Never>(false).eraseToAnyPublisher()
+        }
         do {
             let url = baseUrl.appendingPathComponent(path)
             try contents.write(to: url)
@@ -82,6 +97,9 @@ extension SandboxRepository: Repository {
     }
 
     func removeItem (at path: String) -> AnyPublisher<Bool, Never> {
+        guard let baseUrl else {
+            return CurrentValueSubject<Bool, Never>(false).eraseToAnyPublisher()
+        }
         do {
             let url = baseUrl.appendingPathComponent(path)
             try FileManager.default.removeItem(at: url)
