@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import RCLog
 
 class LocalRepository {
 
@@ -115,22 +116,41 @@ extension LocalRepository: Repository {
 
     func writeFile (_ contents: Data, at path: String) -> AnyPublisher<Bool, Never> {
 
-        return Future<Bool, Never> { promise in
-            self.execute { baseUrl in
-                do {
-                    let url = baseUrl.appendingPathComponent(path)
-                    try contents.write(to: url)
-                    promise(.success(true))
-                } catch {
-                    print(error)
-                    promise(.success(false))
-                }
-            }
+        guard let baseUrl = LocalRepository.getBaseUrlBookmark() else {
+            return CurrentValueSubject<Bool, Never>(false).eraseToAnyPublisher()
         }
-        .flatMap { success in
-            CurrentValueSubject<Bool, Never>(success)
+        _ = baseUrl.startAccessingSecurityScopedResource()
+
+        do {
+            let url = baseUrl.appendingPathComponent(path)
+            RCLog(url.absoluteString.components(separatedBy: ".").last!)
+            try contents.write(to: url)
+            baseUrl.stopAccessingSecurityScopedResource()
+            return CurrentValueSubject<Bool, Never>(true).eraseToAnyPublisher()
+        } catch {
+            RCLog(error)
+            baseUrl.stopAccessingSecurityScopedResource()
+            return CurrentValueSubject<Bool, Never>(false).eraseToAnyPublisher()
         }
-        .eraseToAnyPublisher()
+
+
+//        return Future<Bool, Never> { promise in
+//            self.execute { baseUrl in
+//                do {
+//                    let url = baseUrl.appendingPathComponent(path)
+//                    RCLog(url)
+//                    try contents.write(to: url)
+//                    promise(.success(true))
+//                } catch {
+//                    print(error)
+//                    promise(.success(false))
+//                }
+//            }
+//        }
+//        .flatMap { success in
+//            CurrentValueSubject<Bool, Never>(success)
+//        }
+//        .eraseToAnyPublisher()
     }
 
     func removeItem (at path: String) -> AnyPublisher<Bool, Never> {

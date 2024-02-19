@@ -19,6 +19,15 @@
       }
     },
     {
+      "identity" : "rclog",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/cristibaluta/RCLog",
+      "state" : {
+        "branch" : "master",
+        "revision" : "e5777165170c2b77562ceb22eaffec8cbc48a69f"
+      }
+    },
+    {
       "identity" : "rcpreferences",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/cristibaluta/RCPreferences",

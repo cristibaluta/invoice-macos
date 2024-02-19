@@ -6,9 +6,7 @@
 //
 
 import Foundation
-import SwiftUI
 import Combine
-import BarChart
 
 enum ContentViewType {
     case noProjects
@@ -27,8 +25,5 @@ enum ContentViewType {
 class MainWindowState: ObservableObject {
 
     @Published var contentType: ContentViewType = .noProjects
-    
-    init() {
-        print(">>>>>> init ContentColumnState")
-    }
+
 }

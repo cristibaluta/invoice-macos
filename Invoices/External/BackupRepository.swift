@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import RCLog
 
 class BackupRepository {
 
@@ -48,9 +49,10 @@ extension BackupRepository: Repository {
 
     func writeFile (_ contents: Data, at path: String) -> AnyPublisher<Bool, Never> {
 
+        RCLog(path)
         return mainRepository.writeFile(contents, at: path)
             .flatMap { success in
-                self.backupRepository.writeFile(contents, at: path)
+                return self.backupRepository.writeFile(contents, at: path)
             }
             .eraseToAnyPublisher()
     }

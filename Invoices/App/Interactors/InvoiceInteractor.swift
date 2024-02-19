@@ -50,6 +50,7 @@ class InvoiceInteractor {
                 let invoiceXmlPath = "\(invoicePath)/data.xml"
                 return self.repository.writeFile(xmlData, at: invoiceXmlPath)
             }
+            .switchToLatest()
 
         // Save pdf
         let pdfName = "Invoice-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).pdf"

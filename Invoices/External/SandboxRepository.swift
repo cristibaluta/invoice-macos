@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import RCLog
 
 class SandboxRepository {
 
@@ -85,6 +86,7 @@ extension SandboxRepository: Repository {
         }
         do {
             try contents.write(to: url)
+            RCLog(url.absoluteString.components(separatedBy: ".").last!)
             return CurrentValueSubject<Bool, Never>(true).eraseToAnyPublisher()
         } catch {
             print(error)

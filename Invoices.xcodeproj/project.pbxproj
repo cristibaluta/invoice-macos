@@ -164,6 +164,7 @@
 		56DEB1DD2B82641300A87EE2 /* RCHttp in Frameworks */ = {isa = PBXBuildFile; productRef = 56DEB1DC2B82641300A87EE2 /* RCHttp */; };
 		56DEB1DF2B828A8900A87EE2 /* BackupRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DEB1DE2B828A8900A87EE2 /* BackupRepository.swift */; };
 		56DEB1E02B828A8900A87EE2 /* BackupRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DEB1DE2B828A8900A87EE2 /* BackupRepository.swift */; };
+		56DEB1E32B8343BA00A87EE2 /* RCLog in Frameworks */ = {isa = PBXBuildFile; productRef = 56DEB1E22B8343BA00A87EE2 /* RCLog */; };
 		56E013482B82384600E255C0 /* RCHttp in Frameworks */ = {isa = PBXBuildFile; productRef = 56E013472B82384600E255C0 /* RCHttp */; };
 		56E013492B82397300E255C0 /* IcloudDriveRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73D3F2764D2C400F727C3 /* IcloudDriveRepository.swift */; };
 		56E0134A2B82397400E255C0 /* IcloudDriveRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73D3F2764D2C400F727C3 /* IcloudDriveRepository.swift */; };
@@ -319,6 +320,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56DEB1E32B8343BA00A87EE2 /* RCLog in Frameworks */,
 				56E013482B82384600E255C0 /* RCHttp in Frameworks */,
 				56D6799027FEB1C300133E1B /* RCPreferences in Frameworks */,
 				28CE1DDD276392A000491447 /* CloudKit.framework in Frameworks */,
@@ -762,6 +764,7 @@
 				28C0435C274BA69F0057C0D0 /* BarChart */,
 				56D6798F27FEB1C300133E1B /* RCPreferences */,
 				56E013472B82384600E255C0 /* RCHttp */,
+				56DEB1E22B8343BA00A87EE2 /* RCLog */,
 			);
 			productName = Invoices;
 			productReference = 28F91D4A26A1AC100057C5CC /* Invoices.app */;
@@ -803,6 +806,7 @@
 				28C0435B274BA69F0057C0D0 /* XCRemoteSwiftPackageReference "BarChart" */,
 				56D6798E27FEB1C300133E1B /* XCRemoteSwiftPackageReference "RCPreferences" */,
 				56E013462B82384600E255C0 /* XCRemoteSwiftPackageReference "RCHttp" */,
+				56DEB1E12B8343BA00A87EE2 /* XCRemoteSwiftPackageReference "RCLog" */,
 			);
 			productRefGroup = 28F91D4B26A1AC100057C5CC /* Products */;
 			projectDirPath = "";
@@ -1413,6 +1417,14 @@
 				kind = branch;
 			};
 		};
+		56DEB1E12B8343BA00A87EE2 /* XCRemoteSwiftPackageReference "RCLog" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/cristibaluta/RCLog";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		56E013462B82384600E255C0 /* XCRemoteSwiftPackageReference "RCHttp" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/cristibaluta/RCHttp";
@@ -1458,6 +1470,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 56E013462B82384600E255C0 /* XCRemoteSwiftPackageReference "RCHttp" */;
 			productName = RCHttp;
+		};
+		56DEB1E22B8343BA00A87EE2 /* RCLog */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 56DEB1E12B8343BA00A87EE2 /* XCRemoteSwiftPackageReference "RCLog" */;
+			productName = RCLog;
 		};
 		56E013472B82384600E255C0 /* RCHttp */ = {
 			isa = XCSwiftPackageProductDependency;
