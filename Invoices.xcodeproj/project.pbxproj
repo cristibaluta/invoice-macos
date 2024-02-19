@@ -165,6 +165,8 @@
 		56DEB1DF2B828A8900A87EE2 /* BackupRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DEB1DE2B828A8900A87EE2 /* BackupRepository.swift */; };
 		56DEB1E02B828A8900A87EE2 /* BackupRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DEB1DE2B828A8900A87EE2 /* BackupRepository.swift */; };
 		56DEB1E32B8343BA00A87EE2 /* RCLog in Frameworks */ = {isa = PBXBuildFile; productRef = 56DEB1E22B8343BA00A87EE2 /* RCLog */; };
+		56DEB1E52B83C59B00A87EE2 /* RCLog in Frameworks */ = {isa = PBXBuildFile; productRef = 56DEB1E42B83C59B00A87EE2 /* RCLog */; };
+		56DEB1E92B83C70700A87EE2 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DEB1E82B83C70700A87EE2 /* SettingsScreen.swift */; };
 		56E013482B82384600E255C0 /* RCHttp in Frameworks */ = {isa = PBXBuildFile; productRef = 56E013472B82384600E255C0 /* RCHttp */; };
 		56E013492B82397300E255C0 /* IcloudDriveRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73D3F2764D2C400F727C3 /* IcloudDriveRepository.swift */; };
 		56E0134A2B82397400E255C0 /* IcloudDriveRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73D3F2764D2C400F727C3 /* IcloudDriveRepository.swift */; };
@@ -290,6 +292,7 @@
 		56DAD6402B66E4A300A30F9C /* InvoicesConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesConfig.swift; sourceTree = "<group>"; };
 		56DAD6432B67AEAD00A30F9C /* EditorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorType.swift; sourceTree = "<group>"; };
 		56DEB1DE2B828A8900A87EE2 /* BackupRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRepository.swift; sourceTree = "<group>"; };
+		56DEB1E82B83C70700A87EE2 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		56EB80C92B5315280046D72C /* ProjectsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsMenu.swift; sourceTree = "<group>"; };
 		56EB80CB2B5315F10046D72C /* InvoicesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesList.swift; sourceTree = "<group>"; };
 		56EB80CD2B532C7E0046D72C /* CompaniesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesList.swift; sourceTree = "<group>"; };
@@ -301,6 +304,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56DEB1E52B83C59B00A87EE2 /* RCLog in Frameworks */,
 				56DEB1DD2B82641300A87EE2 /* RCHttp in Frameworks */,
 				28A73D352763C28A00F727C3 /* BarChart in Frameworks */,
 				564788AF287E95B10034AA4C /* CloudKit.framework in Frameworks */,
@@ -530,6 +534,7 @@
 				56B9450628851EAD00D312A4 /* Projects */,
 				56B94510288552D800D312A4 /* InvoiceAndReport */,
 				56B9450F288552C700D312A4 /* Companies */,
+				56DEB1E72B83C6E200A87EE2 /* Settings */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -702,6 +707,14 @@
 			path = Interactors;
 			sourceTree = "<group>";
 		};
+		56DEB1E72B83C6E200A87EE2 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				56DEB1E82B83C70700A87EE2 /* SettingsScreen.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -723,6 +736,7 @@
 				28A73D362763C29500F727C3 /* SwiftCSV */,
 				564788AC287E959F0034AA4C /* RCPreferences */,
 				56DEB1DC2B82641300A87EE2 /* RCHttp */,
+				56DEB1E42B83C59B00A87EE2 /* RCLog */,
 			);
 			productName = "Invoices iOS";
 			productReference = 28A73D042763B93700F727C3 /* Invoices.app */;
@@ -778,7 +792,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1310;
-				LastUpgradeCheck = 1510;
+				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					28A73D032763B93700F727C3 = {
 						CreatedOnToolsVersion = 13.1;
@@ -909,6 +923,7 @@
 				28737A8227849072004D56C1 /* CompanyView.swift in Sources */,
 				56DEB1E02B828A8900A87EE2 /* BackupRepository.swift in Sources */,
 				56B944F528822FBA00D312A4 /* NoCompaniesScreen.swift in Sources */,
+				56DEB1E92B83C70700A87EE2 /* SettingsScreen.swift in Sources */,
 				56B94501288485AC00D312A4 /* ReportsInteractor.swift in Sources */,
 				28737A8927849F0B004D56C1 /* MainWindow.swift in Sources */,
 				56D6799C28020D0400133E1B /* ProjectsInteractor.swift in Sources */,
@@ -1170,6 +1185,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1233,6 +1249,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1472,6 +1489,11 @@
 			productName = RCHttp;
 		};
 		56DEB1E22B8343BA00A87EE2 /* RCLog */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 56DEB1E12B8343BA00A87EE2 /* XCRemoteSwiftPackageReference "RCLog" */;
+			productName = RCLog;
+		};
+		56DEB1E42B83C59B00A87EE2 /* RCLog */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 56DEB1E12B8343BA00A87EE2 /* XCRemoteSwiftPackageReference "RCLog" */;
 			productName = RCLog;

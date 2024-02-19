@@ -24,6 +24,10 @@ class LocalRepository {
             baseUrl.stopAccessingSecurityScopedResource()
         }
     }
+
+    init() {
+        RCLog("init LocalRepository")
+    }
 }
 
 extension LocalRepository: Repository {

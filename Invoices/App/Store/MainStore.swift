@@ -25,13 +25,17 @@ class MainStore: ObservableObject {
         switch RepositoryType(rawValue: pref.int(.repository)) {
             case .sandbox: mainRepository = SandboxRepository()
             case .icloud: mainRepository = IcloudDriveRepository()
+            #if os(macOS)
             case .custom: mainRepository = LocalRepository()
+            #endif
             default: mainRepository = SandboxRepository()
         }
 
         let backupRepository: Repository?
         switch RepositoryType(rawValue: pref.int(.repository)) {
+            #if os(macOS)
             case .sandbox: backupRepository = LocalRepository()
+            #endif
             default: backupRepository = nil
         }
 

@@ -17,6 +17,10 @@ class SandboxRepository {
 //        print(documentsDirectory)
         return documentsDirectory
     }
+
+    init() {
+        RCLog("init SandboxRepository")
+    }
 }
 
 extension SandboxRepository: Repository {

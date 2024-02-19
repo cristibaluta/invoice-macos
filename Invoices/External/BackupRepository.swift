@@ -21,6 +21,7 @@ class BackupRepository {
     init (mainRepository: Repository, backupRepository: Repository) {
         self.mainRepository = mainRepository
         self.backupRepository = backupRepository
+        RCLog("init BackupRepository")
     }
 }
 

@@ -50,7 +50,7 @@ struct MainWindow: View {
             // Settings tab
             //
             NavigationView {
-                
+                SettingsScreen()
             }
             .tabItem { Label("Settings", systemImage: "gearshape.fill") }
             .tag(2)

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RCLog
 
 class IcloudDriveRepository: SandboxRepository {
 
@@ -15,5 +16,8 @@ class IcloudDriveRepository: SandboxRepository {
             .url(forUbiquityContainerIdentifier: "iCloud.ro.imagin.Invoices")?
             .appendingPathComponent("Documents")
     }
-    
+
+    override init() {
+        RCLog("init IcloudRepository")
+    }
 }
