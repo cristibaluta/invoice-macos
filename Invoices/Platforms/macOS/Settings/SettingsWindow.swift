@@ -43,11 +43,13 @@ struct SettingsWindow: View {
                             panel.allowsMultipleSelection = false
                             if panel.runModal() == .OK {
                                 if let url = panel.urls.first {
-                                    LocalRepository.setBaseUrl(url)
+                                    self.settingsStore.setBackupUrl(url)
                                 }
                             }
                         }
                         .padding(.leading, 16)
+
+                        Text(settingsStore.backupRepositoryUrl)
                     }
                 }
 

@@ -18,6 +18,7 @@ class SettingsStore: ObservableObject {
     @Published var repositories: [RepositoryOption]
     @Published var currentRepository: RepositoryType
     @Published var backupRepository: RepositoryType
+    @Published var backupRepositoryUrl: String
     @Published var enableBackup: Bool
 
     private var pref = RCPreferences<UserPreferences>()
@@ -30,11 +31,18 @@ class SettingsStore: ObservableObject {
         ]
         currentRepository = RepositoryType(rawValue: pref.int(.repository)) ?? .sandbox
         backupRepository = RepositoryType(rawValue: pref.int(.backupRepository)) ?? .custom
-        enableBackup = false
+        enableBackup = pref.int(.backupRepository) != -1
+        backupRepositoryUrl = LocalRepository.getBaseUrlBookmark()?.absoluteString ?? ""
     }
 
     func setCurrentRepository(_ repository: RepositoryType) {
         currentRepository = repository
         pref.set(repository.rawValue, forKey: .repository)
+    }
+
+    func setBackupUrl(_ url: URL) {
+        backupRepository = .custom
+        backupRepositoryUrl = url.absoluteString
+        pref.set(backupRepository.rawValue, forKey: .backupRepository)
     }
 }

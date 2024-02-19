@@ -21,13 +21,27 @@ class MainStore: ObservableObject {
 
     init() {
 
-        var repository: Repository
+        let mainRepository: Repository
         switch RepositoryType(rawValue: pref.int(.repository)) {
-            case .sandbox: repository = SandboxRepository()
-            case .icloud: repository = IcloudDriveRepository()
-            case .custom: repository = LocalRepository()
-            default: repository = SandboxRepository()
+            case .sandbox: mainRepository = SandboxRepository()
+            case .icloud: mainRepository = IcloudDriveRepository()
+            case .custom: mainRepository = LocalRepository()
+            default: mainRepository = SandboxRepository()
         }
+
+        let backupRepository: Repository?
+        switch RepositoryType(rawValue: pref.int(.repository)) {
+            case .sandbox: backupRepository = LocalRepository()
+            default: backupRepository = nil
+        }
+
+        let repository: Repository
+        if let backupRepository {
+            repository = BackupRepository(mainRepository: mainRepository, backupRepository: backupRepository)
+        } else {
+            repository = mainRepository
+        }
+
 
         projectsStore = ProjectsStore(repository: repository)
         companiesStore = CompaniesStore(repository: repository)
