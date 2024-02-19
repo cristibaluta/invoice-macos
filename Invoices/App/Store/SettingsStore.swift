@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 import RCPreferences
 
 struct RepositoryOption: Identifiable, Hashable {
@@ -20,6 +21,7 @@ class SettingsStore: ObservableObject {
     @Published var backupRepository: RepositoryType
     @Published var backupRepositoryUrl: String
     @Published var enableBackup: Bool
+    private var enableBackupCancellable: AnyCancellable?
 
     private var pref = RCPreferences<UserPreferences>()
 
@@ -33,6 +35,11 @@ class SettingsStore: ObservableObject {
         backupRepository = RepositoryType(rawValue: pref.int(.backupRepository)) ?? .custom
         enableBackup = pref.int(.backupRepository) != -1
         backupRepositoryUrl = LocalRepository.getBaseUrlBookmark()?.absoluteString ?? ""
+
+        enableBackupCancellable = $enableBackup.sink { isOn in
+            self.backupRepository = isOn ? (RepositoryType(rawValue: self.pref.int(.backupRepository)) ?? .custom) : .custom
+            self.pref.set(isOn ? 2 : -1, forKey: .backupRepository)
+        }
     }
 
     func setCurrentRepository(_ repository: RepositoryType) {
