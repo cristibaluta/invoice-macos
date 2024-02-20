@@ -10,14 +10,14 @@ import SwiftUI
 
 struct InvoiceEditorSheet: View {
 
-    @EnvironmentObject var companiesData: CompaniesStore
+    @EnvironmentObject var companiesStore: CompaniesStore
     @Environment(\.dismiss) var dismiss
+    private var invoiceStore: InvoiceStore
     private var viewModel: InvoiceEditorViewModel
-    private let onSave: (InvoiceData) -> Void
 
-    init (viewModel: InvoiceEditorViewModel, onSave: @escaping (InvoiceData) -> Void) {
-        self.viewModel = viewModel
-        self.onSave = onSave
+    init (invoiceStore: InvoiceStore) {
+        self.invoiceStore = invoiceStore
+        self.viewModel = invoiceStore.invoiceEditorViewModel
     }
 
     var body: some View {
@@ -27,14 +27,15 @@ struct InvoiceEditorSheet: View {
         NavigationView {
             ScrollView {
                 InvoiceEditor(viewModel: viewModel, onTapAddCompany: {
-                    self.companiesData.isShowingNewCompanySheet = true
+                    self.companiesStore.isShowingNewCompanySheet = true
                 })
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
-                        dismiss()
+//                        dismiss()
+                        invoiceStore.dismissEditor()
                     }
                 }
                 ToolbarItem(placement: .principal) {
@@ -42,12 +43,13 @@ struct InvoiceEditorSheet: View {
                 }
                 ToolbarItem(placement: .primaryAction) {
                     Button("Save") {
-                        onSave(viewModel.data)
-                        dismiss()
+                        invoiceStore.save()
+                        invoiceStore.dismissEditor()
+//                        dismiss()
                     }
                 }
             }
-            .sheet(isPresented: $companiesData.isShowingNewCompanySheet) {
+            .sheet(isPresented: $companiesStore.isShowingNewCompanySheet) {
                 NewCompanySheet()
             }
             .onTapGesture {

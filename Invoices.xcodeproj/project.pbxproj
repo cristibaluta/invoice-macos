@@ -104,7 +104,7 @@
 		56B9451F2886A1A900D312A4 /* NewInvoiceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B9451E2886A1A900D312A4 /* NewInvoiceScreen.swift */; };
 		56B945232886A29100D312A4 /* NewInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A5F277BBC6D004D56C1 /* NewInvoiceView.swift */; };
 		56B945242886A29F00D312A4 /* NewInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A5F277BBC6D004D56C1 /* NewInvoiceView.swift */; };
-		56B945282886B3D300D312A4 /* InvoiceAndReportScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A9B278A1FF7004D56C1 /* InvoiceAndReportScreen.swift */; };
+		56B945282886B3D300D312A4 /* InvoiceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28737A9B278A1FF7004D56C1 /* InvoiceScreen.swift */; };
 		56B9452A2886C34B00D312A4 /* CompaniesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B945292886C34B00D312A4 /* CompaniesStore.swift */; };
 		56B9452B2886C34B00D312A4 /* CompaniesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B945292886C34B00D312A4 /* CompaniesStore.swift */; };
 		56B9452D28874E1900D312A4 /* NoCompaniesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B944F72882F5B300D312A4 /* NoCompaniesView.swift */; };
@@ -167,7 +167,6 @@
 		56DEB1E32B8343BA00A87EE2 /* RCLog in Frameworks */ = {isa = PBXBuildFile; productRef = 56DEB1E22B8343BA00A87EE2 /* RCLog */; };
 		56DEB1E52B83C59B00A87EE2 /* RCLog in Frameworks */ = {isa = PBXBuildFile; productRef = 56DEB1E42B83C59B00A87EE2 /* RCLog */; };
 		56DEB1E92B83C70700A87EE2 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DEB1E82B83C70700A87EE2 /* SettingsScreen.swift */; };
-		56DEB1EB2B84077A00A87EE2 /* InvoiceAndReportModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DEB1EA2B84077A00A87EE2 /* InvoiceAndReportModel.swift */; };
 		56E013482B82384600E255C0 /* RCHttp in Frameworks */ = {isa = PBXBuildFile; productRef = 56E013472B82384600E255C0 /* RCHttp */; };
 		56E013492B82397300E255C0 /* IcloudDriveRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73D3F2764D2C400F727C3 /* IcloudDriveRepository.swift */; };
 		56E0134A2B82397400E255C0 /* IcloudDriveRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73D3F2764D2C400F727C3 /* IcloudDriveRepository.swift */; };
@@ -210,7 +209,7 @@
 		28737A8A27862F63004D56C1 /* MainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindow.swift; sourceTree = "<group>"; };
 		28737A9327878B33004D56C1 /* InvoicesListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListScreen.swift; sourceTree = "<group>"; };
 		28737A972787A42F004D56C1 /* CompaniesListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesListScreen.swift; sourceTree = "<group>"; };
-		28737A9B278A1FF7004D56C1 /* InvoiceAndReportScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceAndReportScreen.swift; sourceTree = "<group>"; };
+		28737A9B278A1FF7004D56C1 /* InvoiceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceScreen.swift; sourceTree = "<group>"; };
 		28A73D042763B93700F727C3 /* Invoices.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Invoices.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28A73D0A2763B93900F727C3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		28A73D0D2763B93900F727C3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -294,7 +293,6 @@
 		56DAD6432B67AEAD00A30F9C /* EditorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorType.swift; sourceTree = "<group>"; };
 		56DEB1DE2B828A8900A87EE2 /* BackupRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRepository.swift; sourceTree = "<group>"; };
 		56DEB1E82B83C70700A87EE2 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
-		56DEB1EA2B84077A00A87EE2 /* InvoiceAndReportModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceAndReportModel.swift; sourceTree = "<group>"; };
 		56EB80C92B5315280046D72C /* ProjectsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsMenu.swift; sourceTree = "<group>"; };
 		56EB80CB2B5315F10046D72C /* InvoicesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesList.swift; sourceTree = "<group>"; };
 		56EB80CD2B532C7E0046D72C /* CompaniesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesList.swift; sourceTree = "<group>"; };
@@ -605,8 +603,7 @@
 			isa = PBXGroup;
 			children = (
 				28737A9327878B33004D56C1 /* InvoicesListScreen.swift */,
-				28737A9B278A1FF7004D56C1 /* InvoiceAndReportScreen.swift */,
-				56DEB1EA2B84077A00A87EE2 /* InvoiceAndReportModel.swift */,
+				28737A9B278A1FF7004D56C1 /* InvoiceScreen.swift */,
 				56D3854E288B207B00E8BEB5 /* Exporter.swift */,
 				569326BC2B70BC7600579BA7 /* Invoice */,
 				56D3854B288A944F00E8BEB5 /* Reports */,
@@ -886,7 +883,6 @@
 				56DAD6392B6308E200A30F9C /* CompanyViewModel.swift in Sources */,
 				28737A86278490EA004D56C1 /* PropertyLoopable.swift in Sources */,
 				28737A812784906B004D56C1 /* NewCompanySheet.swift in Sources */,
-				56DEB1EB2B84077A00A87EE2 /* InvoiceAndReportModel.swift in Sources */,
 				28A73D2B2763BFA600F727C3 /* HtmlViewer.swift in Sources */,
 				562965062B4EE2CC00C44605 /* ProjectsListScreen.swift in Sources */,
 				28A73D282763BF9C00F727C3 /* ReportEditor.swift in Sources */,
@@ -895,7 +891,7 @@
 				56DAD62F2B59180000A30F9C /* ReportEditorViewModel.swift in Sources */,
 				56D6799828017F0D00133E1B /* Repository.swift in Sources */,
 				56E0134A2B82397400E255C0 /* IcloudDriveRepository.swift in Sources */,
-				56B945282886B3D300D312A4 /* InvoiceAndReportScreen.swift in Sources */,
+				56B945282886B3D300D312A4 /* InvoiceScreen.swift in Sources */,
 				56B94532288771B000D312A4 /* CompanyScreen.swift in Sources */,
 				56B94516288585E900D312A4 /* NoInvoicesScreen.swift in Sources */,
 				56D6799428017C0A00133E1B /* MainStore.swift in Sources */,

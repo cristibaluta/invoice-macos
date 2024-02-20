@@ -11,12 +11,12 @@ import SwiftUI
 struct ReportEditorSheet: View {
 
     @Environment(\.dismiss) var dismiss
+    private var invoiceStore: InvoiceStore
     private var viewModel: ReportEditorViewModel
-    private let onSave: (InvoiceData) -> Void
 
-    init (viewModel: ReportEditorViewModel, onSave: @escaping (InvoiceData) -> Void) {
-        self.viewModel = viewModel
-        self.onSave = onSave
+    init (invoiceStore: InvoiceStore) {
+        self.invoiceStore = invoiceStore
+        self.viewModel = invoiceStore.reportEditorViewModel
     }
 
     var body: some View {
@@ -31,7 +31,7 @@ struct ReportEditorSheet: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
-                        dismiss.callAsFunction()
+                        dismiss()
                     }
                 }
                 ToolbarItem(placement: .principal) {
@@ -39,8 +39,9 @@ struct ReportEditorSheet: View {
                 }
                 ToolbarItem(placement: .primaryAction) {
                     Button("Save") {
-                        onSave(viewModel.data)
-                        dismiss.callAsFunction()
+                        invoiceStore.save()
+                        invoiceStore.dismissEditor()
+                        dismiss()
                     }
                 }
             }

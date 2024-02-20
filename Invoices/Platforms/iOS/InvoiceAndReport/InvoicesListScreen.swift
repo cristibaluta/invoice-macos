@@ -11,6 +11,7 @@ struct InvoicesListScreen: View {
 
     @EnvironmentObject var store: MainStore
     var project: Project
+    @State var isLoaded = false
 
 
     var body: some View {
@@ -38,23 +39,30 @@ struct InvoicesListScreen: View {
             .onDelete(perform: delete)
         }
         .navigationDestination(for: Invoice.self) { invoice in
-            InvoiceAndReportScreen(invoicesStore: invoicesStore,
-                                   model: InvoiceAndReportModel(invoice: invoice,
-                                                                invoiceStore: invoicesStore.selectedInvoiceStore))
+            if let invoiceStore = invoicesStore.selectedInvoiceStore {
+                InvoiceScreen(invoiceStore: invoiceStore)
+            } else {
+                Text("Loading...")
+                    .task {
+                        _ = invoicesStore.loadInvoice(invoice)
+                        .sink { invoiceStore in
+                            // selectedInvoiceStore is not observable and we need to trigger a change somehow
+                            store.objectWillChange.send()
+                        }
+                    }
+            }
         }
         .refreshable {
             invoicesStore.loadInvoices()
         }
         .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(project.name).font(.headline)
-            }
             ToolbarItem(placement: .primaryAction) {
                 Button("Add") {
                     store.projectsStore.invoicesStore?.isShowingNewInvoiceSheet = true
                 }
             }
         }
+        .navigationBarTitle(project.name, displayMode: .inline)
 //        .sheet(isPresented: $store.projectsStore.invoicesStore!.isShowingNewInvoiceSheet) {
 //            NewInvoiceScreen()
 //        }

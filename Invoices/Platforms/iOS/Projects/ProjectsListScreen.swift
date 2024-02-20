@@ -29,9 +29,6 @@ struct ProjectsListScreen: View {
             store.projectsStore.refresh()
         }
         .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text("Projects").font(.headline)
-            }
             ToolbarItem(placement: .primaryAction) {
                 Button("New") {
                     store.projectsStore.isShowingNewProjectSheet = true
@@ -42,7 +39,8 @@ struct ProjectsListScreen: View {
                 }
             }
         }
-        
+        .navigationBarTitle("Projects", displayMode: .inline)
+
     }
 
     private func delete (at offsets: IndexSet) {
