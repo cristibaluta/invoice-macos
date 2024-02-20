@@ -12,12 +12,12 @@ enum ContentViewType {
     case noProjects
     case noInvoices
     case charts(ChartsViewModel)
-    case newInvoice(InvoiceStore)
+    case newInvoice(InvoiceModel)
     case deleteInvoice(Invoice)
-    case invoice(InvoiceStore)
-    case invoiceEditor(InvoiceStore)
-    case report(InvoiceStore)
-    case reportEditor(InvoiceStore)
+    case invoice(InvoiceModel)
+    case invoiceEditor(InvoiceModel)
+    case report(InvoiceModel)
+    case reportEditor(InvoiceModel)
     case company(CompanyData)
     case error(String, String)
 }

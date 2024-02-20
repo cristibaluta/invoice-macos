@@ -10,7 +10,7 @@ import Combine
 
 // Source of truth for the invoice data
 // It also stores the html to display
-class InvoiceStore: ObservableObject {
+class InvoiceModel: ObservableObject {
 
     let id = UUID()// Needed to redraw the HtmlViewer
     @Published var editorType: EditorType = .invoice {
@@ -18,9 +18,8 @@ class InvoiceStore: ObservableObject {
             buildHtml()
         }
     }
-    @Published var isShowingEditorSheet = false
-    @Published var hasChanges = false
     @Published var isEditing = false
+    @Published var hasChanges = false
     @Published var html: String = "Loading invoice..." {
         didSet {
             self.htmlSubject.send(html)
@@ -94,6 +93,7 @@ class InvoiceStore: ObservableObject {
           invoicesInteractor: InvoicesInteractor,
           reportsInteractor: ReportsInteractor) {
 
+        print(">>>>>>>> init InvoiceModel")
         self.project = project
         self.data = data
         self.initialData = data
@@ -108,12 +108,11 @@ class InvoiceStore: ObservableObject {
     }
 
     deinit {
-        print(">>>>>>>> deinit InvoiceStore")
+        print("<<<<<<<< deinit InvoiceModel")
         cancellables.removeAll()
     }
 
     func dismissEditor() {
-        isShowingEditorSheet = false
         isEditing = false
         activeEditorViewModel = nil
         cancellables.removeAll()

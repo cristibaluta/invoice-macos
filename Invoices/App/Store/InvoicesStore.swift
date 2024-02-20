@@ -24,7 +24,7 @@ class InvoicesStore: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private let invoicesInteractor: InvoicesInteractor
     private let reportsInteractor: ReportsInteractor
-    var selectedInvoiceStore: InvoiceStore?
+    var selectedInvoiceModel: InvoiceModel?
 
     private let chartSubject = PassthroughSubject<ChartsViewModel, Never>()
     var chartPublisher: AnyPublisher<ChartsViewModel, Never> {
@@ -32,8 +32,8 @@ class InvoicesStore: ObservableObject {
     }
     var chartCancellable: Cancellable?
 
-    private let newInvoiceSubject = PassthroughSubject<InvoiceStore, Never>()
-    var newInvoicePublisher: AnyPublisher<InvoiceStore, Never> {
+    private let newInvoiceSubject = PassthroughSubject<InvoiceModel, Never>()
+    var newInvoicePublisher: AnyPublisher<InvoiceModel, Never> {
         newInvoiceSubject.eraseToAnyPublisher()
     }
     var newInvoiceCancellable: Cancellable?
@@ -62,14 +62,14 @@ class InvoicesStore: ObservableObject {
             }
     }
 
-    func loadInvoice (_ invoice: Invoice) -> AnyPublisher<InvoiceStore, Never> {
+    func loadInvoice (_ invoice: Invoice) -> AnyPublisher<InvoiceModel, Never> {
 
         selectedInvoice = invoice
 
         return invoicesInteractor.readInvoice(for: invoice, in: project)
             .map { invoiceData in
-                self.selectedInvoiceStore = self.createInvoiceStore(invoice: invoice, data: invoiceData)
-                return self.selectedInvoiceStore!
+                self.selectedInvoiceModel = self.createInvoiceStore(invoice: invoice, data: invoiceData)
+                return self.selectedInvoiceModel!
             }
             .eraseToAnyPublisher()
     }
@@ -84,8 +84,8 @@ class InvoicesStore: ObservableObject {
                                   name: "\(data.date.yyyyMMdd)-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)")
             invoices = [invoice]
             selectedInvoice = invoice
-            selectedInvoiceStore = createInvoiceStore(invoice: invoice, data: data)
-            newInvoiceSubject.send(selectedInvoiceStore!)
+            selectedInvoiceModel = createInvoiceStore(invoice: invoice, data: data)
+            newInvoiceSubject.send(selectedInvoiceModel!)
             return
         }
 
@@ -107,14 +107,14 @@ class InvoicesStore: ObservableObject {
             self.invoices.insert(invoice, at: 0)
             self.selectedInvoice = invoice
             /// Update the state
-            self.selectedInvoiceStore = self.createInvoiceStore(invoice: invoice, data: data)
-            self.newInvoiceSubject.send(self.selectedInvoiceStore!)
+            self.selectedInvoiceModel = self.createInvoiceStore(invoice: invoice, data: data)
+            self.newInvoiceSubject.send(self.selectedInvoiceModel!)
         }
     }
 
-    private func createInvoiceStore (invoice: Invoice, data: InvoiceData) -> InvoiceStore {
+    private func createInvoiceStore (invoice: Invoice, data: InvoiceData) -> InvoiceModel {
         cancellables.removeAll()
-        let store = InvoiceStore(project: project,
+        let store = InvoiceModel(project: project,
                                  data: data,
                                  invoicesInteractor: invoicesInteractor,
                                  reportsInteractor: reportsInteractor)

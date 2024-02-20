@@ -11,7 +11,7 @@ struct InvoiceEditorPopover: View {
 
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var companiesStore: CompaniesStore
-    var invoiceStore: InvoiceStore
+    var invoiceStore: InvoiceModel
     var editorViewModel: InvoiceEditorViewModel
 
     var body: some View {

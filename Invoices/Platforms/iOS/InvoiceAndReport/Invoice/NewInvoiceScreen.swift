@@ -14,7 +14,7 @@ struct NewInvoiceScreen: View {
 
     var body: some View {
         NavigationView {
-            if let invoiceStore = invoicesStore.selectedInvoiceStore {
+            if let invoiceModel = invoicesStore.selectedInvoiceModel {
 //                NewInvoiceView(viewModel: invoicesStore.selectedInvoiceContentData.invoiceEditorState)
                 Text("New invoice placeholder")
                 .padding(20)

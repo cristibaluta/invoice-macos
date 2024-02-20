@@ -12,12 +12,12 @@ struct InvoiceEditorSheet: View {
 
     @EnvironmentObject var companiesStore: CompaniesStore
     @Environment(\.dismiss) var dismiss
-    private var invoiceStore: InvoiceStore
-    private var viewModel: InvoiceEditorViewModel
+    private var invoiceModel: InvoiceModel
+    private var editorModel: InvoiceEditorViewModel
 
-    init (invoiceStore: InvoiceStore) {
-        self.invoiceStore = invoiceStore
-        self.viewModel = invoiceStore.invoiceEditorViewModel
+    init (model: InvoiceModel) {
+        self.invoiceModel = model
+        self.editorModel = model.invoiceEditorViewModel
     }
 
     var body: some View {
@@ -26,7 +26,7 @@ struct InvoiceEditorSheet: View {
         
         NavigationView {
             ScrollView {
-                InvoiceEditor(viewModel: viewModel, onTapAddCompany: {
+                InvoiceEditor(viewModel: editorModel, onTapAddCompany: {
                     self.companiesStore.isShowingNewCompanySheet = true
                 })
             }
@@ -35,7 +35,7 @@ struct InvoiceEditorSheet: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
 //                        dismiss()
-                        invoiceStore.dismissEditor()
+                        invoiceModel.dismissEditor()
                     }
                 }
                 ToolbarItem(placement: .principal) {
@@ -43,8 +43,8 @@ struct InvoiceEditorSheet: View {
                 }
                 ToolbarItem(placement: .primaryAction) {
                     Button("Save") {
-                        invoiceStore.save()
-                        invoiceStore.dismissEditor()
+                        invoiceModel.save()
+                        invoiceModel.dismissEditor()
 //                        dismiss()
                     }
                 }

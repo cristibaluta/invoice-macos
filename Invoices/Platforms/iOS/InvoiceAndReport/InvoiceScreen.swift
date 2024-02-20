@@ -9,7 +9,7 @@ import SwiftUI
 
 struct InvoiceScreen: View {
 
-    @ObservedObject var invoiceStore: InvoiceStore
+    @ObservedObject var model: InvoiceModel
 
     
     var body: some View {
@@ -18,7 +18,7 @@ struct InvoiceScreen: View {
 
         GeometryReader { context in
             ScrollView {
-                HtmlViewer(htmlString: invoiceStore.html, wrappedPdfData: invoiceStore.wrappedPdfData)
+                HtmlViewer(htmlString: model.html, wrappedPdfData: model.wrappedPdfData)
                     .frame(width: context.size.width,
                            height: context.size.width * HtmlViewer.size.height / HtmlViewer.size.width)
             }
@@ -26,25 +26,25 @@ struct InvoiceScreen: View {
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Picker("Type", selection: $invoiceStore.editorType) {
+                Picker("Type", selection: $model.editorType) {
                     Text("Invoice").tag(EditorType.invoice)
                     Text("Reports").tag(EditorType.report)
                 }
                 .frame(width: 150)
                 .pickerStyle(SegmentedPickerStyle())
-                .onChange(of: invoiceStore.editorType) { newValue in
-                    invoiceStore.editorType = newValue
+                .onChange(of: model.editorType) { newValue in
+                    model.editorType = newValue
                 }
             }
             ToolbarItem(placement: .primaryAction) {
                 Button("Edit") {
-                    invoiceStore.isEditing = true
+                    model.isEditing = true
                 }
-                .sheet(isPresented: $invoiceStore.isEditing) {
-                    if invoiceStore.editorType == .invoice {
-                        InvoiceEditorSheet(invoiceStore: invoiceStore)
+                .sheet(isPresented: $model.isEditing) {
+                    if model.editorType == .invoice {
+                        InvoiceEditorSheet(model: model)
                     } else {
-                        ReportEditorSheet(invoiceStore: invoiceStore)
+                        ReportEditorSheet(model: model)
                     }
                 }
             }

@@ -11,12 +11,12 @@ import SwiftUI
 struct ReportEditorSheet: View {
 
     @Environment(\.dismiss) var dismiss
-    private var invoiceStore: InvoiceStore
-    private var viewModel: ReportEditorViewModel
+    private var invoiceModel: InvoiceModel
+    private var editorModel: ReportEditorViewModel
 
-    init (invoiceStore: InvoiceStore) {
-        self.invoiceStore = invoiceStore
-        self.viewModel = invoiceStore.reportEditorViewModel
+    init (model: InvoiceModel) {
+        self.invoiceModel = model
+        self.editorModel = model.reportEditorViewModel
     }
 
     var body: some View {
@@ -25,13 +25,14 @@ struct ReportEditorSheet: View {
 
         NavigationView {
             ScrollView {
-                ReportEditor(viewModel: viewModel)
+                ReportEditor(viewModel: editorModel)
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
                         dismiss()
+                        invoiceModel.dismissEditor()
                     }
                 }
                 ToolbarItem(placement: .principal) {
@@ -39,8 +40,8 @@ struct ReportEditorSheet: View {
                 }
                 ToolbarItem(placement: .primaryAction) {
                     Button("Save") {
-                        invoiceStore.save()
-                        invoiceStore.dismissEditor()
+                        invoiceModel.save()
+                        invoiceModel.dismissEditor()
                         dismiss()
                     }
                 }

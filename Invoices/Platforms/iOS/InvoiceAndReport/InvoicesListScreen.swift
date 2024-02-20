@@ -11,7 +11,6 @@ struct InvoicesListScreen: View {
 
     @EnvironmentObject var store: MainStore
     var project: Project
-    @State var isLoaded = false
 
 
     var body: some View {
@@ -39,14 +38,14 @@ struct InvoicesListScreen: View {
             .onDelete(perform: delete)
         }
         .navigationDestination(for: Invoice.self) { invoice in
-            if let invoiceStore = invoicesStore.selectedInvoiceStore {
-                InvoiceScreen(invoiceStore: invoiceStore)
+            if let model = invoicesStore.selectedInvoiceModel {
+                InvoiceScreen(model: model)
             } else {
                 Text("Loading...")
                     .task {
                         _ = invoicesStore.loadInvoice(invoice)
-                        .sink { invoiceStore in
-                            // selectedInvoiceStore is not observable and we need to trigger a change somehow
+                        .sink { invoiceModel in
+                            // selectedInvoiceModel is not observable and we need to trigger a change somehow
                             store.objectWillChange.send()
                         }
                     }

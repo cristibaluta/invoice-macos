@@ -11,7 +11,7 @@ import PDFKit
 struct Toolbar: ViewModifier {
 
     @EnvironmentObject var mainWindowState: MainWindowState
-    @ObservedObject var invoiceStore: InvoiceStore
+    @ObservedObject var invoiceStore: InvoiceModel
 //    @State private var isShowingExportPopover = false
     
     func body (content: Content) -> some View {
