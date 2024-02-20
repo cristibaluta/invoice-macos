@@ -103,10 +103,10 @@ class ProjectsStore: ObservableObject {
     }
 
     func dismissNewProject() {
-        self.isShowingNewProjectSheet = false
+        isShowingNewProjectSheet = false
     }
 
     func dismissDeleteProject() {
-        self.isShowingDeleteProjectAlert = false
+        isShowingDeleteProjectAlert = false
     }
 }

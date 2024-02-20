@@ -23,9 +23,9 @@ struct InvoicesListScreen: View {
             }
         } else {
             Text("Loading...")
-            .onAppear {
-                store.projectsStore.selectedProject = project
-            }
+                .onAppear {
+                    store.projectsStore.selectedProject = project
+                }
         }
     }
 
@@ -38,8 +38,9 @@ struct InvoicesListScreen: View {
             .onDelete(perform: delete)
         }
         .navigationDestination(for: Invoice.self) { invoice in
-            Text("Invoice details for \(invoice.name)")
-//            InvoiceAndReportScreen(state: InvoiceAndReportScreenState(invoice: invoice, contentData: invoicesStore.selectedInvoiceContentData))
+            InvoiceAndReportScreen(invoicesStore: invoicesStore,
+                                   model: InvoiceAndReportModel(invoice: invoice,
+                                                                invoiceStore: invoicesStore.selectedInvoiceStore))
         }
         .refreshable {
             invoicesStore.loadInvoices()
@@ -62,11 +63,11 @@ struct InvoicesListScreen: View {
     private func noInvoicesBody (with invoicesStore: InvoicesStore) -> some View {
 
         NoInvoicesScreen(invoicesStore: invoicesStore)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(project.name).font(.headline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(project.name).font(.headline)
+                }
             }
-        }
     }
 
     private func delete (at offsets: IndexSet) {

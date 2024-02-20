@@ -98,8 +98,11 @@ class InvoiceStore: ObservableObject {
         self.data = data
         self.initialData = data
 
-        invoiceInteractor = InvoiceInteractor(repository: invoicesInteractor.repository, project: project)
-        reportInteractor = ReportInteractor(repository: reportsInteractor.repository, project: project, reportsInteractor: reportsInteractor)
+        invoiceInteractor = InvoiceInteractor(repository: invoicesInteractor.repository,
+                                              project: project)
+        reportInteractor = ReportInteractor(repository: reportsInteractor.repository,
+                                            project: project,
+                                            reportsInteractor: reportsInteractor)
 
         buildHtml()
     }

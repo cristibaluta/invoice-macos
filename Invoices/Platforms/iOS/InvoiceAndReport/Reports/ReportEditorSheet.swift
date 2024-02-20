@@ -11,12 +11,12 @@ import SwiftUI
 struct ReportEditorSheet: View {
 
     @Environment(\.dismiss) var dismiss
-//    private var state: ReportEditorViewModel
-    private let onChange: (InvoiceData) -> Void
+    private var viewModel: ReportEditorViewModel
+    private let onSave: (InvoiceData) -> Void
 
-    init (data: InvoiceData, onChange: @escaping (InvoiceData) -> Void) {
-        self.onChange = onChange
-//        self.state = ReportEditorViewModel(data: data)
+    init (viewModel: ReportEditorViewModel, onSave: @escaping (InvoiceData) -> Void) {
+        self.viewModel = viewModel
+        self.onSave = onSave
     }
 
     var body: some View {
@@ -25,32 +25,25 @@ struct ReportEditorSheet: View {
 
         NavigationView {
             ScrollView {
-//                ReportEditor(state: state, onChange: { newData in
-//                    self.state.data = newData
-//                    self.onChange(newData)
-//                })
+                ReportEditor(viewModel: viewModel)
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
-//                        self.state.dismissInvoiceEditor()
-                        dismiss()
+                        dismiss.callAsFunction()
                     }
                 }
                 ToolbarItem(placement: .principal) {
-                    Text("Edit invoice").font(.headline)
+                    Text("Edit report").font(.headline)
                 }
                 ToolbarItem(placement: .primaryAction) {
                     Button("Save") {
-//                        onChange(state.data)
-//                        self.dismiss.callAsFunction()
+                        onSave(viewModel.data)
+                        dismiss.callAsFunction()
                     }
                 }
             }
-//            .sheet(isPresented: $companiesData.isShowingNewCompanySheet) {
-//                NewCompanySheet()
-//            }
         }
     }
 

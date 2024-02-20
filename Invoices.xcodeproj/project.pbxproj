@@ -167,6 +167,7 @@
 		56DEB1E32B8343BA00A87EE2 /* RCLog in Frameworks */ = {isa = PBXBuildFile; productRef = 56DEB1E22B8343BA00A87EE2 /* RCLog */; };
 		56DEB1E52B83C59B00A87EE2 /* RCLog in Frameworks */ = {isa = PBXBuildFile; productRef = 56DEB1E42B83C59B00A87EE2 /* RCLog */; };
 		56DEB1E92B83C70700A87EE2 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DEB1E82B83C70700A87EE2 /* SettingsScreen.swift */; };
+		56DEB1EB2B84077A00A87EE2 /* InvoiceAndReportModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DEB1EA2B84077A00A87EE2 /* InvoiceAndReportModel.swift */; };
 		56E013482B82384600E255C0 /* RCHttp in Frameworks */ = {isa = PBXBuildFile; productRef = 56E013472B82384600E255C0 /* RCHttp */; };
 		56E013492B82397300E255C0 /* IcloudDriveRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73D3F2764D2C400F727C3 /* IcloudDriveRepository.swift */; };
 		56E0134A2B82397400E255C0 /* IcloudDriveRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73D3F2764D2C400F727C3 /* IcloudDriveRepository.swift */; };
@@ -293,6 +294,7 @@
 		56DAD6432B67AEAD00A30F9C /* EditorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorType.swift; sourceTree = "<group>"; };
 		56DEB1DE2B828A8900A87EE2 /* BackupRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRepository.swift; sourceTree = "<group>"; };
 		56DEB1E82B83C70700A87EE2 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
+		56DEB1EA2B84077A00A87EE2 /* InvoiceAndReportModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceAndReportModel.swift; sourceTree = "<group>"; };
 		56EB80C92B5315280046D72C /* ProjectsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsMenu.swift; sourceTree = "<group>"; };
 		56EB80CB2B5315F10046D72C /* InvoicesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesList.swift; sourceTree = "<group>"; };
 		56EB80CD2B532C7E0046D72C /* CompaniesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesList.swift; sourceTree = "<group>"; };
@@ -604,6 +606,7 @@
 			children = (
 				28737A9327878B33004D56C1 /* InvoicesListScreen.swift */,
 				28737A9B278A1FF7004D56C1 /* InvoiceAndReportScreen.swift */,
+				56DEB1EA2B84077A00A87EE2 /* InvoiceAndReportModel.swift */,
 				56D3854E288B207B00E8BEB5 /* Exporter.swift */,
 				569326BC2B70BC7600579BA7 /* Invoice */,
 				56D3854B288A944F00E8BEB5 /* Reports */,
@@ -883,6 +886,7 @@
 				56DAD6392B6308E200A30F9C /* CompanyViewModel.swift in Sources */,
 				28737A86278490EA004D56C1 /* PropertyLoopable.swift in Sources */,
 				28737A812784906B004D56C1 /* NewCompanySheet.swift in Sources */,
+				56DEB1EB2B84077A00A87EE2 /* InvoiceAndReportModel.swift in Sources */,
 				28A73D2B2763BFA600F727C3 /* HtmlViewer.swift in Sources */,
 				562965062B4EE2CC00C44605 /* ProjectsListScreen.swift in Sources */,
 				28A73D282763BF9C00F727C3 /* ReportEditor.swift in Sources */,

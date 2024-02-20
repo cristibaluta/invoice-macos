@@ -51,7 +51,7 @@ struct InvoiceEditorSheet: View {
                 NewCompanySheet()
             }
             .onTapGesture {
-                self.endEditing()
+                endEditing()
             }
         }
     }
@@ -59,4 +59,5 @@ struct InvoiceEditorSheet: View {
     private func endEditing() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
+
 }

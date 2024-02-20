@@ -49,6 +49,7 @@ struct HtmlViewer: ViewRepresentable {
 
     private func updateView(_ webView: WKWebView, context: ViewContext) {
         webView.loadHTMLString(htmlString, baseURL: nil)
+        // We need a delay before generating the pdf because the data is not yet on screen
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(1000)) {
             generatePdf(webView)
         }
@@ -71,4 +72,5 @@ struct HtmlViewer: ViewRepresentable {
         config.rect = CGRect(origin: .zero, size: HtmlViewer.size)
         return config
     }
+
 }
