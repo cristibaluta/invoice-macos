@@ -31,18 +31,7 @@ struct InvoicesListScreen: View {
             .onDelete(perform: delete)
         }
         .navigationDestination(for: Invoice.self) { invoice in
-            if let model = invoicesStore.selectedInvoiceModel {
-                InvoiceScreen(model: model)
-            } else {
-                Text("Loading...")
-                    .task {
-                        _ = invoicesStore.loadInvoice(invoice)
-                        .sink { invoiceModel in
-                            // selectedInvoiceModel is not observable and we need to trigger a change somehow
-                            store.objectWillChange.send()
-                        }
-                    }
-            }
+            InvoiceScreenLoader(invoicesStore: invoicesStore, invoice: invoice)
         }
         .refreshable {
             invoicesStore.loadInvoices()

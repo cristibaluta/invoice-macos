@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProjectsListScreen: View {
 
-    @Environment(\.presentationMode) var mode: Binding<PresentationMode>
+    @Environment(\.isPresented) var isPresented
     @EnvironmentObject var store: MainStore
 
     var body: some View {
@@ -23,25 +23,7 @@ struct ProjectsListScreen: View {
             .onDelete(perform: delete)
         }
         .navigationDestination(for: Project.self) { proj in
-            if let invoicesStore = store.projectsStore.invoicesStore {
-                InvoicesListScreen(invoicesStore: invoicesStore)
-                    .navigationBarTitle(proj.name, displayMode: .inline)
-                    .onDisappear {
-                        store.projectsStore.dismissSelectedProject()
-                    }
-//                    .navigationBarBackButtonHidden(true)
-//                    .navigationBarItems(leading: Button(action : {
-////                        store.projectsStore.dismissSelectedProject()
-//                        self.mode.wrappedValue.dismiss()
-//                    }){
-//                        Image(systemName: "arrow.left")
-//                    })
-            } else {
-                Text("Loading...")
-                    .task {
-                        store.projectsStore.selectedProject = proj
-                    }
-            }
+            InvoicesListScreenLoader(project: proj)
         }
         .refreshable {
             store.projectsStore.refresh()
@@ -58,6 +40,9 @@ struct ProjectsListScreen: View {
             }
         }
         .navigationBarTitle("Projects", displayMode: .inline)
+        .onChange(of: isPresented) { newValue in
+            print("ProjectsListScreen is isPresented \(newValue)")
+        }
 
     }
 
