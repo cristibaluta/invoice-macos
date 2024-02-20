@@ -15,7 +15,6 @@ class InvoicesStore: ObservableObject {
     @Published var selectedInvoice: Invoice?
 
     @Published var isShowingNewInvoiceSheet = false
-    @Published var isShowingEditInvoiceSheet = false
     @Published var isShowingDeleteInvoiceAlert = false
 
 
@@ -173,10 +172,6 @@ class InvoicesStore: ObservableObject {
 
     func dismissNewInvoice() {
         isShowingNewInvoiceSheet = false
-    }
-
-    func dismissInvoiceEditor() {
-        isShowingEditInvoiceSheet = false
     }
 
     func dismissDeleteInvoice() {

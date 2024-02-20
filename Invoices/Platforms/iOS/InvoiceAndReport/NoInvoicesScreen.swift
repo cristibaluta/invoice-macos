@@ -16,7 +16,7 @@ struct NoInvoicesScreen: View {
             invoicesStore.isShowingNewInvoiceSheet = true
         }
         .sheet(isPresented: $invoicesStore.isShowingNewInvoiceSheet) {
-            NewInvoiceScreen(invoicesStore: invoicesStore)
+            NewInvoiceSheet(invoicesStore: invoicesStore)
         }
     }
 

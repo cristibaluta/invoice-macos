@@ -102,11 +102,17 @@ class ProjectsStore: ObservableObject {
         selectProject(named: lastProj)
     }
 
+    func dismissSelectedProject() {
+        selectedProject = nil
+    }
+
     func dismissNewProject() {
         isShowingNewProjectSheet = false
+        selectedProject = nil
     }
 
     func dismissDeleteProject() {
         isShowingDeleteProjectAlert = false
+        selectedProject = nil
     }
 }

@@ -10,26 +10,19 @@ import SwiftUI
 struct InvoicesListScreen: View {
 
     @EnvironmentObject var store: MainStore
-    var project: Project
+    @ObservedObject var invoicesStore: InvoicesStore
 
 
     var body: some View {
 
-        if let invoicesStore = store.projectsStore.invoicesStore {
-            if invoicesStore.invoices.count > 0 {
-                invoicesListBody(with: invoicesStore)
-            } else {
-                noInvoicesBody(with: invoicesStore)
-            }
+        if invoicesStore.invoices.count > 0 {
+            invoicesListBody()
         } else {
-            Text("Loading...")
-                .onAppear {
-                    store.projectsStore.selectedProject = project
-                }
+            noInvoicesBody()
         }
     }
 
-    private func invoicesListBody (with invoicesStore: InvoicesStore) -> some View {
+    private func invoicesListBody() -> some View {
 
         List {
             ForEach(invoicesStore.invoices, id: \.self) { invoice in
@@ -57,24 +50,18 @@ struct InvoicesListScreen: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button("Add") {
-                    store.projectsStore.invoicesStore?.isShowingNewInvoiceSheet = true
+                    invoicesStore.isShowingNewInvoiceSheet = true
+                    store.objectWillChange.send()
                 }
             }
         }
-        .navigationBarTitle(project.name, displayMode: .inline)
-//        .sheet(isPresented: $store.projectsStore.invoicesStore!.isShowingNewInvoiceSheet) {
-//            NewInvoiceScreen()
-//        }
+        .sheet(isPresented: $invoicesStore.isShowingNewInvoiceSheet) {
+            NewInvoiceSheet(invoicesStore: invoicesStore)
+        }
     }
 
-    private func noInvoicesBody (with invoicesStore: InvoicesStore) -> some View {
-
+    private func noInvoicesBody() -> some View {
         NoInvoicesScreen(invoicesStore: invoicesStore)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(project.name).font(.headline)
-                }
-            }
     }
 
     private func delete (at offsets: IndexSet) {

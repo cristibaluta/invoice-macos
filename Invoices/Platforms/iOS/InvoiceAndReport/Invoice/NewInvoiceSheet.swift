@@ -7,28 +7,30 @@
 
 import SwiftUI
 
-struct NewInvoiceScreen: View {
+struct NewInvoiceSheet: View {
 
+    @EnvironmentObject var companiesStore: CompaniesStore
     @ObservedObject var invoicesStore: InvoicesStore
 
 
     var body: some View {
         NavigationView {
-            if let invoiceModel = invoicesStore.selectedInvoiceModel {
-//                NewInvoiceView(viewModel: invoicesStore.selectedInvoiceContentData.invoiceEditorState)
-                Text("New invoice placeholder")
+            if let editorModel = invoicesStore.selectedInvoiceModel?.invoiceEditorViewModel {
+//                NewInvoiceView(viewModel: editorModel)
+                InvoiceEditor(viewModel: editorModel, onTapAddCompany: {
+                    self.companiesStore.isShowingNewCompanySheet = true
+                })
                 .padding(20)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Cancel") {
-                            self.invoicesStore.dismissNewInvoice()
+                            invoicesStore.dismissNewInvoice()
                         }
                     }
                     ToolbarItem(placement: .primaryAction) {
                         Button("Save") {
-//                                self.invoicesStore.selectedInvoiceContentData.calculate()
-//                                self.invoicesStore.selectedInvoiceContentData.save()
-//                                self.invoicesStore.dismissNewInvoice()
+                            invoicesStore.selectedInvoiceModel?.save()
+                            invoicesStore.dismissNewInvoice()
                         }
                     }
                 }

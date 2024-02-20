@@ -10,12 +10,6 @@ import SwiftUI
 
 struct NewProjectView: View {
 
-#if os(iOS)
-    typealias Stack = VStack
-#else
-    typealias Stack = VStack
-#endif
-
     @State var projectName: String = ""
     private var onTap: (String) -> Void
 
@@ -32,7 +26,7 @@ struct NewProjectView: View {
 
             Spacer().frame(height: 60)
 
-            Stack {
+            VStack {
                 TextField("Project name", text: $projectName)
                     .frame(width: 160)
                     .multilineTextAlignment(.center)

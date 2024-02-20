@@ -30,16 +30,13 @@ struct InvoiceEditorSheet: View {
                     self.companiesStore.isShowingNewCompanySheet = true
                 })
             }
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitle("Invoice editor", displayMode: .inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
 //                        dismiss()
                         invoiceModel.dismissEditor()
                     }
-                }
-                ToolbarItem(placement: .principal) {
-                    Text("Edit invoice").font(.headline)
                 }
                 ToolbarItem(placement: .primaryAction) {
                     Button("Save") {
