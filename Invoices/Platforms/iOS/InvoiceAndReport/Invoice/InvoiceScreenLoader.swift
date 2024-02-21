@@ -12,18 +12,20 @@ struct InvoiceScreenLoader: View {
 
     @ObservedObject var invoicesStore: InvoicesStore
     var invoice: Invoice
+    @State var isLoaded = false
 
     var body: some View {
 
         let _ = Self._printChanges()
 
-        if let model = invoicesStore.selectedInvoiceModel {
-            InvoiceScreen(model: model)
+        if isLoaded, let invoiceModel = invoicesStore.selectedInvoiceModel {
+            InvoiceScreen(model: invoiceModel)
         } else {
             Text("Loading...")
                 .task {
                     _ = invoicesStore.loadInvoice(invoice)
                     .sink { invoiceModel in
+                        isLoaded = true
                     }
                 }
         }

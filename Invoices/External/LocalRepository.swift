@@ -26,7 +26,7 @@ class LocalRepository {
     }
 
     init() {
-        RCLog("init LocalRepository")
+        RCLog("init LocalRepository at: \(String(describing: baseUrl))")
     }
 }
 

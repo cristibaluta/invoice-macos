@@ -57,6 +57,27 @@ class ProjectsStore: ObservableObject {
         self.interactor = ProjectsInteractor(repository: repository)
     }
 
+    #if os(iOS)
+    func newInstanceOfInvoicesStore(for project: Project) -> InvoicesStore {
+        cancellables.removeAll()
+
+        let invoicesStore = InvoicesStore(repository: repository, project: project)
+//        invoicesStore.chartPublisher
+//            .sink { chartViewModel in
+////                self.changeSubject.send()
+//            }
+//            .store(in: &cancellables)
+        invoicesStore.didSaveInvoicePublisher
+            .sink {
+                invoicesStore.loadInvoices()
+            }
+            .store(in: &cancellables)
+        invoicesStore.loadInvoices()
+
+        return invoicesStore
+    }
+    #endif
+
     func refresh() {
         _ = interactor.loadProjectsList()
             .sink { [weak self] in

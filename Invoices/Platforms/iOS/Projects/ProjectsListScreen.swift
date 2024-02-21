@@ -23,7 +23,10 @@ struct ProjectsListScreen: View {
             .onDelete(perform: delete)
         }
         .navigationDestination(for: Project.self) { proj in
-            InvoicesListScreenLoader(project: proj)
+            // Need to make sure that store doesn't trigger new updates after this
+//            InvoicesListScreenLoader(invoicesStore: store.projectsStore.getInstanceOfInvoicesStore(for: proj), project: proj)
+            InvoicesListScreen(invoicesStore: store.projectsStore.newInstanceOfInvoicesStore(for: proj))
+                .navigationBarTitle(proj.name, displayMode: .inline)
         }
         .refreshable {
             store.projectsStore.refresh()

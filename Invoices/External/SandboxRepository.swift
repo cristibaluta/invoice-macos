@@ -14,12 +14,11 @@ class SandboxRepository {
     var baseUrl: URL? {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
-//        print(documentsDirectory)
         return documentsDirectory
     }
 
     init() {
-        RCLog("init SandboxRepository")
+        RCLog("init SandboxRepository at: \(String(describing: baseUrl))")
     }
 }
 

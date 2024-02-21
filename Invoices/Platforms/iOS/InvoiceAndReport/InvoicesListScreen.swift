@@ -57,7 +57,7 @@ struct InvoicesListScreen: View {
         guard let index = offsets.first else {
             return
         }
-        store.projectsStore.invoicesStore?.deleteInvoice(at: index)
+        invoicesStore.deleteInvoice(at: index)
     }
 
 }

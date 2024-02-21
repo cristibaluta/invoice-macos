@@ -43,12 +43,16 @@ class InvoicesStore: ObservableObject {
     }
 
     init (repository: Repository, project: Project) {
-        
+        print(">>>>>>> init InvoicesStore \(project.name)")
         self.repository = repository
         self.project = project
 
         invoicesInteractor = InvoicesInteractor(repository: repository)
         reportsInteractor = ReportsInteractor(repository: repository)
+    }
+
+    deinit {
+        print("<<<<<<< deinit InvoicesStore \(project.name)")
     }
 
     func loadInvoices() {
