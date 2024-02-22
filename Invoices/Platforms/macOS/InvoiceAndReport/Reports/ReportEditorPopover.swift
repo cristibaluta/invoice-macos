@@ -16,7 +16,7 @@ struct ReportEditorPopover: View {
 
     @Environment(\.dismiss) var dismiss
     var invoiceStore: InvoiceModel
-    var editorViewModel: ReportEditorViewModel
+    var editorViewModel: ReportEditorModel
 
     var body: some View {
 
@@ -38,7 +38,7 @@ struct ReportEditorPopover: View {
 
             Divider()
 
-            ReportEditor(viewModel: editorViewModel)
+            ReportEditorView(viewModel: editorViewModel)
 
             Button("Save") {
                 invoiceStore.save()

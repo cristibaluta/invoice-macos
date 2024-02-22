@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class ReportEditorViewModel: ObservableObject, InvoiceEditorProtocol {
+class ReportEditorModel: ObservableObject, InvoiceEditorProtocol {
 
     @Published var data: InvoiceData
     private let reportInteractor: ReportInteractor
@@ -17,12 +17,12 @@ class ReportEditorViewModel: ObservableObject, InvoiceEditorProtocol {
     @Published var reports: [Report] = []
     private var allReports: [Report] = []
 
-    /// Publisher for creating a new company
-    var addCompanyPublisher: AnyPublisher<Void, Never> { addCompanySubject.eraseToAnyPublisher() }
-    private let addCompanySubject = PassthroughSubject<Void, Never>()
+    /// Publisher for creating a new company. Unused in reports
+    var addCompanyPublisher = PassthroughSubject<Void, Never>().eraseToAnyPublisher()
 
 
     init (data: InvoiceData, reportInteractor: ReportInteractor) {
+        print(">>>>>>> init ReportEditorViewModel")
         self.data = data
         self.reportInteractor = reportInteractor
 
@@ -34,6 +34,10 @@ class ReportEditorViewModel: ObservableObject, InvoiceEditorProtocol {
         })
         allProjects = projects(from: allReports, isOn: true)
         updateReports()
+    }
+
+    deinit {
+        print("<<<<<<< deinit ReportEditorViewModel")
     }
 
     func importCsv (at fileUrl: URL) {
@@ -76,9 +80,11 @@ class ReportEditorViewModel: ObservableObject, InvoiceEditorProtocol {
     }
 
     func updateReports() {
-        self.reports = allReports.filter({
+        reports = allReports.filter({
             let pn = $0.project_name
-            return self.allProjects.contains(where: {$0.name == pn && $0.isOn})
+            return allProjects.contains(where: {
+                $0.name == pn && $0.isOn
+            })
         })
     }
 

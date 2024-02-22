@@ -8,19 +8,18 @@
 import SwiftUI
 import Combine
 
-struct ReportEditor: View {
+struct ReportEditorView: View {
     
-    @ObservedObject var viewModel: ReportEditorViewModel
+    @ObservedObject var viewModel: ReportEditorModel
     
     let columns = [
         GridItem(.adaptive(minimum: 160))
     ]
-    
-    init (viewModel: ReportEditorViewModel) {
-        self.viewModel = viewModel
-    }
-    
+
     var body: some View {
+        
+        let _ = Self._printChanges()
+
         VStack {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 20) {

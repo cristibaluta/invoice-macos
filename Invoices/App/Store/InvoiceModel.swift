@@ -43,11 +43,11 @@ class InvoiceModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private var activeEditorViewModel: (any InvoiceEditorProtocol)?
 
-    var invoiceEditorViewModel: InvoiceEditorViewModel {
-        if let viewModel = activeEditorViewModel as? InvoiceEditorViewModel {
+    var invoiceEditorViewModel: InvoiceEditorModel {
+        if let viewModel = activeEditorViewModel as? InvoiceEditorModel {
             return viewModel
         }
-        let viewModel = InvoiceEditorViewModel(data: data)
+        let viewModel = InvoiceEditorModel(data: data)
         viewModel.$data
             .sink { newData in
                 self.data = newData
@@ -63,11 +63,11 @@ class InvoiceModel: ObservableObject {
         return viewModel
     }
 
-    var reportEditorViewModel: ReportEditorViewModel {
-        if let viewModel = activeEditorViewModel as? ReportEditorViewModel {
+    var reportEditorViewModel: ReportEditorModel {
+        if let viewModel = activeEditorViewModel as? ReportEditorModel {
             return viewModel
         }
-        let viewModel = ReportEditorViewModel(data: data, reportInteractor: reportInteractor)
+        let viewModel = ReportEditorModel(data: data, reportInteractor: reportInteractor)
         viewModel.$data
             .sink { newData in
                 self.data = newData

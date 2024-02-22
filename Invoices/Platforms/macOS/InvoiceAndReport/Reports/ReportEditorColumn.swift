@@ -12,7 +12,7 @@ import Combine
 struct ReportEditorColumn: View {
 
     var invoiceStore: InvoiceModel
-    var editorViewModel: ReportEditorViewModel
+    var editorViewModel: ReportEditorModel
 
     private let columns = [
         GridItem(.adaptive(minimum: 160))
@@ -38,7 +38,7 @@ struct ReportEditorColumn: View {
 
             Divider()
 
-            ReportEditor(viewModel: editorViewModel)
+            ReportEditorView(viewModel: editorViewModel)
 
 //            Button("Save") {
 //                invoiceStore.save()

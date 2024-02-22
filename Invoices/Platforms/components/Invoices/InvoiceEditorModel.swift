@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class InvoiceEditorViewModel: ObservableObject, InvoiceEditorProtocol {
+class InvoiceEditorModel: ObservableObject, InvoiceEditorProtocol {
 
     @Published var data: InvoiceData {
         didSet {
@@ -20,7 +20,7 @@ class InvoiceEditorViewModel: ObservableObject, InvoiceEditorProtocol {
     @Published var invoiceNr: String
     @Published var invoiceDate: Date
     @Published var invoicedDate: Date
-    @Published var products: [InvoiceProductEditorViewModel]
+    @Published var products: [ProductRowModel]
     @Published var vat: String
     @Published var amountTotalVat: String
     @Published var clientName: String
@@ -46,7 +46,7 @@ class InvoiceEditorViewModel: ObservableObject, InvoiceEditorProtocol {
         invoiceDate = Date(yyyyMMdd: data.invoice_date) ?? Date()
         invoicedDate = Date(yyyyMMdd: data.invoiced_period) ?? Date()
         
-        products = data.products.map({ InvoiceProductEditorViewModel(data: $0) })
+        products = data.products.map({ ProductRowModel(data: $0) })
 
         vat = data.vat.stringValue_2
         amountTotalVat = data.amount_total_vat.stringValue_2
@@ -93,7 +93,7 @@ class InvoiceEditorViewModel: ObservableObject, InvoiceEditorProtocol {
                                             units_name: "",
                                             amount_per_unit: 0,
                                             amount: 0))
-        products = data.products.map({ InvoiceProductEditorViewModel(data: $0) })
+        products = data.products.map({ ProductRowModel(data: $0) })
         subscribeToProductsChanges()
     }
 
@@ -111,73 +111,5 @@ class InvoiceEditorViewModel: ObservableObject, InvoiceEditorProtocol {
             }
             .store(in: &productsCancellables)
         }
-    }
-}
-
-class InvoiceProductEditorViewModel: ObservableObject, Identifiable {
-
-    let id = UUID()
-    @Published var data: InvoiceProduct
-
-    @Published var productName: String
-    @Published var rate: String
-    @Published var exchangeRate: String
-    @Published var unitsName: String
-    @Published var units: String
-    @Published var amount: String
-
-    private var cancellables = Set<AnyCancellable>()
-
-    init (data: InvoiceProduct) {
-
-        self.data = data
-
-        productName = data.product_name
-        rate = data.rate.stringValue_2
-        exchangeRate = data.exchange_rate.stringValue_4
-        unitsName = data.units_name
-        units = data.units.stringValue
-        amount = data.amount.stringValue_2
-
-        $productName.removeDuplicates().sink { newValue in
-            self.data.product_name = newValue
-        }
-        .store(in: &cancellables)
-
-        $rate.removeDuplicates().sink { newValue in
-            print(">>>>>> rate.sink \(newValue)")
-            self.data.rate = Decimal(string: newValue) ?? 0
-            self.calculateAmount()
-        }
-        .store(in: &cancellables)
-
-        $exchangeRate.removeDuplicates().sink { newValue in
-            print(">>>>>> exchangerate.sink \(newValue)")
-            self.data.exchange_rate = Decimal(string: newValue) ?? 0
-            self.calculateAmount()
-        }
-        .store(in: &cancellables)
-
-        //        .assign(to: \.units_name, on: self.data)
-        $unitsName.removeDuplicates().sink { newValue in
-            self.data.units_name = newValue
-        }
-        .store(in: &cancellables)
-
-        $units.removeDuplicates().sink { newValue in
-            print(">>>>>> units.sink \(newValue)")
-            self.data.units = Decimal(string: newValue) ?? 0
-            self.calculateAmount()
-        }
-        .store(in: &cancellables)
-    }
-
-    deinit {
-        cancellables.removeAll()
-    }
-
-    private func calculateAmount() {
-        data.calculate()
-        amount = data.amount.stringValue_2
     }
 }

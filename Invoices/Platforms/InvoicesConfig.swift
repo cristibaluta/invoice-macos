@@ -11,8 +11,10 @@ import RCPreferences
 
 #if os(macOS)
 let appFont = Font.system(size: 12)
+let smallFont = Font.system(size: 12)
 #else
 let appFont = Font.system(.body)
+let smallFont = Font.system(.callout)
 #endif
 
 enum UserPreferences: String, RCPreferencesProtocol {

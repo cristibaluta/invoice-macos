@@ -13,7 +13,7 @@ struct InvoiceEditorSheet: View {
     @EnvironmentObject var companiesStore: CompaniesStore
     @Environment(\.dismiss) var dismiss
     private var invoiceModel: InvoiceModel
-    private var editorModel: InvoiceEditorViewModel
+    private var editorModel: InvoiceEditorModel
 
     init (model: InvoiceModel) {
         self.invoiceModel = model
@@ -26,7 +26,7 @@ struct InvoiceEditorSheet: View {
         
         NavigationView {
             ScrollView {
-                InvoiceEditor(viewModel: editorModel, onTapAddCompany: {
+                InvoiceEditorView(model: editorModel, onTapAddCompany: {
                     self.companiesStore.isShowingNewCompanySheet = true
                 })
             }

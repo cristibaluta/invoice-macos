@@ -17,13 +17,14 @@ struct InvoiceScreen: View {
         let _ = Self._printChanges()
 
         GeometryReader { context in
-            ScrollView {
-                HtmlViewer(htmlString: model.html, wrappedPdfData: model.wrappedPdfData)
-                    .frame(width: context.size.width,
-                           height: context.size.width * HtmlViewer.size.height / HtmlViewer.size.width)
-            }
-            .navigationBarTitle("", displayMode: .inline)
+            HtmlViewer(htmlString: model.html, wrappedPdfData: model.wrappedPdfData)
+                .frame(width: context.size.width - 20,
+                       height: (context.size.width - 20) * HtmlViewer.size.height / HtmlViewer.size.width)
+                .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 20)))
+                .padding(10)
         }
+        .background(Color(.systemGray4))
+        .navigationBarTitle("", displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Picker("Type", selection: $model.editorType) {
@@ -43,8 +44,10 @@ struct InvoiceScreen: View {
                 .sheet(isPresented: $model.isEditing) {
                     if model.editorType == .invoice {
                         InvoiceEditorSheet(model: model)
+                            .interactiveDismissDisabled()
                     } else {
                         ReportEditorSheet(model: model)
+                            .interactiveDismissDisabled()
                     }
                 }
             }

@@ -12,7 +12,7 @@ struct ReportEditorSheet: View {
 
     @Environment(\.dismiss) var dismiss
     private var invoiceModel: InvoiceModel
-    private var editorModel: ReportEditorViewModel
+    private var editorModel: ReportEditorModel
 
     init (model: InvoiceModel) {
         self.invoiceModel = model
@@ -24,28 +24,26 @@ struct ReportEditorSheet: View {
         let _ = Self._printChanges()
 
         NavigationView {
-            ScrollView {
-                ReportEditor(viewModel: editorModel)
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        dismiss()
-                        invoiceModel.dismissEditor()
+            ReportEditorView(viewModel: editorModel)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            dismiss()
+                            invoiceModel.dismissEditor()
+                        }
+                    }
+                    ToolbarItem(placement: .principal) {
+                        Text("Edit report").font(.headline)
+                    }
+                    ToolbarItem(placement: .primaryAction) {
+                        Button("Save") {
+                            invoiceModel.save()
+                            invoiceModel.dismissEditor()
+                            dismiss()
+                        }
                     }
                 }
-                ToolbarItem(placement: .principal) {
-                    Text("Edit report").font(.headline)
-                }
-                ToolbarItem(placement: .primaryAction) {
-                    Button("Save") {
-                        invoiceModel.save()
-                        invoiceModel.dismissEditor()
-                        dismiss()
-                    }
-                }
-            }
         }
     }
 

@@ -20,7 +20,7 @@ struct NewProjectSheet: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
-                        self.store.projectsStore.dismissNewProject()
+                        store.projectsStore.dismissNewProject()
                     }
                 }
             }
