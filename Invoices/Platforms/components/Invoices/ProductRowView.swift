@@ -66,7 +66,9 @@ struct ProductRowView: View {
             }
             .padding()
         }
+        #if os(iOS)
         .background(Color(.systemGray6))
+        #endif
         .cornerRadius(8)
         .overlay(RoundedRectangle(cornerRadius: 8).stroke(.gray, lineWidth: 1))
     }

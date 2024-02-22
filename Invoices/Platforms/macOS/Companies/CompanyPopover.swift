@@ -9,24 +9,22 @@ import SwiftUI
 
 struct CompanyPopover: View {
 
-    @EnvironmentObject var companiesData: CompaniesStore
+    @EnvironmentObject var companiesStore: CompaniesStore
     var data: CompanyData
-//    init() {
-//        print("init CompanyPopover")
-//    }
 
     var body: some View {
+
         let _ = Self._printChanges()
         
         VStack {
             CompanyView(data: data) { data in
                 print("onChange \(data.name)")
-                companiesData.selectedCompany = data
+                companiesStore.selectedCompany = data
             }
             .padding()
             Spacer()
             Button("Save") {
-                companiesData.saveSelectedCompany()
+                companiesStore.saveSelectedCompany()
             }
             .padding()
         }

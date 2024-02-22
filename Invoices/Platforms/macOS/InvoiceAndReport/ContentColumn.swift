@@ -28,8 +28,8 @@ struct ContentColumn: View {
                     mainStore.projectsStore.invoicesStore?.createNextInvoiceInProject()
                 }
 
-            case .newInvoice(let invoiceStore):
-                NewInvoiceView(viewModel: invoiceStore.invoiceEditorViewModel)
+            case .newInvoice(let invoiceModel):
+                NewInvoiceView(viewModel: invoiceModel.invoiceEditorModel)
                 .padding(40)
 
             case .deleteInvoice(let invoice):
@@ -39,41 +39,41 @@ struct ContentColumn: View {
                 ChartsView(viewModel: chartsViewModel)
                 .padding(40)
 
-            case .invoice(let invoiceStore):
-                HtmlViewer(htmlString: invoiceStore.html, wrappedPdfData: invoiceStore.wrappedPdfData)
+            case .invoice(let invoiceModel):
+                HtmlViewer(htmlString: invoiceModel.html, wrappedPdfData: invoiceModel.wrappedPdfData)
                 .frame(width: 920)
                 .padding(10)
-                .modifier(Toolbar(invoiceStore: invoiceStore))
-                .task(id: invoiceStore.id) {
+                .modifier(Toolbar(invoiceModel: invoiceModel))
+                .task(id: invoiceModel.id) {
                     // Use task because onAppear will not be called when store changes
-//                    invoiceStore.htmlCancellable = invoiceStore.htmlDidChangePublisher.sink { html in
-//                        // InvoiceStore changes don't trigger ContentColumn redraw
+//                    invoiceModel.htmlCancellable = invoiceModel.htmlDidChangePublisher.sink { html in
+//                        // invoiceModel changes don't trigger ContentColumn redraw
 //                        mainWindowState.objectWillChange.send()
 //                    }
                 }
                 
-            case .invoiceEditor(let invoiceStore):
-                InvoiceEditorColumn(editorViewModel: invoiceStore.invoiceEditorViewModel)
+            case .invoiceEditor(let invoiceModel):
+                InvoiceEditorColumn(editorModel: invoiceModel.invoiceEditorModel)
                 .padding(10)
-                .modifier(Toolbar(invoiceStore: invoiceStore))
+                .modifier(Toolbar(invoiceModel: invoiceModel))
 
-            case .report(let invoiceStore):
-                HtmlViewer(htmlString: invoiceStore.html, wrappedPdfData: invoiceStore.wrappedPdfData)
+            case .report(let invoiceModel):
+                HtmlViewer(htmlString: invoiceModel.html, wrappedPdfData: invoiceModel.wrappedPdfData)
                 .frame(width: 920)
                 .padding(10)
-                .modifier(Toolbar(invoiceStore: invoiceStore))
-                .task(id: invoiceStore.id) {
+                .modifier(Toolbar(invoiceModel: invoiceModel))
+                .task(id: invoiceModel.id) {
                     // Use task because onAppear will not be called when store changes
-//                    invoiceStore.htmlCancellable = invoiceStore.htmlDidChangePublisher.sink { html in
-//                        // InvoiceStore changes don't trigger ContentColumn redraw
+//                    invoiceModel.htmlCancellable = invoiceModel.htmlDidChangePublisher.sink { html in
+//                        // invoiceModel changes don't trigger ContentColumn redraw
 //                        mainWindowState.objectWillChange.send()
 //                    }
                 }
 
-            case .reportEditor(let invoiceStore):
-                ReportEditorColumn(invoiceStore: invoiceStore, editorViewModel: invoiceStore.reportEditorViewModel)
+            case .reportEditor(let invoiceModel):
+                ReportEditorColumn(invoiceModel: invoiceModel, editorViewModel: invoiceModel.reportEditorModel)
                 .padding(10)
-                .modifier(Toolbar(invoiceStore: invoiceStore))
+                .modifier(Toolbar(invoiceModel: invoiceModel))
 
             case .company(let companyData):
                 CompanyColumn(data: companyData)

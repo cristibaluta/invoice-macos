@@ -17,7 +17,7 @@ struct InvoiceEditorSheet: View {
 
     init (model: InvoiceModel) {
         self.invoiceModel = model
-        self.editorModel = model.invoiceEditorViewModel
+        self.editorModel = model.invoiceEditorModel
     }
 
     var body: some View {

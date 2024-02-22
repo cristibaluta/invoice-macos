@@ -11,7 +11,7 @@ import Combine
 
 struct ReportEditorColumn: View {
 
-    var invoiceStore: InvoiceModel
+    var invoiceModel: InvoiceModel
     var editorViewModel: ReportEditorModel
 
     private let columns = [
@@ -41,7 +41,7 @@ struct ReportEditorColumn: View {
             ReportEditorView(viewModel: editorViewModel)
 
 //            Button("Save") {
-//                invoiceStore.save()
+//                invoiceModel.save()
 //            }
         }
         .padding(20)

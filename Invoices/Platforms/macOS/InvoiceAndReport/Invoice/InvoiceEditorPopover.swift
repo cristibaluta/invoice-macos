@@ -11,20 +11,20 @@ struct InvoiceEditorPopover: View {
 
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var companiesStore: CompaniesStore
-    var invoiceStore: InvoiceModel
-    var editorViewModel: InvoiceEditorModel
+    var invoiceModel: InvoiceModel
+    var editorModel: InvoiceEditorModel
 
     var body: some View {
 
         let _ = Self._printChanges()
 
         VStack {
-            InvoiceEditorView(viewModel: editorViewModel, onTapAddCompany: {
+            InvoiceEditorView(model: editorModel, onTapAddCompany: {
                 self.companiesStore.isShowingNewCompanySheet = true
             })
             Button("Save") {
-                invoiceStore.save()
-                self.dismiss.callAsFunction()
+                invoiceModel.save()
+                dismiss.callAsFunction()
             }
         }
         .padding(20)

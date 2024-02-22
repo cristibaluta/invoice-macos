@@ -10,14 +10,16 @@ import SwiftUI
 
 struct CompanyColumn: View {
 
-    @EnvironmentObject var companiesData: CompaniesStore
+    @EnvironmentObject var companiesStore: CompaniesStore
     var data: CompanyData
 
     var body: some View {
+
         let _ = Self._printChanges()
+        
         VStack {
             CompanyView(data: data) { data in
-                companiesData.selectedCompany = data
+                companiesStore.selectedCompany = data
             }
             .frame(width: 400)
         }
@@ -25,7 +27,7 @@ struct CompanyColumn: View {
             ToolbarItemGroup(placement: .primaryAction) {
                 Spacer()
                 Button("Save") {
-                    companiesData.saveSelectedCompany()
+                    companiesStore.saveSelectedCompany()
                 }
             }
         }

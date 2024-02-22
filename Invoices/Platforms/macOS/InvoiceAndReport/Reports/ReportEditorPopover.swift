@@ -15,8 +15,8 @@ struct ReportEditorPopover: View {
     ]
 
     @Environment(\.dismiss) var dismiss
-    var invoiceStore: InvoiceModel
-    var editorViewModel: ReportEditorModel
+    var invoiceModel: InvoiceModel
+    var editorModel: ReportEditorModel
 
     var body: some View {
 
@@ -31,18 +31,18 @@ struct ReportEditorPopover: View {
                 //panel.allowedContentTypes = ["csv"]
                 if panel.runModal() == .OK {
                     if let url = panel.urls.first {
-                        editorViewModel.importCsv(at: url)
+                        editorModel.importCsv(at: url)
                     }
                 }
             }
 
             Divider()
 
-            ReportEditorView(viewModel: editorViewModel)
+            ReportEditorView(viewModel: editorModel)
 
             Button("Save") {
-                invoiceStore.save()
-                self.dismiss.callAsFunction()
+                invoiceModel.save()
+                dismiss.callAsFunction()
             }
         }
         .padding(20)

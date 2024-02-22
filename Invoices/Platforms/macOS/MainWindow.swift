@@ -19,26 +19,14 @@ struct MainWindow: View {
 
         let _ = Self._printChanges()
 
-        content
-        .frame(minWidth: 1000, idealWidth: 1200, minHeight: 600, idealHeight: 900, alignment: .topLeading)
-        .onAppear {
-            // Refresh the projects
-            store.projectsStore.refresh()
-            store.projectsStore.selectLastProject()
-            // Refresh the companies
-            companiesStore.refresh()
-        }
-    }
-
-    var content: some View {
         NavigationView {
             if !store.projectsStore.projects.isEmpty {
                 SidebarColumn()
-                .frame(minWidth: 180)
+                    .frame(minWidth: 180)
             }
 
             ContentColumn()
-            .frame(minWidth: 900)
+                .frame(minWidth: 900)
         }
         .toolbar {
             ToolbarItem(placement: .navigation) {
@@ -49,7 +37,14 @@ struct MainWindow: View {
         }
         .navigationViewStyle(.columns)
         .environmentObject(mainWindowState)
-//        .navigationTitle(state.invoiceName)
+        .frame(minWidth: 1000, idealWidth: 1200, minHeight: 600, idealHeight: 900, alignment: .topLeading)
+        .onAppear {
+            // Refresh the projects
+            store.projectsStore.refresh()
+            store.projectsStore.selectLastProject()
+            // Refresh the companies
+            companiesStore.refresh()
+        }
     }
 
     private func toggleSidebar() {

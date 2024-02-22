@@ -15,7 +15,7 @@ struct NewInvoiceSheet: View {
 
     var body: some View {
         NavigationView {
-            if let editorModel = invoicesStore.selectedInvoiceModel?.invoiceEditorViewModel {
+            if let editorModel = invoicesStore.selectedInvoiceModel?.invoiceEditorModel {
                 // Add only few fields
 //                NewInvoiceView(viewModel: editorModel)
                 InvoiceEditorView(model: editorModel, onTapAddCompany: {

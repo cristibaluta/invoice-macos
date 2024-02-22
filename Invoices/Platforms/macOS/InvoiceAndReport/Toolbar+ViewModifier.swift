@@ -11,73 +11,73 @@ import PDFKit
 struct Toolbar: ViewModifier {
 
     @EnvironmentObject var mainWindowState: MainWindowState
-    @ObservedObject var invoiceStore: InvoiceModel
+    @ObservedObject var invoiceModel: InvoiceModel
 //    @State private var isShowingExportPopover = false
     
     func body (content: Content) -> some View {
         
         content.toolbar {
             ToolbarItem(placement: .principal) {
-                if invoiceStore.isEditing {
-                    Text(invoiceStore.editorType == .invoice ? "Edit invoice" : "Edit report")
+                if invoiceModel.isEditing {
+                    Text(invoiceModel.editorType == .invoice ? "Edit invoice" : "Edit report")
                 } else {
-                    Picker("Section", selection: $invoiceStore.editorType) {
+                    Picker("Section", selection: $invoiceModel.editorType) {
                         Text("Invoice").tag(EditorType.invoice)
                         Text("Report").tag(EditorType.report)
                     }
                     .pickerStyle(SegmentedPickerStyle())
-                    .onChange(of: invoiceStore.editorType) { editorType in
-                        invoiceStore.editorType = editorType
+                    .onChange(of: invoiceModel.editorType) { editorType in
+                        invoiceModel.editorType = editorType
                         switch editorType {
                             case .invoice:
-                                mainWindowState.contentType = .invoice(invoiceStore)
+                                mainWindowState.contentType = .invoice(invoiceModel)
                             case .report:
-                                mainWindowState.contentType = .report(invoiceStore)
+                                mainWindowState.contentType = .report(invoiceModel)
                         }
                     }
                 }
             }
             ToolbarItemGroup(placement: .primaryAction) {
                 Spacer()
-//                Button("Editor") {
-//                    switch invoiceStore.editorType {
-//                        case .invoice:
-//                            invoiceStore.isShowingEditorSheet = true
-//                        case .report:
-//                            invoiceStore.isShowingEditorSheet = true
-//                    }
-//                }
-//                .popover(isPresented: $invoiceStore.isShowingEditorSheet,
-//                         attachmentAnchor: .point(.leading),
-//                         arrowEdge: .leading) {
-//                    switch invoiceStore.editorType {
-//                        case .invoice:
-//                            InvoiceEditorPopover(invoiceStore: invoiceStore, editorViewModel: invoiceStore.invoiceEditorViewModel)
-//                        case .report:
-//                            ReportEditorPopover(invoiceStore: invoiceStore, editorViewModel: invoiceStore.reportEditorViewModel)
-//                                .frame(width: 500, height: 600)
-//                    }
-//                }
-                if invoiceStore.isEditing {
+                Button("Editor") {
+                    switch invoiceModel.editorType {
+                        case .invoice:
+                            invoiceModel.isEditing = true
+                        case .report:
+                            invoiceModel.isEditing = true
+                    }
+                }
+                .popover(isPresented: $invoiceModel.isEditing,
+                         attachmentAnchor: .point(.trailing),
+                         arrowEdge: .trailing) {
+                    switch invoiceModel.editorType {
+                        case .invoice:
+                            InvoiceEditorPopover(invoiceModel: invoiceModel, editorModel: invoiceModel.invoiceEditorModel)
+                        case .report:
+                            ReportEditorPopover(invoiceModel: invoiceModel, editorModel: invoiceModel.reportEditorModel)
+                                .frame(width: 500, height: 600)
+                    }
+                }
+                if invoiceModel.isEditing {
                     Button("Preview") {
                         // Dismiss editor
-                        invoiceStore.dismissEditor()
+                        invoiceModel.dismissEditor()
                         // Go back to preview mode
                         gotoPreview()
                     }
                 } else {
                     Button("Edit") {
-                        switch invoiceStore.editorType {
+                        switch invoiceModel.editorType {
                             case .invoice:
-                                mainWindowState.contentType = .invoiceEditor(invoiceStore)
+                                mainWindowState.contentType = .invoiceEditor(invoiceModel)
                             case .report:
-                                mainWindowState.contentType = .reportEditor(invoiceStore)
+                                mainWindowState.contentType = .reportEditor(invoiceModel)
                         }
                     }
-                    if invoiceStore.hasChanges {
+                    if invoiceModel.hasChanges {
                         Button("Save") {
                             // Save the invoice
-                            invoiceStore.save()
+                            invoiceModel.save()
                         }
                     }
 //                    Button(action: {
@@ -86,12 +86,12 @@ struct Toolbar: ViewModifier {
 //                        Image(systemName: "square.and.arrow.up")
 //                    }
 //                    .popover(isPresented: $isShowingExportPopover) {
-//                        ExportPopover(state: invoiceStore)
+//                        ExportPopover(state: invoiceModel)
 //                            .padding(20)
 //                    }
 
-//                    if let pdfData = invoiceStore.pdfData,
-                    if let pdf = PDFDocument(data: invoiceStore.wrappedPdfData.data) {
+//                    if let pdfData = invoiceModel.pdfData,
+                    if let pdf = PDFDocument(data: invoiceModel.wrappedPdfData.data) {
                         ShareLink(item: pdf, preview: SharePreview("PDF"))
                     }
                 }
@@ -101,11 +101,11 @@ struct Toolbar: ViewModifier {
     }
 
     private func gotoPreview() {
-        switch invoiceStore.editorType {
+        switch invoiceModel.editorType {
             case .invoice:
-                mainWindowState.contentType = .invoice(invoiceStore)
+                mainWindowState.contentType = .invoice(invoiceModel)
             case .report:
-                mainWindowState.contentType = .report(invoiceStore)
+                mainWindowState.contentType = .report(invoiceModel)
         }
     }
 

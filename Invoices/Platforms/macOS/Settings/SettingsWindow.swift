@@ -23,7 +23,7 @@ struct SettingsWindow: View {
                     Menu {
                         ForEach(settingsStore.repositories) { repository in
                             Button(repository.type.name, action: {
-                                self.settingsStore.setCurrentRepository(repository.type)
+                                settingsStore.setCurrentRepository(repository.type)
                             })
                         }
                     } label: {

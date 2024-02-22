@@ -35,8 +35,8 @@ struct InvoicesList: View {
             .contentShape(Rectangle())
             .onTapGesture {
                 _ = invoicesStore.loadInvoice(invoice)
-                    .sink { invoiceStore in
-                        mainWindowState.contentType = .invoice(invoiceStore)
+                    .sink { invoiceModel in
+                        mainWindowState.contentType = .invoice(invoiceModel)
                     }
             }
             .contextMenu {

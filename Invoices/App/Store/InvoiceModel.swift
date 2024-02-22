@@ -41,10 +41,11 @@ class InvoiceModel: ObservableObject {
     private var reportInteractor: ReportInteractor
 
     private var cancellables = Set<AnyCancellable>()
-    private var activeEditorViewModel: (any InvoiceEditorProtocol)?
+    private var activeEditorModel: (any InvoiceEditorProtocol)?
 
-    var invoiceEditorViewModel: InvoiceEditorModel {
-        if let viewModel = activeEditorViewModel as? InvoiceEditorModel {
+    /// Creates and sets as active a new InvoiceEditorModel
+    var invoiceEditorModel: InvoiceEditorModel {
+        if let viewModel = activeEditorModel as? InvoiceEditorModel {
             return viewModel
         }
         let viewModel = InvoiceEditorModel(data: data)
@@ -58,13 +59,14 @@ class InvoiceModel: ObservableObject {
                 print("Request to add new company")
             }
             .store(in: &cancellables)
-        activeEditorViewModel = viewModel
+        activeEditorModel = viewModel
         isEditing = true
         return viewModel
     }
 
-    var reportEditorViewModel: ReportEditorModel {
-        if let viewModel = activeEditorViewModel as? ReportEditorModel {
+    /// Creates and sets as active a new ReportEditorModel
+    var reportEditorModel: ReportEditorModel {
+        if let viewModel = activeEditorModel as? ReportEditorModel {
             return viewModel
         }
         let viewModel = ReportEditorModel(data: data, reportInteractor: reportInteractor)
@@ -73,7 +75,7 @@ class InvoiceModel: ObservableObject {
                 self.data = newData
             }
             .store(in: &cancellables)
-        activeEditorViewModel = viewModel
+        activeEditorModel = viewModel
         isEditing = true
         return viewModel
     }
@@ -114,7 +116,7 @@ class InvoiceModel: ObservableObject {
 
     func dismissEditor() {
         isEditing = false
-        activeEditorViewModel = nil
+        activeEditorModel = nil
         cancellables.removeAll()
     }
 
