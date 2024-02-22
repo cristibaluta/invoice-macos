@@ -9,7 +9,6 @@ import SwiftUI
 
 struct InvoicesListScreen: View {
 
-    @EnvironmentObject var store: MainStore
     @ObservedObject var invoicesStore: InvoicesStore
 
 
@@ -40,12 +39,11 @@ struct InvoicesListScreen: View {
             ToolbarItem(placement: .primaryAction) {
                 Button("Add") {
                     invoicesStore.isShowingNewInvoiceSheet = true
-                    store.objectWillChange.send()
                 }
             }
         }
         .sheet(isPresented: $invoicesStore.isShowingNewInvoiceSheet) {
-            NewInvoiceSheet(invoicesStore: invoicesStore)
+            NewInvoiceSheet(invoicesStore: invoicesStore).interactiveDismissDisabled()
         }
     }
 

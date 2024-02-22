@@ -43,11 +43,9 @@ struct InvoiceScreen: View {
                 }
                 .sheet(isPresented: $model.isEditing) {
                     if model.editorType == .invoice {
-                        InvoiceEditorSheet(model: model)
-                            .interactiveDismissDisabled()
+                        InvoiceEditorSheet(model: model).interactiveDismissDisabled()
                     } else {
-                        ReportEditorSheet(model: model)
-                            .interactiveDismissDisabled()
+                        ReportEditorSheet(model: model).interactiveDismissDisabled()
                     }
                 }
             }
