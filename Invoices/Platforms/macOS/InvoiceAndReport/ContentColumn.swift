@@ -40,17 +40,7 @@ struct ContentColumn: View {
                 .padding(40)
 
             case .invoice(let invoiceModel):
-                HtmlViewer(htmlString: invoiceModel.html, wrappedPdfData: invoiceModel.wrappedPdfData)
-                .frame(width: 920)
-                .padding(10)
-                .modifier(Toolbar(invoiceModel: invoiceModel))
-                .task(id: invoiceModel.id) {
-                    // Use task because onAppear will not be called when store changes
-//                    invoiceModel.htmlCancellable = invoiceModel.htmlDidChangePublisher.sink { html in
-//                        // invoiceModel changes don't trigger ContentColumn redraw
-//                        mainWindowState.objectWillChange.send()
-//                    }
-                }
+                InvoicePreviewColumn(invoiceModel: invoiceModel)
                 
             case .invoiceEditor(let invoiceModel):
                 InvoiceEditorColumn(editorModel: invoiceModel.invoiceEditorModel)
@@ -58,17 +48,7 @@ struct ContentColumn: View {
                 .modifier(Toolbar(invoiceModel: invoiceModel))
 
             case .report(let invoiceModel):
-                HtmlViewer(htmlString: invoiceModel.html, wrappedPdfData: invoiceModel.wrappedPdfData)
-                .frame(width: 920)
-                .padding(10)
-                .modifier(Toolbar(invoiceModel: invoiceModel))
-                .task(id: invoiceModel.id) {
-                    // Use task because onAppear will not be called when store changes
-//                    invoiceModel.htmlCancellable = invoiceModel.htmlDidChangePublisher.sink { html in
-//                        // invoiceModel changes don't trigger ContentColumn redraw
-//                        mainWindowState.objectWillChange.send()
-//                    }
-                }
+                InvoicePreviewColumn(invoiceModel: invoiceModel)
 
             case .reportEditor(let invoiceModel):
                 ReportEditorColumn(invoiceModel: invoiceModel, editorViewModel: invoiceModel.reportEditorModel)

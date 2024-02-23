@@ -22,12 +22,13 @@ struct InvoiceEditorPopover: View {
             InvoiceEditorView(model: editorModel, onTapAddCompany: {
                 self.companiesStore.isShowingNewCompanySheet = true
             })
+            .padding(.top, 16)
             Button("Save") {
                 invoiceModel.save()
                 dismiss.callAsFunction()
             }
+            .padding(.bottom, 16)
         }
-        .padding(20)
     }
 
 }

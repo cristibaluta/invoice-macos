@@ -17,11 +17,9 @@ struct InvoiceEditorColumn: View {
 
         let _ = Self._printChanges()
 
-        VStack {
-            InvoiceEditorView(model: editorModel, onTapAddCompany: {
-                companiesStore.isShowingNewCompanySheet = true
-            })
-        }
+        InvoiceEditorView(model: editorModel, onTapAddCompany: {
+            companiesStore.isShowingNewCompanySheet = true
+        })
         .padding(20)
     }
 
