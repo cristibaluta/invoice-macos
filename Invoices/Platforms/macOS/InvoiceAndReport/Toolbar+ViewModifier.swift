@@ -12,10 +12,13 @@ struct Toolbar: ViewModifier {
 
     @EnvironmentObject var mainWindowState: MainWindowState
     @ObservedObject var invoiceModel: InvoiceModel
+    @State private var isShowingEditorPopover = false
 //    @State private var isShowingExportPopover = false
     
     func body (content: Content) -> some View {
         
+        let _ = Self._printChanges()
+
         content.toolbar {
             ToolbarItem(placement: .principal) {
                 if invoiceModel.isEditing {
@@ -42,12 +45,12 @@ struct Toolbar: ViewModifier {
                 Button("Editor") {
                     switch invoiceModel.editorType {
                         case .invoice:
-                            invoiceModel.isEditing = true
+                            isShowingEditorPopover = true
                         case .report:
-                            invoiceModel.isEditing = true
+                            isShowingEditorPopover = true
                     }
                 }
-                .popover(isPresented: $invoiceModel.isEditing,
+                .popover(isPresented: $isShowingEditorPopover,
                          attachmentAnchor: .point(.trailing),
                          arrowEdge: .trailing) {
                     switch invoiceModel.editorType {

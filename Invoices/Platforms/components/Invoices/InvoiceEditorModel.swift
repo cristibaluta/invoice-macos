@@ -10,9 +10,10 @@ import Combine
 
 class InvoiceEditorModel: ObservableObject, InvoiceEditorProtocol {
 
+    /// Subscribe to data to be notified about changes
     @Published var data: InvoiceData {
         didSet {
-            print(">>>>>>>>. did change data")
+            print(">>>>>>>> did change data in invoiceEditorModel")
         }
     }
 

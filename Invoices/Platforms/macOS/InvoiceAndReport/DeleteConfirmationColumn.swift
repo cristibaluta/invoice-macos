@@ -18,8 +18,12 @@ struct DeleteConfirmationColumn: View {
         VStack(alignment: .center) {
             Spacer()
             
-            Text("Delete invoice").font(.system(size: 40)).bold().padding(10)
-            Text("Are you sure you want to delete invoice \(invoice.name)? This operation is irreversible.").multilineTextAlignment(.center)
+            Text("Delete invoice")
+                .font(.system(size: 40))
+                .bold()
+                .padding(10)
+            Text("Are you sure you want to delete invoice \(invoice.name)? This operation is irreversible.")
+                .multilineTextAlignment(.center)
 
             Spacer().frame(height: 20)
 

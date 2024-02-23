@@ -85,6 +85,7 @@ class InvoiceModel: ObservableObject {
         didSet {
             hasChanges = data != initialData
             buildHtml()
+            print(">>>>>>> did change data in InvoiceModel")
             dataChangeSubject.send(data)
         }
     }
