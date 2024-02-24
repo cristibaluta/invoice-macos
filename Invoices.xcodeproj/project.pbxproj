@@ -151,8 +151,8 @@
 		56DAD6332B598CF100A30F9C /* InvoiceEditorColumn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD6322B598CF100A30F9C /* InvoiceEditorColumn.swift */; };
 		56DAD6352B59CB7E00A30F9C /* InvoiceEditorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD6342B59CB7E00A30F9C /* InvoiceEditorModel.swift */; };
 		56DAD6362B59CB7E00A30F9C /* InvoiceEditorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD6342B59CB7E00A30F9C /* InvoiceEditorModel.swift */; };
-		56DAD6382B6308E200A30F9C /* CompanyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD6372B6308E200A30F9C /* CompanyViewModel.swift */; };
-		56DAD6392B6308E200A30F9C /* CompanyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD6372B6308E200A30F9C /* CompanyViewModel.swift */; };
+		56DAD6382B6308E200A30F9C /* CompanyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD6372B6308E200A30F9C /* CompanyModel.swift */; };
+		56DAD6392B6308E200A30F9C /* CompanyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD6372B6308E200A30F9C /* CompanyModel.swift */; };
 		56DAD63B2B654CAD00A30F9C /* ChartsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD63A2B654CAD00A30F9C /* ChartsViewModel.swift */; };
 		56DAD63C2B654CAD00A30F9C /* ChartsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD63A2B654CAD00A30F9C /* ChartsViewModel.swift */; };
 		56DAD63E2B66AB1900A30F9C /* PDFDocument+Transferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAD63D2B66AB1900A30F9C /* PDFDocument+Transferable.swift */; };
@@ -292,7 +292,7 @@
 		56DAD6302B595A9000A30F9C /* ReportEditorColumn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportEditorColumn.swift; sourceTree = "<group>"; };
 		56DAD6322B598CF100A30F9C /* InvoiceEditorColumn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceEditorColumn.swift; sourceTree = "<group>"; };
 		56DAD6342B59CB7E00A30F9C /* InvoiceEditorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceEditorModel.swift; sourceTree = "<group>"; };
-		56DAD6372B6308E200A30F9C /* CompanyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyViewModel.swift; sourceTree = "<group>"; };
+		56DAD6372B6308E200A30F9C /* CompanyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyModel.swift; sourceTree = "<group>"; };
 		56DAD63A2B654CAD00A30F9C /* ChartsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsViewModel.swift; sourceTree = "<group>"; };
 		56DAD63D2B66AB1900A30F9C /* PDFDocument+Transferable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PDFDocument+Transferable.swift"; sourceTree = "<group>"; };
 		56DAD6402B66E4A300A30F9C /* InvoicesConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesConfig.swift; sourceTree = "<group>"; };
@@ -372,7 +372,7 @@
 		28737A69278310A2004D56C1 /* Companies */ = {
 			isa = PBXGroup;
 			children = (
-				56DAD6372B6308E200A30F9C /* CompanyViewModel.swift */,
+				56DAD6372B6308E200A30F9C /* CompanyModel.swift */,
 				2867F84B270B595C002CA8CC /* CompanyView.swift */,
 				56B944F72882F5B300D312A4 /* NoCompaniesView.swift */,
 			);
@@ -896,7 +896,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				56DEB1EF2B855D3D00A87EE2 /* InvoicesListScreenLoader.swift in Sources */,
-				56DAD6392B6308E200A30F9C /* CompanyViewModel.swift in Sources */,
+				56DAD6392B6308E200A30F9C /* CompanyModel.swift in Sources */,
 				28737A86278490EA004D56C1 /* PropertyLoopable.swift in Sources */,
 				28737A812784906B004D56C1 /* NewCompanySheet.swift in Sources */,
 				28A73D2B2763BFA600F727C3 /* HtmlViewer.swift in Sources */,
@@ -991,7 +991,7 @@
 				28C04387275656DA0057C0D0 /* Project.swift in Sources */,
 				56DAD63B2B654CAD00A30F9C /* ChartsViewModel.swift in Sources */,
 				56E013492B82397300E255C0 /* IcloudDriveRepository.swift in Sources */,
-				56DAD6382B6308E200A30F9C /* CompanyViewModel.swift in Sources */,
+				56DAD6382B6308E200A30F9C /* CompanyModel.swift in Sources */,
 				56D38551288B20A600E8BEB5 /* Exporter.swift in Sources */,
 				28737A8B27862F64004D56C1 /* MainWindow.swift in Sources */,
 				568AB7402B50A33600D1679F /* SettingsStore.swift in Sources */,

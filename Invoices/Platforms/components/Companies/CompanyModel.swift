@@ -7,7 +7,7 @@
 
 import Foundation
 
-class CompanyViewViewModel {
+class CompanyModel {
 
     var data: CompanyData
 

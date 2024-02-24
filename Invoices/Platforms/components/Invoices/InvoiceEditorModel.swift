@@ -27,8 +27,8 @@ class InvoiceEditorModel: ObservableObject, InvoiceEditorProtocol {
     @Published var clientName: String
     @Published var contractorName: String
 
-    private var clientViewModel: CompanyViewViewModel
-    private var contractorViewModel: CompanyViewViewModel
+    private var clientViewModel: CompanyModel
+    private var contractorViewModel: CompanyModel
 
     /// Publisher to add new company
     var addCompanyPublisher: AnyPublisher<Void, Never> { addCompanySubject.eraseToAnyPublisher() }
@@ -52,8 +52,8 @@ class InvoiceEditorModel: ObservableObject, InvoiceEditorProtocol {
         vat = data.vat.stringValue_2
         amountTotalVat = data.amount_total_vat.stringValue_2
 
-        clientViewModel = CompanyViewViewModel(data: data.client)
-        contractorViewModel = CompanyViewViewModel(data: data.contractor)
+        clientViewModel = CompanyModel(data: data.client)
+        contractorViewModel = CompanyModel(data: data.contractor)
         clientName = data.client.name.isEmpty ? "-" : data.client.name
         contractorName = data.contractor.name.isEmpty ? "-" : data.contractor.name
 

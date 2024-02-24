@@ -9,12 +9,6 @@ import SwiftUI
 
 struct CompanyView: View {
 
-#if os(iOS)
-    typealias Stack = HStack
-#else
-    typealias Stack = HStack
-#endif
-
     @State var name: String
     @State var orc: String
     @State var cui: String
@@ -27,28 +21,28 @@ struct CompanyView: View {
     @State var web: String
 
     private var onChange: (CompanyData) -> Void
-    private var vm: CompanyViewViewModel
+    private var model: CompanyModel
     
 
     init (data: CompanyData, onChange: @escaping (CompanyData) -> Void) {
-        self.init(vm: CompanyViewViewModel(data: data), onChange: onChange)
+        self.init(model: CompanyModel(data: data), onChange: onChange)
     }
 
-    private init (vm: CompanyViewViewModel, onChange: @escaping (CompanyData) -> Void) {
+    private init (model: CompanyModel, onChange: @escaping (CompanyData) -> Void) {
         print("init CompanyView")
-        self.vm = vm
+        self.model = model
         self.onChange = onChange
 
-        name = vm.data.name
-        orc = vm.data.orc
-        cui = vm.data.cui
-        address = vm.data.address
-        county = vm.data.county
-        bankAccount = vm.data.bank_account
-        bankName = vm.data.bank_name
-        email = vm.data.email ?? ""
-        phone = vm.data.phone ?? ""
-        web = vm.data.web ?? ""
+        name = model.data.name
+        orc = model.data.orc
+        cui = model.data.cui
+        address = model.data.address
+        county = model.data.county
+        bankAccount = model.data.bank_account
+        bankName = model.data.bank_name
+        email = model.data.email ?? ""
+        phone = model.data.phone ?? ""
+        web = model.data.web ?? ""
     }
     
     var body: some View {
@@ -57,62 +51,62 @@ struct CompanyView: View {
 
         VStack(alignment: .leading) {
             Group {
-                Stack {
+                HStack {
                     Text("Nume*:").foregroundColor(.gray)
                     TextField("", text: $name).onChange(of: name) { newValue in
                         /// Proper way to do this?
                         /// Published didSet is called twice in a row
                         /// State is not called at all
-                        vm.data.name = newValue
-                        onChange(vm.data)
+                        model.data.name = newValue
+                        onChange(model.data)
                     }
                     .modifier(OutlineTextField())
                 }
-                Stack {
+                HStack {
                     Text("Nr.ORC/an*:").foregroundColor(.gray)
                     TextField("", text: $orc).onChange(of: orc) { newValue in
-                        vm.data.orc = newValue
-                        onChange(vm.data)
+                        model.data.orc = newValue
+                        onChange(model.data)
                     }
                     .modifier(OutlineTextField())
                 }
-                Stack {
+                HStack {
                     Text("C.U.I.*:").foregroundColor(.gray)
                     TextField("", text: $cui).onChange(of: cui) { newValue in
-                        vm.data.cui = newValue
-                        onChange(vm.data)
+                        model.data.cui = newValue
+                        onChange(model.data)
                     }
                     .modifier(OutlineTextField())
                 }
-                Stack {
+                HStack {
                     Text("Sediul*:").foregroundColor(.gray)
                     TextField("", text: $address).onChange(of: address) { newValue in
-                        vm.data.address = newValue
-                        onChange(vm.data)
+                        model.data.address = newValue
+                        onChange(model.data)
                     }
                     .modifier(OutlineTextField())
                 }
-                Stack {
+                HStack {
                     Text("Județul*:").foregroundColor(.gray)
                     TextField("", text: $county).onChange(of: county) { newValue in
-                        vm.data.county = newValue
-                        onChange(vm.data)
+                        model.data.county = newValue
+                        onChange(model.data)
                     }
                     .modifier(OutlineTextField())
                 }
-                Stack {
+                HStack {
                     Text("Contul*:").foregroundColor(.gray)
                     TextField("", text: $bankAccount).onChange(of: bankAccount) { newValue in
-                        vm.data.bank_account = newValue
-                        onChange(vm.data)
+                        model.data.bank_account = newValue
+                        onChange(model.data)
                     }
                     .modifier(OutlineTextField())
                 }
-                Stack {
+                HStack {
                     Text("Banca*:").foregroundColor(.gray)
                     TextField("", text: $bankName).onChange(of: bankName) { newValue in
-                        vm.data.bank_name = newValue
-                        onChange(vm.data)
+                        model.data.bank_name = newValue
+                        onChange(model.data)
                     }
                     .modifier(OutlineTextField())
                 }
@@ -121,29 +115,28 @@ struct CompanyView: View {
             Divider()
 
             Group {
-                Stack {
+                HStack {
                     Text("Email:").foregroundColor(.gray)
                     TextField("", text: $email).onChange(of: email) { newValue in
-                        vm.data.email = newValue != "" ? newValue : nil
-                        onChange(vm.data)
+                        model.data.email = newValue != "" ? newValue : nil
+                        onChange(model.data)
                     }
                     .modifier(OutlineTextField())
-//                    .modifier(NumberKeyboard())
                 }
-                Stack {
+                HStack {
                     Text("Phone:").foregroundColor(.gray)
                     TextField("", text: $phone).onChange(of: phone) { newValue in
-                        vm.data.phone = newValue != "" ? newValue : nil
-                        onChange(vm.data)
+                        model.data.phone = newValue != "" ? newValue : nil
+                        onChange(model.data)
                     }
                     .modifier(OutlineTextField())
                     .modifier(NumberKeyboard())
                 }
-                Stack {
+                HStack {
                     Text("Website:").foregroundColor(.gray)
                     TextField("", text: $web).onChange(of: web) { newValue in
-                        vm.data.web = newValue != "" ? newValue : nil
-                        onChange(vm.data)
+                        model.data.web = newValue != "" ? newValue : nil
+                        onChange(model.data)
                     }
                     .modifier(OutlineTextField())
                 }
