@@ -77,6 +77,12 @@ struct Toolbar: ViewModifier {
                                 mainWindowState.contentType = .reportEditor(invoiceModel)
                         }
                     }
+                    Button("Validate xml") {
+                        invoiceModel.validateXml()
+                    }
+//                    Button("Upload xml") {
+//                        invoiceModel.uploadXml()
+//                    }
                     if invoiceModel.hasChanges {
                         Button("Save") {
                             // Save the invoice

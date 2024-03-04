@@ -53,6 +53,9 @@ struct SettingsWindow: View {
                     }
                 }
 
+                Button("Test ANAF") {
+                    AnafRepository().getRefreshToken()
+                }
             }
             .padding()
         }

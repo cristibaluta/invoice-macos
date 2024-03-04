@@ -153,6 +153,20 @@ class InvoiceModel: ObservableObject {
         }
     }
 
+    func validateXml() {
+        _ = invoiceInteractor.readXml(for: data)
+            .sink(receiveValue: { xml in
+                AnafRepository().validate(xml: xml)
+            })
+    }
+
+    func uploadXml() {
+        _ = invoiceInteractor.readXml(for: data)
+            .sink(receiveValue: { xml in
+                AnafRepository().upload(xml: xml)
+            })
+    }
+
 //    func export (isPdf: Bool) {
 //        let fileName = "Invoice-\(data.invoice_series)\(data.invoice_nr.prefixedWith0)-\(data.date.yyyyMMdd).\(isPdf ? "pdf" : "html")"
 //        let exporter = Exporter()

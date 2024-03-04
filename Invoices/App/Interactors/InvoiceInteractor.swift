@@ -148,4 +148,17 @@ class InvoiceInteractor {
             .eraseToAnyPublisher()
     }
 
+    func readXml (for data: InvoiceData) -> AnyPublisher<String, Never> {
+
+        let invoiceNr = "\(data.invoice_series)\(data.invoice_nr.prefixedWith0)"
+        let invoiceFolderName = "\(data.date.yyyyMMdd)-\(invoiceNr)"
+        let invoiceXmlPath = "\(project.name)/\(invoiceFolderName)/data.xml"
+        print(invoiceXmlPath)
+
+        return repository
+            .readFile(at: invoiceXmlPath)
+            .map { String(decoding: $0, as: UTF8.self) }
+            .eraseToAnyPublisher()
+    }
+
 }
