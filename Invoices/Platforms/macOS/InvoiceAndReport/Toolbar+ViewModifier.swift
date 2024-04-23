@@ -42,25 +42,25 @@ struct Toolbar: ViewModifier {
             }
             ToolbarItemGroup(placement: .primaryAction) {
                 Spacer()
-                Button("Editor") {
-                    switch invoiceModel.editorType {
-                        case .invoice:
-                            isShowingEditorPopover = true
-                        case .report:
-                            isShowingEditorPopover = true
-                    }
-                }
-                .popover(isPresented: $isShowingEditorPopover,
-                         attachmentAnchor: .point(.trailing),
-                         arrowEdge: .trailing) {
-                    switch invoiceModel.editorType {
-                        case .invoice:
-                            InvoiceEditorPopover(invoiceModel: invoiceModel, editorModel: invoiceModel.invoiceEditorModel)
-                        case .report:
-                            ReportEditorPopover(invoiceModel: invoiceModel, editorModel: invoiceModel.reportEditorModel)
-                                .frame(width: 500, height: 600)
-                    }
-                }
+//                Button("Editor") {
+//                    switch invoiceModel.editorType {
+//                        case .invoice:
+//                            isShowingEditorPopover = true
+//                        case .report:
+//                            isShowingEditorPopover = true
+//                    }
+//                }
+//                .popover(isPresented: $isShowingEditorPopover,
+//                         attachmentAnchor: .point(.trailing),
+//                         arrowEdge: .trailing) {
+//                    switch invoiceModel.editorType {
+//                        case .invoice:
+//                            InvoiceEditorPopover(invoiceModel: invoiceModel, editorModel: invoiceModel.invoiceEditorModel)
+//                        case .report:
+//                            ReportEditorPopover(invoiceModel: invoiceModel, editorModel: invoiceModel.reportEditorModel)
+//                                .frame(width: 500, height: 600)
+//                    }
+//                }
                 if invoiceModel.isEditing {
                     Button("Preview") {
                         // Dismiss editor

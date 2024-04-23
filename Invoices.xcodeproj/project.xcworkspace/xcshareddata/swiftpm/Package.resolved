@@ -1,4 +1,5 @@
 {
+  "originHash" : "cd6e3e6625575dfca491e5425cdfcc8ebeb82b1d40f9e8bb413e9a380bca3821",
   "pins" : [
     {
       "identity" : "barchart",
@@ -33,7 +34,7 @@
       "location" : "https://github.com/cristibaluta/RCPreferences",
       "state" : {
         "branch" : "master",
-        "revision" : "0fa2ff20175e7f2e745d25db7ba047e94eebe210"
+        "revision" : "369cde53cbc4d44fd9f4ae74c67c18ec23176657"
       }
     },
     {
@@ -41,10 +42,10 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftcsv/SwiftCSV",
       "state" : {
-        "revision" : "039cc273dcc91f4c9d85e05a2514bbe63e7dde60",
-        "version" : "0.6.1"
+        "revision" : "ad2042d0ba2ea260246b0e1b1d5710cbc53e2836",
+        "version" : "0.6.0"
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

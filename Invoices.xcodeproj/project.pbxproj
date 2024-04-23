@@ -1166,7 +1166,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = U8W527Y939;
+				DEVELOPMENT_TEAM = 5NHDC5EV44;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1192,7 +1192,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = U8W527Y939;
+				DEVELOPMENT_TEAM = 5NHDC5EV44;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1450,8 +1450,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/swiftcsv/SwiftCSV";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.6.0;
+				kind = exactVersion;
+				version = 0.6.0;
 			};
 		};
 		56D6798E27FEB1C300133E1B /* XCRemoteSwiftPackageReference "RCPreferences" */ = {

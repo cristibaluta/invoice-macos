@@ -56,7 +56,7 @@ class AnafRepository {
                     return
                 }
                 self.pref.set(accessToken, forKey: .accessToken)
-                self.pref.set(Date().addingTimeInterval(TimeInterval(accessTokenExpiration)), forKey: .accessTokenExpiration)
+//                self.pref.set(Date().addingTimeInterval(TimeInterval(accessTokenExpiration)), forKey: .accessTokenExpiration)
                 self.pref.set(refreshToken, forKey: .refreshToken)
             }
         } failure: { err in
