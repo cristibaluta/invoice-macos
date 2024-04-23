@@ -51,7 +51,7 @@ class AnafRepository {
             if let tokens = try? JSONDecoder().decode(AnafTokenResponse.self, from: data) {
                 print(tokens)
                 guard let accessToken = tokens.access_token,
-                      let accessTokenExpiration = tokens.expires_in,
+//                      let accessTokenExpiration = tokens.expires_in,
                       let refreshToken = tokens.refresh_token else {
                     return
                 }
@@ -72,7 +72,7 @@ class AnafRepository {
         client.post(at: "prod/FCTEL/rest/validare/FACT1", parameters: params, contentType: .text) { response, data in
 
             print(response)
-            print(String(data: data, encoding: .utf8))
+            print(String(data: data, encoding: .utf8) ?? "-")
         } failure: { err in
             print(err)
         }
@@ -86,7 +86,7 @@ class AnafRepository {
         client.post(at: "test/FCTEL/rest/upload?standard=UBL&cif=34441362", parameters: params, contentType: .none) { response, data in
 
             print(response)
-            print(String(data: data, encoding: .utf8))
+            print(String(data: data, encoding: .utf8) ?? "-")
         } failure: { err in
             print(err)
         }
