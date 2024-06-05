@@ -9,24 +9,35 @@ import Foundation
 import Combine
 import RCLog
 
+enum LocalRepositoryType: String {
+    case main = "mainBaseUrlBookmarkKey"
+    case backup = "backupBaseUrlBookmarkKey"
+}
+
 class LocalRepository {
 
-    static fileprivate let bookmarkKey = "baseUrlBookmarkKey"
+    fileprivate let key: String
 
     var baseUrl: URL? {
-        return LocalRepository.getBaseUrlBookmark()
+        get {
+            return getBaseUrlBookmark()
+        }
+        set {
+            saveBaseUrl(newValue)
+        }
     }
 
     private func execute (_ block: (URL) -> Void) {
-        if let baseUrl = LocalRepository.getBaseUrlBookmark() {
+        if let baseUrl {
             let _ = baseUrl.startAccessingSecurityScopedResource()
             block(baseUrl)
             baseUrl.stopAccessingSecurityScopedResource()
         }
     }
 
-    init() {
-        RCLog("init LocalRepository at: \(String(describing: baseUrl))")
+    init(_ type: LocalRepositoryType) {
+        self.key = type.rawValue
+        RCLog("init LocalRepository for key: \(key) path: \(String(describing: baseUrl))")
     }
 }
 
@@ -34,7 +45,7 @@ extension LocalRepository: Repository {
 
     func readFolderContent (at path: String) -> Publishers.Sequence<[String], Never> {
 
-        guard let baseUrl = LocalRepository.getBaseUrlBookmark() else {
+        guard let baseUrl else {
             return Publishers.Sequence(sequence: [])
         }
         defer {
@@ -75,7 +86,7 @@ extension LocalRepository: Repository {
     
     func readFiles (at paths: [String]) -> Publishers.Sequence<[Data], Never> {
         
-        guard let baseUrl = LocalRepository.getBaseUrlBookmark() else {
+        guard let baseUrl else {
             return Publishers.Sequence(sequence: [])
         }
         defer {
@@ -120,7 +131,7 @@ extension LocalRepository: Repository {
 
     func writeFile (_ contents: Data, at path: String) -> AnyPublisher<Bool, Never> {
 
-        guard let baseUrl = LocalRepository.getBaseUrlBookmark() else {
+        guard let baseUrl else {
             return CurrentValueSubject<Bool, Never>(false).eraseToAnyPublisher()
         }
         _ = baseUrl.startAccessingSecurityScopedResource()
@@ -181,8 +192,8 @@ extension LocalRepository: Repository {
 extension LocalRepository {
 
     /// Returns a temporary url
-    static func getBaseUrlBookmark() -> URL? {
-        if let bookmark = UserDefaults.standard.object(forKey: bookmarkKey) as? NSData as Data? {
+    fileprivate func getBaseUrlBookmark() -> URL? {
+        if let bookmark = UserDefaults.standard.object(forKey: key) as? NSData as Data? {
             var stale = false
             if let url = try? URL(resolvingBookmarkData: bookmark,
                                   options: URL.BookmarkResolutionOptions.withSecurityScope,
@@ -194,18 +205,18 @@ extension LocalRepository {
         return nil
     }
 
-    static func setBaseUrl (_ url: URL?) {
+    fileprivate func saveBaseUrl (_ url: URL?) {
         guard let bookmark = try? url?.bookmarkData(options: URL.BookmarkCreationOptions.withSecurityScope,
                                                     includingResourceValuesForKeys: nil,
                                                     relativeTo: nil) else {
             return
         }
-        UserDefaults.standard.set(bookmark, forKey: bookmarkKey)
+        UserDefaults.standard.set(bookmark, forKey: key)
         UserDefaults.standard.synchronize()
     }
 
-    static func clear() {
-        UserDefaults.standard.removeObject(forKey: bookmarkKey)
+    fileprivate func clear() {
+        UserDefaults.standard.removeObject(forKey: key)
         UserDefaults.standard.synchronize()
     }
 }

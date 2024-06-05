@@ -19,42 +19,82 @@ struct SettingsWindow: View {
                 Text("Files location:")
                     .bold()
 
-                HStack {
-                    Menu {
-                        ForEach(settingsStore.repositories) { repository in
-                            Button(repository.type.name, action: {
-                                settingsStore.setCurrentRepository(repository.type)
-                            })
+                VStack {
+                    HStack {
+                        Menu {
+                            ForEach(settingsStore.repositories) { repository in
+                                Button(repository.type.name, action: {
+                                    settingsStore.setMainRepository(repository.type)
+                                })
+                            }
+                        } label: {
+                            Text(settingsStore.mainRepositoryType.name)
                         }
-                    } label: {
-                        Text(settingsStore.currentRepository.name)
+                        Spacer()
                     }
-                    Spacer()
-                }
-
-                HStack {
-                    Toggle("Backup", isOn: $settingsStore.enableBackup)
-
-                    if settingsStore.enableBackup {
-                        Button("Chose path") {
-                            let panel = NSOpenPanel()
-                            panel.canChooseFiles = false
-                            panel.canChooseDirectories = true
-                            panel.allowsMultipleSelection = false
-                            if panel.runModal() == .OK {
-                                if let url = panel.urls.first {
-                                    self.settingsStore.setBackupUrl(url)
+                    if settingsStore.mainRepositoryType == .custom {
+                        HStack {
+                            Button("Chose path") {
+                                let panel = NSOpenPanel()
+                                panel.canChooseFiles = false
+                                panel.canChooseDirectories = true
+                                panel.allowsMultipleSelection = false
+                                if panel.runModal() == .OK {
+                                    if let url = panel.urls.first {
+                                        self.settingsStore.setMainUrl(url)
+                                    }
                                 }
                             }
+                            Text(settingsStore.mainRepositoryUrl)
+                            Spacer()
                         }
-                        .padding(.leading, 16)
-
-                        Text(settingsStore.backupRepositoryUrl)
+                        .padding(.top, 10)
                     }
                 }
 
-                Button("Test ANAF") {
-                    AnafRepository().getRefreshToken()
+                Spacer().frame(height: 40)
+                
+                Text("Backup files location:")
+                    .bold()
+
+                VStack {
+                    HStack {
+                        Toggle("Backup", isOn: $settingsStore.enableBackup)
+                        Spacer()
+                    }
+
+                    if settingsStore.enableBackup {
+                        HStack {
+                            Menu {
+                                ForEach(settingsStore.repositories) { repository in
+                                    Button(repository.type.name, action: {
+                                        settingsStore.setBackupRepository(repository.type)
+                                    })
+                                }
+                            } label: {
+                                Text(settingsStore.backupRepositoryType.name)
+                            }
+                            Spacer()
+                        }
+                        if settingsStore.backupRepositoryType == .custom {
+                            HStack {
+                                Button("Chose path") {
+                                    let panel = NSOpenPanel()
+                                    panel.canChooseFiles = false
+                                    panel.canChooseDirectories = true
+                                    panel.allowsMultipleSelection = false
+                                    if panel.runModal() == .OK {
+                                        if let url = panel.urls.first {
+                                            self.settingsStore.setBackupUrl(url)
+                                        }
+                                    }
+                                }
+                                Text(settingsStore.backupRepositoryUrl)
+                                Spacer()
+                            }
+                            .padding(.top, 10)
+                        }
+                    }
                 }
             }
             .padding()

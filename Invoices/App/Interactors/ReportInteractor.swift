@@ -171,7 +171,7 @@ class ReportInteractor {
                     return
                 }
                 let report = Report(project_name: projectName,
-                                    group: "",
+                                    group: dict["Component"] ?? "",
                                     description: dict["Work Description"] ?? "",
                                     duration: Decimal(Double(dict["Hours"]?.replacingOccurrences(of: ",", with: ".") ?? "0") ?? 0))
 

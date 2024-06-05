@@ -184,6 +184,8 @@
 		56EB80CE2B532C7E0046D72C /* CompaniesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EB80CD2B532C7E0046D72C /* CompaniesList.swift */; };
 		56EB80D62B55FAF30046D72C /* InvoiceEditorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EB80D52B55FAF30046D72C /* InvoiceEditorProtocol.swift */; };
 		56EB80D72B55FAF30046D72C /* InvoiceEditorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EB80D52B55FAF30046D72C /* InvoiceEditorProtocol.swift */; };
+		6D55C5262C0E024900468F4D /* CurrencyInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D55C5252C0E024900468F4D /* CurrencyInteractor.swift */; };
+		6D55C5272C0E024900468F4D /* CurrencyInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D55C5252C0E024900468F4D /* CurrencyInteractor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -311,6 +313,7 @@
 		56EB80CB2B5315F10046D72C /* InvoicesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesList.swift; sourceTree = "<group>"; };
 		56EB80CD2B532C7E0046D72C /* CompaniesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesList.swift; sourceTree = "<group>"; };
 		56EB80D52B55FAF30046D72C /* InvoiceEditorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceEditorProtocol.swift; sourceTree = "<group>"; };
+		6D55C5252C0E024900468F4D /* CurrencyInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyInteractor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -722,6 +725,7 @@
 				28C04365274E9D3E0057C0D0 /* ReportsInteractorTests.swift */,
 				56D385632891E3BB00E8BEB5 /* ReportInteractor.swift */,
 				56D679A0280212CC00133E1B /* CompaniesInteractor.swift */,
+				6D55C5252C0E024900468F4D /* CurrencyInteractor.swift */,
 			);
 			path = Interactors;
 			sourceTree = "<group>";
@@ -908,6 +912,7 @@
 				28A73D282763BF9C00F727C3 /* ReportEditorView.swift in Sources */,
 				56DAD6452B67AEAD00A30F9C /* EditorType.swift in Sources */,
 				56DAD63F2B66AB1900A30F9C /* PDFDocument+Transferable.swift in Sources */,
+				6D55C5272C0E024900468F4D /* CurrencyInteractor.swift in Sources */,
 				56DAD62F2B59180000A30F9C /* ReportEditorModel.swift in Sources */,
 				56D6799828017F0D00133E1B /* Repository.swift in Sources */,
 				56E0134A2B82397400E255C0 /* IcloudDriveRepository.swift in Sources */,
@@ -1028,6 +1033,7 @@
 				56B945242886A29F00D312A4 /* NewInvoiceView.swift in Sources */,
 				56EB80CA2B5315280046D72C /* ProjectsMenu.swift in Sources */,
 				56D38558288C8B5400E8BEB5 /* ChartsView.swift in Sources */,
+				6D55C5262C0E024900468F4D /* CurrencyInteractor.swift in Sources */,
 				56EB80CE2B532C7E0046D72C /* CompaniesList.swift in Sources */,
 				56EB80CC2B5315F10046D72C /* InvoicesList.swift in Sources */,
 				56D6799728017F0D00133E1B /* Repository.swift in Sources */,

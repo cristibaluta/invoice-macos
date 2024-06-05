@@ -19,28 +19,34 @@ class SettingsStore: ObservableObject {
 
     @Published var repositories: [RepositoryOption]
     @Published var selection: RepositoryOption.ID?
-    @Published var currentRepository: RepositoryType
-    @Published var backupRepository: RepositoryType
+    @Published var mainRepositoryType: RepositoryType
+    @Published var backupRepositoryType: RepositoryType
+    @Published var mainRepository: Repository
+    @Published var backupRepository: Repository?
+    @Published var mainRepositoryUrl: String = ""
     @Published var backupRepositoryUrl: String = ""
     @Published var enableBackup: Bool
     private var enableBackupCancellable: AnyCancellable?
 
     private var pref = RCPreferences<UserPreferences>()
 
-    init() {
+    init(mainRepository: Repository, backupRepository: Repository?) {
         repositories = [
             RepositoryOption(type: .sandbox),
             RepositoryOption(type: .icloud),
             RepositoryOption(type: .custom)
         ]
-        currentRepository = RepositoryType(rawValue: pref.int(.repository)) ?? .sandbox
-        backupRepository = RepositoryType(rawValue: pref.int(.backupRepository)) ?? .custom
+        mainRepositoryType = RepositoryType(rawValue: pref.int(.repository)) ?? .sandbox
+        backupRepositoryType = RepositoryType(rawValue: pref.int(.backupRepository)) ?? .custom
+        self.mainRepository = mainRepository
+        self.backupRepository = backupRepository
         enableBackup = pref.int(.backupRepository) != -1
         #if os(macOS)
-        backupRepositoryUrl = LocalRepository.getBaseUrlBookmark()?.absoluteString ?? ""
+        mainRepositoryUrl = (mainRepository as? LocalRepository)?.baseUrl?.absoluteString ?? ""
+        backupRepositoryUrl = (backupRepository as? LocalRepository)?.baseUrl?.absoluteString ?? ""
 
         enableBackupCancellable = $enableBackup.sink { isOn in
-            self.backupRepository = isOn ? (RepositoryType(rawValue: self.pref.int(.backupRepository)) ?? .custom) : .custom
+            self.backupRepositoryType = isOn ? (RepositoryType(rawValue: self.pref.int(.backupRepository)) ?? .custom) : .custom
             self.pref.set(isOn ? 2 : -1, forKey: .backupRepository)
         }
         #else
@@ -52,14 +58,25 @@ class SettingsStore: ObservableObject {
         #endif
     }
 
-    func setCurrentRepository(_ repository: RepositoryType) {
-        currentRepository = repository
-        pref.set(repository.rawValue, forKey: .repository)
+    func setMainRepository(_ repositoryType: RepositoryType) {
+        mainRepositoryType = repositoryType
+        pref.set(repositoryType.rawValue, forKey: .repository)
+    }
+
+    func setBackupRepository(_ repositoryType: RepositoryType) {
+        backupRepositoryType = repositoryType
+        pref.set(repositoryType.rawValue, forKey: .backupRepository)
+    }
+
+    func setMainUrl(_ url: URL) {
+        mainRepositoryUrl = url.absoluteString
+        pref.set(mainRepositoryType.rawValue, forKey: .repository)
+        (mainRepository as? LocalRepository)?.baseUrl = url
     }
 
     func setBackupUrl(_ url: URL) {
-        backupRepository = .custom
         backupRepositoryUrl = url.absoluteString
-        pref.set(backupRepository.rawValue, forKey: .backupRepository)
+        pref.set(backupRepositoryType.rawValue, forKey: .backupRepository)
+        (backupRepository as? LocalRepository)?.baseUrl = url
     }
 }

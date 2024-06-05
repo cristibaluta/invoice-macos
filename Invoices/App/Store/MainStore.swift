@@ -26,15 +26,17 @@ class MainStore: ObservableObject {
             case .sandbox: mainRepository = SandboxRepository()
             case .icloud: mainRepository = IcloudDriveRepository()
             #if os(macOS)
-            case .custom: mainRepository = LocalRepository()
+            case .custom: mainRepository = LocalRepository(.main)
             #endif
             default: mainRepository = SandboxRepository()
         }
 
         let backupRepository: Repository?
-        switch RepositoryType(rawValue: pref.int(.repository)) {
+        switch RepositoryType(rawValue: pref.int(.backupRepository)) {
+            case .sandbox: backupRepository = SandboxRepository()
+            case .icloud: backupRepository = IcloudDriveRepository()
             #if os(macOS)
-            case .sandbox: backupRepository = LocalRepository()
+            case .custom: backupRepository = LocalRepository(.backup)
             #endif
             default: backupRepository = nil
         }
@@ -49,7 +51,7 @@ class MainStore: ObservableObject {
 
         projectsStore = ProjectsStore(repository: repository)
         companiesStore = CompaniesStore(repository: repository)
-        settingsStore = SettingsStore()
+        settingsStore = SettingsStore(mainRepository: mainRepository, backupRepository: backupRepository)
 
         projectsStore.changePublisher
             .sink {
