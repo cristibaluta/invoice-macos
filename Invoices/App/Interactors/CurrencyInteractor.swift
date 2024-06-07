@@ -7,16 +7,20 @@
 
 import Foundation
 
-class CurrencyRateParser: NSObject, XMLParserDelegate {
-    private var currentDate: String
-    private var currentElement = ""
+class CurrencyInteractor: NSObject, XMLParserDelegate {
     private var foundEURRate: String?
-    private var dateToSearch: String
+    private var dateToSearch: String?
     private var isTargetDate = false
+    private var isTargetCurrency = false
 
-    init(date: String) {
-        self.dateToSearch = date
-        self.currentDate = ""
+    func getLatestEuroExchangeRateFromLastDayOfTheMonth(completion: @escaping (String?) -> Void) {
+
+        dateToSearch = Date().endOfMonth(lastWorkingDay: true).yyyyMMdd_dashes
+
+        BNRRepository().getLatest10ExchangeRates { data in
+            let rate = self.parse(xmlData: data)
+            completion(rate)
+        }
     }
 
     func parse(xmlData: Data) -> String? {
@@ -36,31 +40,31 @@ class CurrencyRateParser: NSObject, XMLParserDelegate {
                 namespaceURI: String?,
                 qualifiedName qName: String?,
                 attributes attributeDict: [String : String] = [:]) {
-        currentElement = elementName
 
         if elementName == "Cube" {
-            if let date = attributeDict["date"] {
-                currentDate = date
-                isTargetDate = (date == dateToSearch)
+            if let date = attributeDict["date"], date == dateToSearch {
+                isTargetDate = true
             }
         }
 
         if elementName == "Rate" && isTargetDate {
             if let currency = attributeDict["currency"], currency == "EUR" {
-                currentElement = "Rate"
+                isTargetCurrency = true
             }
         }
     }
 
     func parser(_ parser: XMLParser, foundCharacters string: String) {
-        if currentElement == "Rate" && isTargetDate {
+        if isTargetCurrency && isTargetDate {
             foundEURRate = string
-            currentElement = ""
             isTargetDate = false
+            isTargetCurrency = false
         }
     }
 
-    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        currentElement = ""
+    func parser(_ parser: XMLParser, 
+                didEndElement elementName: String,
+                namespaceURI: String?,
+                qualifiedName qName: String?) {
     }
 }

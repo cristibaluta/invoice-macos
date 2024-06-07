@@ -10,18 +10,26 @@ import Foundation
 extension Date {
     
     func startOfMonth() -> Date {
-        return Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: Calendar.current.startOfDay(for: self)))!
+        return Calendar.current.date(from: 
+                Calendar.current.dateComponents([.year, .month], from:
+                Calendar.current.startOfDay(for: self)))!
     }
     
     func endOfMonth (lastWorkingDay: Bool = true) -> Date {
-        let i = -1
-        var date = Calendar.current.date(byAdding: DateComponents(month: 1, day: i), to: self.startOfMonth())!
+        var components = Calendar.current.dateComponents([.year, .month], from: self)
+            components.day = 1
+
+        // Get the last day of the previous month
+        guard let firstDayOfCurrentMonth = Calendar.current.date(from: components),
+              let lastDayOfPreviousMonth = Calendar.current.date(byAdding: .day, value: -1, to: firstDayOfCurrentMonth) else {
+            return Date()
+        }
+        var date = lastDayOfPreviousMonth
+
         if lastWorkingDay {
-            if date.dayNumberOfWeek() == 1 || date.dayNumberOfWeek() > 6 {// Sun or Sat
-                date = Calendar.current.date(byAdding: DateComponents(day: i), to: date)!
-            }
-            if date.dayNumberOfWeek() == 1 || date.dayNumberOfWeek() > 6 {// Sun or Sat
-                date = Calendar.current.date(byAdding: DateComponents(day: i), to: date)!
+            // If the last day is a weekend, find the previous working day
+            while date.isWeekend {
+                date = Calendar.current.date(byAdding: .day, value: -1, to: date)!
             }
         }
         return date
@@ -91,7 +99,13 @@ extension Date {
         let comp = Calendar.current.dateComponents([.year], from: self)
         return comp.year ?? 0
     }
-    
+
+    var isWeekend: Bool {
+        let calendar = Calendar.current
+        let weekday = calendar.component(.weekday, from: self)
+        return weekday == 1 || weekday == 7 // Sunday = 1, Saturday = 7
+    }
+
     init?(yyyyMMdd: String) {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = .current

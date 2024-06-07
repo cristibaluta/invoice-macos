@@ -186,6 +186,8 @@
 		56EB80D72B55FAF30046D72C /* InvoiceEditorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EB80D52B55FAF30046D72C /* InvoiceEditorProtocol.swift */; };
 		6D55C5262C0E024900468F4D /* CurrencyInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D55C5252C0E024900468F4D /* CurrencyInteractor.swift */; };
 		6D55C5272C0E024900468F4D /* CurrencyInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D55C5252C0E024900468F4D /* CurrencyInteractor.swift */; };
+		6D55C5292C11ECED00468F4D /* BNRRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D55C5282C11ECED00468F4D /* BNRRepository.swift */; };
+		6D55C52A2C11ECED00468F4D /* BNRRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D55C5282C11ECED00468F4D /* BNRRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -314,6 +316,7 @@
 		56EB80CD2B532C7E0046D72C /* CompaniesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesList.swift; sourceTree = "<group>"; };
 		56EB80D52B55FAF30046D72C /* InvoiceEditorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceEditorProtocol.swift; sourceTree = "<group>"; };
 		6D55C5252C0E024900468F4D /* CurrencyInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyInteractor.swift; sourceTree = "<group>"; };
+		6D55C5282C11ECED00468F4D /* BNRRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BNRRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -711,6 +714,7 @@
 				28A73D3F2764D2C400F727C3 /* IcloudDriveRepository.swift */,
 				56DEB1DE2B828A8900A87EE2 /* BackupRepository.swift */,
 				56DEB1FA2B937DA500A87EE2 /* AnafRepository.swift */,
+				6D55C5282C11ECED00468F4D /* BNRRepository.swift */,
 			);
 			path = External;
 			sourceTree = "<group>";
@@ -923,6 +927,7 @@
 				56D6799428017C0A00133E1B /* MainStore.swift in Sources */,
 				56B9452B2886C34B00D312A4 /* CompaniesStore.swift in Sources */,
 				56D3854A288A6C0C00E8BEB5 /* MainViewIpad.swift in Sources */,
+				6D55C52A2C11ECED00468F4D /* BNRRepository.swift in Sources */,
 				56D385622891E3B000E8BEB5 /* InvoiceInteractor.swift in Sources */,
 				56DAD6362B59CB7E00A30F9C /* InvoiceEditorModel.swift in Sources */,
 				56B945232886A29100D312A4 /* NewInvoiceView.swift in Sources */,
@@ -992,6 +997,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D55C5292C11ECED00468F4D /* BNRRepository.swift in Sources */,
 				56D38553288B392A00E8BEB5 /* Keyboard+ViewModifier.swift in Sources */,
 				56D38557288C22AB00E8BEB5 /* CompanyPopover.swift in Sources */,
 				56D385612891E3B000E8BEB5 /* InvoiceInteractor.swift in Sources */,

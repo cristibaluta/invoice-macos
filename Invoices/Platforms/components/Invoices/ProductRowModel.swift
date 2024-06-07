@@ -71,6 +71,16 @@ class ProductRowModel: ObservableObject, Identifiable {
         cancellables.removeAll()
     }
 
+    func requestExchangeRate() {
+        CurrencyInteractor().getLatestEuroExchangeRateFromLastDayOfTheMonth() { rate in
+            if let rate {
+                DispatchQueue.main.async {
+                    self.exchangeRate = rate
+                }
+            }
+        }
+    }
+
     private func calculateAmount() {
         data.calculate()
         amount = data.amount.stringValue_2

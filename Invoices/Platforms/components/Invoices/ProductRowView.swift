@@ -38,10 +38,18 @@ struct ProductRowView: View {
                 Divider()
                 VStack(alignment: .center) {
                     Text("Exchange Rate #2:").font(smallFont)
-                    TextField("", text: $viewModel.exchangeRate)
-                        .font(appFont)
-                        .modifier(OutlineTextField())
-                        .modifier(NumberKeyboard())
+                    HStack {
+                        TextField("", text: $viewModel.exchangeRate)
+                            .font(appFont)
+                            .modifier(OutlineTextField())
+                            .modifier(NumberKeyboard())
+                        Button {
+                            viewModel.requestExchangeRate()
+                        } label: {
+                            Image(systemName: "arrow.clockwise.circle.fill")
+                        }
+                        .buttonStyle(BorderlessButtonStyle())
+                    }
                 }
                 Divider()
                 VStack(alignment: .center) {
