@@ -37,6 +37,7 @@ class ReportsInteractor {
             projects[report.project_name] = groups
             nrOfReports += 1
         }
+        return projects
 
         // Adjust durations
         guard extraDuration != 0 else {

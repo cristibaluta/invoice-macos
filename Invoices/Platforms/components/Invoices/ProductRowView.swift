@@ -46,7 +46,7 @@ struct ProductRowView: View {
                         Button {
                             viewModel.requestExchangeRate()
                         } label: {
-                            Image(systemName: "arrow.clockwise.circle.fill")
+                            Image(systemName: "arrow.clockwise")
                         }
                         .buttonStyle(BorderlessButtonStyle())
                     }
