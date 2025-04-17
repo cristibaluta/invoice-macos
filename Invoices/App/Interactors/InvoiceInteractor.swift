@@ -79,7 +79,8 @@ class InvoiceInteractor {
                 let dict = data.toDictionary()
 
                 for (key, value) in dict {
-                    if key == "amount_total" || key == "amount_total_vat", let amount = Decimal(string: value as? String ?? "") {
+                    if key == "amount_total" || key == "amount_total_vat" || key == "vat_amount",
+                       let amount = Decimal(string: value as? String ?? "") {
                         // Format the money values
                         let formattedAmount = type == .html ? amount.stringValue_grouped2 : amount.stringValue_2
                         template = template.replacingOccurrences(of: "::\(key)::", with: "\(formattedAmount)")
@@ -120,6 +121,8 @@ class InvoiceInteractor {
                                                    with: "\(product.units.stringValue_grouped2)")
                     row = row.replacingOccurrences(of: "::amount_per_unit::",
                                                    with: "\(product.amount_per_unit.stringValue_grouped4)")
+                    row = row.replacingOccurrences(of: "::vat_percent::",
+                                                   with: "\(data.vat_percent.stringValue_grouped2)")
                     row = row.replacingOccurrences(of: "::amount::",
                                                    with: "\(type == .html ? product.amount.stringValue_grouped2 : product.amount.stringValue_2)")
 

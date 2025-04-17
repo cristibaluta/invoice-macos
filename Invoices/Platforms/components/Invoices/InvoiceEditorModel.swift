@@ -22,7 +22,8 @@ class InvoiceEditorModel: ObservableObject, InvoiceEditorProtocol {
     @Published var invoiceDate: Date
     @Published var invoicedDate: Date
     @Published var products: [ProductRowModel]
-    @Published var vat: String
+    @Published var vatPercent: String
+    @Published var vatAmount: String
     @Published var amountTotalVat: String
     @Published var clientName: String
     @Published var contractorName: String
@@ -49,7 +50,8 @@ class InvoiceEditorModel: ObservableObject, InvoiceEditorProtocol {
         
         products = data.products.map({ ProductRowModel(data: $0) })
 
-        vat = data.vat.stringValue_2
+        vatPercent = data.vat_percent.stringValue_2
+        vatAmount = data.vat_amount.stringValue_2
         amountTotalVat = data.amount_total_vat.stringValue_2
 
         clientViewModel = CompanyModel(data: data.client)
@@ -70,10 +72,11 @@ class InvoiceEditorModel: ObservableObject, InvoiceEditorProtocol {
         $invoicedDate.removeDuplicates().sink { newValue in self.data.invoiced_period = newValue.yyyyMMdd }
         .store(in: &cancellables)
 
-        $vat.removeDuplicates().sink { newValue in
-            self.data.vat = Decimal(string: newValue) ?? 0
+        $vatPercent.removeDuplicates().sink { newValue in
+            self.data.vat_percent = Decimal(string: newValue) ?? 0
             // When VAT changes recalculate the total amount
             self.data.calculate()
+            self.vatAmount = self.data.vat_amount.stringValue_2
             self.amountTotalVat = self.data.amount_total_vat.stringValue_2
         }
         .store(in: &cancellables)

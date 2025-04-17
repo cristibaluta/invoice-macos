@@ -114,8 +114,16 @@ struct InvoiceEditorView: View {
                 
                 Group {
                     HStack(alignment: .center) {
-                        Text("VAT:").font(appFont)
-                        TextField("VAT", text: $model.vat)
+                        Text("VAT %:").font(appFont)
+                        TextField("VAT", text: $model.vatPercent)
+                        .font(appFont)
+                        .modifier(OutlineTextField())
+                        .modifier(NumberKeyboard())
+                    }
+                    HStack(alignment: .center) {
+                        Text("VAT amount (#7 * VAT %):").font(appFont)
+                        TextField("VAT amount", text: $model.vatAmount)
+                        .disabled(true)
                         .font(appFont)
                         .modifier(OutlineTextField())
                         .modifier(NumberKeyboard())

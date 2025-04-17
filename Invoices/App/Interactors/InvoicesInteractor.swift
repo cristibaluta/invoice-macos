@@ -101,7 +101,8 @@ class InvoicesInteractor {
                                                      amount: 0)],
                            reports: [],
                            currency: "",
-                           vat: 0,
+                           vat_percent: 0,
+                           vat_amount: 0,
                            amount_total: 0,
                            amount_total_vat: 0)
     }

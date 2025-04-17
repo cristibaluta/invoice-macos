@@ -20,7 +20,8 @@ struct InvoiceData: Codable, Equatable, PropertyLoopable {
     var products: [InvoiceProduct]
     var reports: [InvoiceReport]
     var currency: String
-    var vat: Decimal
+    var vat_percent: Decimal
+    var vat_amount: Decimal
     var amount_total: Decimal
     var amount_total_vat: Decimal
     
@@ -28,7 +29,11 @@ struct InvoiceData: Codable, Equatable, PropertyLoopable {
     var isFixedTotal: Bool?
     
     enum CodingKeys: CodingKey {
-        case invoice_series, invoice_nr, invoice_date, invoiced_period, client, contractor, products, reports, currency, vat, amount_total, amount_total_vat
+        case invoice_series, invoice_nr, invoice_date, invoiced_period,
+             client, contractor,
+             products,
+             reports,
+             currency, vat_percent, vat_amount, amount_total, amount_total_vat
     }
     
     func encode (to encoder: Encoder) throws {
@@ -42,7 +47,8 @@ struct InvoiceData: Codable, Equatable, PropertyLoopable {
         try container.encode(products, forKey: .products)
         try container.encode(reports, forKey: .reports)
         try container.encode(currency, forKey: .currency)
-        try container.encode(vat.stringValue, forKey: .vat)
+        try container.encode(vat_percent.stringValue, forKey: .vat_percent)
+        try container.encode(vat_amount.stringValue, forKey: .vat_amount)
         try container.encode(amount_total.stringValue, forKey: .amount_total)
         try container.encode(amount_total_vat.stringValue, forKey: .amount_total_vat)
     }
@@ -58,7 +64,8 @@ struct InvoiceData: Codable, Equatable, PropertyLoopable {
         products = try container.decode([InvoiceProduct].self, forKey: .products)
         reports = try container.decode([InvoiceReport].self, forKey: .reports)
         currency = try container.decode(String.self, forKey: .currency)
-        vat = Decimal(string: try container.decode(String.self, forKey: .vat)) ?? 0
+        vat_percent = Decimal(string: (try? container.decode(String.self, forKey: .vat_percent)) ?? "0") ?? 0
+        vat_amount = Decimal(string: (try? container.decode(String.self, forKey: .vat_amount)) ?? "0") ?? 0
         amount_total = Decimal(string: try container.decode(String.self, forKey: .amount_total)) ?? 0
         amount_total_vat = Decimal(string: try container.decode(String.self, forKey: .amount_total_vat)) ?? 0
     }
@@ -72,7 +79,8 @@ struct InvoiceData: Codable, Equatable, PropertyLoopable {
           products: [InvoiceProduct],
           reports: [InvoiceReport],
           currency: String,
-          vat: Decimal,
+          vat_percent: Decimal,
+          vat_amount: Decimal,
           amount_total: Decimal,
           amount_total_vat: Decimal) {
 
@@ -85,7 +93,8 @@ struct InvoiceData: Codable, Equatable, PropertyLoopable {
         self.products = products
         self.reports = reports
         self.currency = currency
-        self.vat = vat
+        self.vat_percent = vat_percent
+        self.vat_amount = vat_amount
         self.amount_total = amount_total
         self.amount_total_vat = amount_total_vat
     }
@@ -130,7 +139,8 @@ extension InvoiceData {
             }
 
             amount_total = total
-            amount_total_vat = amount_total + amount_total * vat / 100
+            vat_amount = amount_total * vat_percent / 100
+            amount_total_vat = amount_total + vat_amount
         }
     }
 
